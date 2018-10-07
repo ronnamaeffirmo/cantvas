@@ -1,0 +1,24 @@
+# import Teacher, Student, TeacherWhereUniqueInput, StudentWhereUniqueInput, TeacherCreateInput, StudentCreateInput from "./generated/prisma.graphql"
+# import TeacherUpdateInput, StudentUpdateInput, TeacherSubscriptionWhereInput, StudentSubscriptionWhereInput from "./generated/prisma.graphql"
+# import TeacherSubscriptionPayload, StudentSubscriptionPayload from "./generated/prisma.graphql"
+
+type Query {
+  teachers: [Teacher]!
+  teacher(where: TeacherWhereUniqueInput): Teacher!
+  students: [Student]!
+  student(where: StudentWhereUniqueInput): Student!
+}
+
+type Mutation {
+  createTeacher(data: TeacherCreateInput!): Teacher!
+  createStudent(data: StudentCreateInput!): Student!
+  updateTeacher(data: TeacherUpdateInput!, where: TeacherWhereUniqueInput!): Teacher
+  updateStudent(data: StudentUpdateInput!, where: StudentWhereUniqueInput!): Student
+  deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
+  deleteStudent(where: StudentWhereUniqueInput!): Student
+}
+
+type Subscription {
+  teacherSubscription(where: TeacherSubscriptionWhereInput): TeacherSubscriptionPayload
+  studentSubscription(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
+}

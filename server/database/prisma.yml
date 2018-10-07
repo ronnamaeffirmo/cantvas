@@ -1,0 +1,6 @@
+datamodel: datamodel.graphql
+secret: ronmark
+hooks:
+  post-deploy:
+    - yarn graphql get-schema --project database
+endpoint: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev

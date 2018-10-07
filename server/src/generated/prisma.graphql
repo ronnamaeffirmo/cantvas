@@ -1,0 +1,675 @@
+# source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
+# timestamp: Sun Oct 07 2018 16:35:19 GMT+0800 (+08)
+
+type AggregateStudent {
+  count: Int!
+}
+
+type AggregateTeacher {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+enum course {
+  BSSE
+  BSCE
+  BSME
+  BSPKG
+  BSEE
+  BSECE
+  BSCHE
+}
+
+enum gender {
+  MALE
+  FEMALE
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createTeacher(data: TeacherCreateInput!): Teacher!
+  createStudent(data: StudentCreateInput!): Student!
+  updateTeacher(data: TeacherUpdateInput!, where: TeacherWhereUniqueInput!): Teacher
+  updateStudent(data: StudentUpdateInput!, where: StudentWhereUniqueInput!): Student
+  deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
+  deleteStudent(where: StudentWhereUniqueInput!): Student
+  upsertTeacher(where: TeacherWhereUniqueInput!, create: TeacherCreateInput!, update: TeacherUpdateInput!): Teacher!
+  upsertStudent(where: StudentWhereUniqueInput!, create: StudentCreateInput!, update: StudentUpdateInput!): Student!
+  updateManyTeachers(data: TeacherUpdateInput!, where: TeacherWhereInput): BatchPayload!
+  updateManyStudents(data: StudentUpdateInput!, where: StudentWhereInput): BatchPayload!
+  deleteManyTeachers(where: TeacherWhereInput): BatchPayload!
+  deleteManyStudents(where: StudentWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  teachers(where: TeacherWhereInput, orderBy: TeacherOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Teacher]!
+  students(where: StudentWhereInput, orderBy: StudentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Student]!
+  teacher(where: TeacherWhereUniqueInput!): Teacher
+  student(where: StudentWhereUniqueInput!): Student
+  teachersConnection(where: TeacherWhereInput, orderBy: TeacherOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeacherConnection!
+  studentsConnection(where: StudentWhereInput, orderBy: StudentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StudentConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Student implements Node {
+  id: ID!
+  name: String!
+  year: year!
+  course: course!
+  gender: gender!
+  age: Int!
+}
+
+"""A connection to a list of items."""
+type StudentConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [StudentEdge]!
+  aggregate: AggregateStudent!
+}
+
+input StudentCreateInput {
+  name: String!
+  year: year!
+  course: course!
+  gender: gender!
+  age: Int!
+}
+
+input StudentCreateManyInput {
+  create: [StudentCreateInput!]
+  connect: [StudentWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type StudentEdge {
+  """The item at the end of the edge."""
+  node: Student!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum StudentOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  year_ASC
+  year_DESC
+  course_ASC
+  course_DESC
+  gender_ASC
+  gender_DESC
+  age_ASC
+  age_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type StudentPreviousValues {
+  id: ID!
+  name: String!
+  year: year!
+  course: course!
+  gender: gender!
+  age: Int!
+}
+
+type StudentSubscriptionPayload {
+  mutation: MutationType!
+  node: Student
+  updatedFields: [String!]
+  previousValues: StudentPreviousValues
+}
+
+input StudentSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StudentSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [StudentSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [StudentSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: StudentWhereInput
+}
+
+input StudentUpdateDataInput {
+  name: String
+  year: year
+  course: course
+  gender: gender
+  age: Int
+}
+
+input StudentUpdateInput {
+  name: String
+  year: year
+  course: course
+  gender: gender
+  age: Int
+}
+
+input StudentUpdateManyInput {
+  create: [StudentCreateInput!]
+  connect: [StudentWhereUniqueInput!]
+  disconnect: [StudentWhereUniqueInput!]
+  delete: [StudentWhereUniqueInput!]
+  update: [StudentUpdateWithWhereUniqueNestedInput!]
+  upsert: [StudentUpsertWithWhereUniqueNestedInput!]
+}
+
+input StudentUpdateWithWhereUniqueNestedInput {
+  where: StudentWhereUniqueInput!
+  data: StudentUpdateDataInput!
+}
+
+input StudentUpsertWithWhereUniqueNestedInput {
+  where: StudentWhereUniqueInput!
+  update: StudentUpdateDataInput!
+  create: StudentCreateInput!
+}
+
+input StudentWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StudentWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [StudentWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [StudentWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  year: year
+
+  """All values that are not equal to given value."""
+  year_not: year
+
+  """All values that are contained in given list."""
+  year_in: [year!]
+
+  """All values that are not contained in given list."""
+  year_not_in: [year!]
+  course: course
+
+  """All values that are not equal to given value."""
+  course_not: course
+
+  """All values that are contained in given list."""
+  course_in: [course!]
+
+  """All values that are not contained in given list."""
+  course_not_in: [course!]
+  gender: gender
+
+  """All values that are not equal to given value."""
+  gender_not: gender
+
+  """All values that are contained in given list."""
+  gender_in: [gender!]
+
+  """All values that are not contained in given list."""
+  gender_not_in: [gender!]
+  age: Int
+
+  """All values that are not equal to given value."""
+  age_not: Int
+
+  """All values that are contained in given list."""
+  age_in: [Int!]
+
+  """All values that are not contained in given list."""
+  age_not_in: [Int!]
+
+  """All values less than the given value."""
+  age_lt: Int
+
+  """All values less than or equal the given value."""
+  age_lte: Int
+
+  """All values greater than the given value."""
+  age_gt: Int
+
+  """All values greater than or equal the given value."""
+  age_gte: Int
+}
+
+input StudentWhereUniqueInput {
+  id: ID
+}
+
+type Subscription {
+  teacher(where: TeacherSubscriptionWhereInput): TeacherSubscriptionPayload
+  student(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
+}
+
+type Teacher implements Node {
+  id: ID!
+  name: String!
+  class: String!
+  age: Int!
+  gender: gender!
+  students(where: StudentWhereInput, orderBy: StudentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Student!]
+}
+
+"""A connection to a list of items."""
+type TeacherConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [TeacherEdge]!
+  aggregate: AggregateTeacher!
+}
+
+input TeacherCreateInput {
+  name: String!
+  class: String!
+  age: Int!
+  gender: gender!
+  students: StudentCreateManyInput
+}
+
+"""An edge in a connection."""
+type TeacherEdge {
+  """The item at the end of the edge."""
+  node: Teacher!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum TeacherOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  class_ASC
+  class_DESC
+  age_ASC
+  age_DESC
+  gender_ASC
+  gender_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type TeacherPreviousValues {
+  id: ID!
+  name: String!
+  class: String!
+  age: Int!
+  gender: gender!
+}
+
+type TeacherSubscriptionPayload {
+  mutation: MutationType!
+  node: Teacher
+  updatedFields: [String!]
+  previousValues: TeacherPreviousValues
+}
+
+input TeacherSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TeacherSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TeacherSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TeacherSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: TeacherWhereInput
+}
+
+input TeacherUpdateInput {
+  name: String
+  class: String
+  age: Int
+  gender: gender
+  students: StudentUpdateManyInput
+}
+
+input TeacherWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TeacherWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TeacherWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TeacherWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  class: String
+
+  """All values that are not equal to given value."""
+  class_not: String
+
+  """All values that are contained in given list."""
+  class_in: [String!]
+
+  """All values that are not contained in given list."""
+  class_not_in: [String!]
+
+  """All values less than the given value."""
+  class_lt: String
+
+  """All values less than or equal the given value."""
+  class_lte: String
+
+  """All values greater than the given value."""
+  class_gt: String
+
+  """All values greater than or equal the given value."""
+  class_gte: String
+
+  """All values containing the given string."""
+  class_contains: String
+
+  """All values not containing the given string."""
+  class_not_contains: String
+
+  """All values starting with the given string."""
+  class_starts_with: String
+
+  """All values not starting with the given string."""
+  class_not_starts_with: String
+
+  """All values ending with the given string."""
+  class_ends_with: String
+
+  """All values not ending with the given string."""
+  class_not_ends_with: String
+  age: Int
+
+  """All values that are not equal to given value."""
+  age_not: Int
+
+  """All values that are contained in given list."""
+  age_in: [Int!]
+
+  """All values that are not contained in given list."""
+  age_not_in: [Int!]
+
+  """All values less than the given value."""
+  age_lt: Int
+
+  """All values less than or equal the given value."""
+  age_lte: Int
+
+  """All values greater than the given value."""
+  age_gt: Int
+
+  """All values greater than or equal the given value."""
+  age_gte: Int
+  gender: gender
+
+  """All values that are not equal to given value."""
+  gender_not: gender
+
+  """All values that are contained in given list."""
+  gender_in: [gender!]
+
+  """All values that are not contained in given list."""
+  gender_not_in: [gender!]
+  students_every: StudentWhereInput
+  students_some: StudentWhereInput
+  students_none: StudentWhereInput
+}
+
+input TeacherWhereUniqueInput {
+  id: ID
+}
+
+enum year {
+  FIRST_YEAR
+  SECOND_YEAR
+  THIRD_YEAR
+  FOURTH_YEAR
+  FIFTH_YEAR
+}

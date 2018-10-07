@@ -1,0 +1,40 @@
+enum gender {
+  MALE,
+  FEMALE
+}
+
+enum year {
+  FIRST_YEAR,
+  SECOND_YEAR,
+  THIRD_YEAR,
+  FOURTH_YEAR,
+  FIFTH_YEAR
+}
+
+enum course {
+  BSSE,
+  BSCE,
+  BSME,
+  BSPKG,
+  BSEE,
+  BSECE,
+  BSCHE
+}
+
+type Teacher {
+  id: ID! @unique
+  name: String!
+  class: String!
+  age: Int!
+  gender: gender!
+  students: [Student!]!
+}
+
+type Student {
+  id: ID! @unique
+  name: String!
+  year: year!
+  course: course!
+  gender: gender!
+  age: Int!
+}
