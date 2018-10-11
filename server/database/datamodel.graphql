@@ -28,6 +28,8 @@ type Teacher {
   age: Int!
   gender: gender!
   students: [Student!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Student {
@@ -37,4 +39,33 @@ type Student {
   course: course!
   gender: gender!
   age: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Exam {
+  id: ID! @unique
+  teachedId: ID!
+  title: String!
+  subject: String!
+  questions: [Question!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Question {
+  id: ID! @unique
+  question: String!
+  choices: [Choice!]!
+  answer: Choice!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Choice {
+  id: ID!
+  key: String!
+  value: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
