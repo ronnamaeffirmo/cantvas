@@ -56,8 +56,8 @@ type Exam {
 type Question {
   id: ID! @unique
   question: String!
-  choices: [Choice!]! @relation(name: "Choices")
-  answer: Choice! @relation(name: "Choice")
+  choices: [Choice!]! @relation(name: "Choices", onDelete: CASCADE)
+  answer: Choice! @relation(name: "Choice", onDelete: CASCADE)
   createdAt: DateTime!
   updatedAt: DateTime!
 }
