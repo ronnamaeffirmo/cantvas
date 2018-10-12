@@ -1,23 +1,23 @@
 enum gender {
-  MALE,
+  MALE
   FEMALE
 }
 
 enum year {
-  FIRST_YEAR,
-  SECOND_YEAR,
-  THIRD_YEAR,
-  FOURTH_YEAR,
+  FIRST_YEAR
+  SECOND_YEAR
+  THIRD_YEAR
+  FOURTH_YEAR
   FIFTH_YEAR
 }
 
 enum course {
-  BSSE,
-  BSCE,
-  BSME,
-  BSPKG,
-  BSEE,
-  BSECE,
+  BSSE
+  BSCE
+  BSME
+  BSPKG
+  BSEE
+  BSECE
   BSCHE
 }
 
@@ -56,14 +56,14 @@ type Exam {
 type Question {
   id: ID! @unique
   question: String!
-  choices: [Choice!]!
-  answer: Choice!
+  choices: [Choice!]! @relation(name: "Choices")
+  answer: Choice! @relation(name: "Choice")
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
 type Choice {
-  id: ID!
+  id: ID! @unique
   key: String!
   value: String!
   createdAt: DateTime!
