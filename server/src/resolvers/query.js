@@ -1,24 +1,31 @@
 module.exports = {
 	teachers(root, args, context, info) {
-		return context.db.query.teachers({}, info)
+		const { where } = args
+		return context.db.query.teachers({ where }, info)
 	},
 	students(root, args, context, info) {
-		return context.db.query.students({}, info)
+		const { where } = args
+		return context.db.query.students({ where }, info)
 	},
 	scores(root, args, context, info) {
-		return context.db.query.scores({}, info)
+		const { where } = args
+		return context.db.query.scores({ where }, info)
 	},
 	subjects(root, args, context, info) {
-		return context.db.query.subjects({}, info)
+		const { where } = args
+		return context.db.query.subjects({ where }, info)
 	},
 	exams(root, args, context, info) {
-		return context.db.query.exams({}, info)
+		const { where } = args
+		return context.db.query.exams({ where }, info)
 	},
 	questions(root, args, context, info) {
-		return context.db.query.questions({}, info)
+		const { where } = args
+		return context.db.query.questions({ where }, info)
 	},
 	choices(root, args, context, info) {
-		return context.db.query.choices({}, info)
+		const { where } = args
+		return context.db.query.choices({ where }, info)
 	},
 	teacher(root, args, context, info) {
 		const { where } = args
