@@ -39,8 +39,15 @@ type Student {
   course: course!
   gender: gender!
   age: Int!
+  scores: [Score!]!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+type Score {
+  id: ID! @unique
+  examId: ID!
+  score: Int!
 }
 
 type Exam {

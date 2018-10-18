@@ -1,7 +1,8 @@
 import React from 'react'
-import { Menu, Image, Grid, Header, Icon } from 'semantic-ui-react'
+import { Menu, Image, Grid, Icon } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import Dashboard from './Dashboard'
 
 const GET_ACTIVE_ITEM = gql`
   {
@@ -12,13 +13,7 @@ const GET_ACTIVE_ITEM = gql`
 const getBody = props => {
   //temporary
   if (props.activeItem === 'dashboard') {
-    return (
-      <Menu pointing secondary style={{ width: '70%' }}>
-        <Menu.Item disabled>
-          <Header size="huge">Dashboard</Header>
-        </Menu.Item>
-      </Menu>
-    )
+    return <Dashboard />
   }
 }
 const home = props => {

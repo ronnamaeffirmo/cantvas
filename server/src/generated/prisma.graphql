@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Fri Oct 12 2018 11:25:21 GMT+0800 (+08)
+# timestamp: Thu Oct 18 2018 19:03:37 GMT+0800 (+08)
 
 type AggregateChoice {
   count: Int!
@@ -10,6 +10,10 @@ type AggregateExam {
 }
 
 type AggregateQuestion {
+  count: Int!
+}
+
+type AggregateScore {
   count: Int!
 }
 
@@ -1001,6 +1005,7 @@ type Mutation {
   createExam(data: ExamCreateInput!): Exam!
   createStudent(data: StudentCreateInput!): Student!
   createQuestion(data: QuestionCreateInput!): Question!
+  createScore(data: ScoreCreateInput!): Score!
   createChoice(data: ChoiceCreateInput!): Choice!
   updateTeacher(
     data: TeacherUpdateInput!
@@ -1015,11 +1020,13 @@ type Mutation {
     data: QuestionUpdateInput!
     where: QuestionWhereUniqueInput!
   ): Question
+  updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
   updateChoice(data: ChoiceUpdateInput!, where: ChoiceWhereUniqueInput!): Choice
   deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
   deleteExam(where: ExamWhereUniqueInput!): Exam
   deleteStudent(where: StudentWhereUniqueInput!): Student
   deleteQuestion(where: QuestionWhereUniqueInput!): Question
+  deleteScore(where: ScoreWhereUniqueInput!): Score
   deleteChoice(where: ChoiceWhereUniqueInput!): Choice
   upsertTeacher(
     where: TeacherWhereUniqueInput!
@@ -1041,6 +1048,11 @@ type Mutation {
     create: QuestionCreateInput!
     update: QuestionUpdateInput!
   ): Question!
+  upsertScore(
+    where: ScoreWhereUniqueInput!
+    create: ScoreCreateInput!
+    update: ScoreUpdateInput!
+  ): Score!
   upsertChoice(
     where: ChoiceWhereUniqueInput!
     create: ChoiceCreateInput!
@@ -1059,6 +1071,10 @@ type Mutation {
     data: QuestionUpdateInput!
     where: QuestionWhereInput
   ): BatchPayload!
+  updateManyScores(
+    data: ScoreUpdateInput!
+    where: ScoreWhereInput
+  ): BatchPayload!
   updateManyChoices(
     data: ChoiceUpdateInput!
     where: ChoiceWhereInput
@@ -1067,6 +1083,7 @@ type Mutation {
   deleteManyExams(where: ExamWhereInput): BatchPayload!
   deleteManyStudents(where: StudentWhereInput): BatchPayload!
   deleteManyQuestions(where: QuestionWhereInput): BatchPayload!
+  deleteManyScores(where: ScoreWhereInput): BatchPayload!
   deleteManyChoices(where: ChoiceWhereInput): BatchPayload!
 }
 
@@ -1148,6 +1165,15 @@ type Query {
     first: Int
     last: Int
   ): [Question]!
+  scores(
+    where: ScoreWhereInput
+    orderBy: ScoreOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Score]!
   choices(
     where: ChoiceWhereInput
     orderBy: ChoiceOrderByInput
@@ -1161,6 +1187,7 @@ type Query {
   exam(where: ExamWhereUniqueInput!): Exam
   student(where: StudentWhereUniqueInput!): Student
   question(where: QuestionWhereUniqueInput!): Question
+  score(where: ScoreWhereUniqueInput!): Score
   choice(where: ChoiceWhereUniqueInput!): Choice
   teachersConnection(
     where: TeacherWhereInput
@@ -1198,6 +1225,15 @@ type Query {
     first: Int
     last: Int
   ): QuestionConnection!
+  scoresConnection(
+    where: ScoreWhereInput
+    orderBy: ScoreOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ScoreConnection!
   choicesConnection(
     where: ChoiceWhereInput
     orderBy: ChoiceOrderByInput
@@ -1602,6 +1638,336 @@ input QuestionWhereUniqueInput {
   id: ID
 }
 
+type Score implements Node {
+  id: ID!
+  examId: ID!
+  score: Int!
+}
+
+"""
+A connection to a list of items.
+"""
+type ScoreConnection {
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [ScoreEdge]!
+  aggregate: AggregateScore!
+}
+
+input ScoreCreateInput {
+  examId: ID!
+  score: Int!
+}
+
+input ScoreCreateManyInput {
+  create: [ScoreCreateInput!]
+  connect: [ScoreWhereUniqueInput!]
+}
+
+"""
+An edge in a connection.
+"""
+type ScoreEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Score!
+
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+enum ScoreOrderByInput {
+  id_ASC
+  id_DESC
+  examId_ASC
+  examId_DESC
+  score_ASC
+  score_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ScorePreviousValues {
+  id: ID!
+  examId: ID!
+  score: Int!
+}
+
+type ScoreSubscriptionPayload {
+  mutation: MutationType!
+  node: Score
+  updatedFields: [String!]
+  previousValues: ScorePreviousValues
+}
+
+input ScoreSubscriptionWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [ScoreSubscriptionWhereInput!]
+
+  """
+  Logical OR on all given filters.
+  """
+  OR: [ScoreSubscriptionWhereInput!]
+
+  """
+  Logical NOT on all given filters combined by AND.
+  """
+  NOT: [ScoreSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ScoreWhereInput
+}
+
+input ScoreUpdateDataInput {
+  examId: ID
+  score: Int
+}
+
+input ScoreUpdateInput {
+  examId: ID
+  score: Int
+}
+
+input ScoreUpdateManyInput {
+  create: [ScoreCreateInput!]
+  connect: [ScoreWhereUniqueInput!]
+  disconnect: [ScoreWhereUniqueInput!]
+  delete: [ScoreWhereUniqueInput!]
+  update: [ScoreUpdateWithWhereUniqueNestedInput!]
+  upsert: [ScoreUpsertWithWhereUniqueNestedInput!]
+}
+
+input ScoreUpdateWithWhereUniqueNestedInput {
+  where: ScoreWhereUniqueInput!
+  data: ScoreUpdateDataInput!
+}
+
+input ScoreUpsertWithWhereUniqueNestedInput {
+  where: ScoreWhereUniqueInput!
+  update: ScoreUpdateDataInput!
+  create: ScoreCreateInput!
+}
+
+input ScoreWhereInput {
+  """
+  Logical AND on all given filters.
+  """
+  AND: [ScoreWhereInput!]
+
+  """
+  Logical OR on all given filters.
+  """
+  OR: [ScoreWhereInput!]
+
+  """
+  Logical NOT on all given filters combined by AND.
+  """
+  NOT: [ScoreWhereInput!]
+  id: ID
+
+  """
+  All values that are not equal to given value.
+  """
+  id_not: ID
+
+  """
+  All values that are contained in given list.
+  """
+  id_in: [ID!]
+
+  """
+  All values that are not contained in given list.
+  """
+  id_not_in: [ID!]
+
+  """
+  All values less than the given value.
+  """
+  id_lt: ID
+
+  """
+  All values less than or equal the given value.
+  """
+  id_lte: ID
+
+  """
+  All values greater than the given value.
+  """
+  id_gt: ID
+
+  """
+  All values greater than or equal the given value.
+  """
+  id_gte: ID
+
+  """
+  All values containing the given string.
+  """
+  id_contains: ID
+
+  """
+  All values not containing the given string.
+  """
+  id_not_contains: ID
+
+  """
+  All values starting with the given string.
+  """
+  id_starts_with: ID
+
+  """
+  All values not starting with the given string.
+  """
+  id_not_starts_with: ID
+
+  """
+  All values ending with the given string.
+  """
+  id_ends_with: ID
+
+  """
+  All values not ending with the given string.
+  """
+  id_not_ends_with: ID
+  examId: ID
+
+  """
+  All values that are not equal to given value.
+  """
+  examId_not: ID
+
+  """
+  All values that are contained in given list.
+  """
+  examId_in: [ID!]
+
+  """
+  All values that are not contained in given list.
+  """
+  examId_not_in: [ID!]
+
+  """
+  All values less than the given value.
+  """
+  examId_lt: ID
+
+  """
+  All values less than or equal the given value.
+  """
+  examId_lte: ID
+
+  """
+  All values greater than the given value.
+  """
+  examId_gt: ID
+
+  """
+  All values greater than or equal the given value.
+  """
+  examId_gte: ID
+
+  """
+  All values containing the given string.
+  """
+  examId_contains: ID
+
+  """
+  All values not containing the given string.
+  """
+  examId_not_contains: ID
+
+  """
+  All values starting with the given string.
+  """
+  examId_starts_with: ID
+
+  """
+  All values not starting with the given string.
+  """
+  examId_not_starts_with: ID
+
+  """
+  All values ending with the given string.
+  """
+  examId_ends_with: ID
+
+  """
+  All values not ending with the given string.
+  """
+  examId_not_ends_with: ID
+  score: Int
+
+  """
+  All values that are not equal to given value.
+  """
+  score_not: Int
+
+  """
+  All values that are contained in given list.
+  """
+  score_in: [Int!]
+
+  """
+  All values that are not contained in given list.
+  """
+  score_not_in: [Int!]
+
+  """
+  All values less than the given value.
+  """
+  score_lt: Int
+
+  """
+  All values less than or equal the given value.
+  """
+  score_lte: Int
+
+  """
+  All values greater than the given value.
+  """
+  score_gt: Int
+
+  """
+  All values greater than or equal the given value.
+  """
+  score_gte: Int
+}
+
+input ScoreWhereUniqueInput {
+  id: ID
+}
+
 type Student implements Node {
   id: ID!
   name: String!
@@ -1609,6 +1975,15 @@ type Student implements Node {
   course: course!
   gender: gender!
   age: Int!
+  scores(
+    where: ScoreWhereInput
+    orderBy: ScoreOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [Score!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1635,6 +2010,7 @@ input StudentCreateInput {
   course: course!
   gender: gender!
   age: Int!
+  scores: ScoreCreateManyInput
 }
 
 input StudentCreateManyInput {
@@ -1738,6 +2114,7 @@ input StudentUpdateDataInput {
   course: course
   gender: gender
   age: Int
+  scores: ScoreUpdateManyInput
 }
 
 input StudentUpdateInput {
@@ -1746,6 +2123,7 @@ input StudentUpdateInput {
   course: course
   gender: gender
   age: Int
+  scores: ScoreUpdateManyInput
 }
 
 input StudentUpdateManyInput {
@@ -2071,6 +2449,9 @@ input StudentWhereInput {
   All values greater than or equal the given value.
   """
   updatedAt_gte: DateTime
+  scores_every: ScoreWhereInput
+  scores_some: ScoreWhereInput
+  scores_none: ScoreWhereInput
 }
 
 input StudentWhereUniqueInput {
@@ -2082,6 +2463,7 @@ type Subscription {
   exam(where: ExamSubscriptionWhereInput): ExamSubscriptionPayload
   student(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
   question(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
+  score(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
   choice(where: ChoiceSubscriptionWhereInput): ChoiceSubscriptionPayload
 }
 
