@@ -1,5 +1,7 @@
 import React from 'react'
 import { Menu, Header, Card, Grid, Button, Container } from 'semantic-ui-react'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
 const placeholder = ['', '', '', '', '', '', '']
 let int = 0
