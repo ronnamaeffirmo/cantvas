@@ -8,7 +8,8 @@
 	"rules": {
 		"prettier/prettier": "error",
 		"react/prop-types": 0,
-		"quotes": ["error", "single"]
+		"quotes": ["error", "single"],
+		"jsx-quotes": ["error", "prefer-single"]
 	},
 	"settings": {
 		"react": {
