@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Thu Oct 18 2018 19:03:37 GMT+0800 (+08)
+# timestamp: Thu Oct 18 2018 19:10:18 GMT+0800 (+08)
 
 type AggregateChoice {
   count: Int!
@@ -499,7 +499,7 @@ scalar DateTime
 
 type Exam implements Node {
   id: ID!
-  teachedId: ID!
+  teacherId: ID!
   title: String!
   subject: String!
   questions(
@@ -532,7 +532,7 @@ type ExamConnection {
 }
 
 input ExamCreateInput {
-  teachedId: ID!
+  teacherId: ID!
   title: String!
   subject: String!
   questions: QuestionCreateManyInput
@@ -556,8 +556,8 @@ type ExamEdge {
 enum ExamOrderByInput {
   id_ASC
   id_DESC
-  teachedId_ASC
-  teachedId_DESC
+  teacherId_ASC
+  teacherId_DESC
   title_ASC
   title_DESC
   subject_ASC
@@ -570,7 +570,7 @@ enum ExamOrderByInput {
 
 type ExamPreviousValues {
   id: ID!
-  teachedId: ID!
+  teacherId: ID!
   title: String!
   subject: String!
   createdAt: DateTime!
@@ -623,7 +623,7 @@ input ExamSubscriptionWhereInput {
 }
 
 input ExamUpdateInput {
-  teachedId: ID
+  teacherId: ID
   title: String
   subject: String
   questions: QuestionUpdateManyInput
@@ -710,72 +710,72 @@ input ExamWhereInput {
   All values not ending with the given string.
   """
   id_not_ends_with: ID
-  teachedId: ID
+  teacherId: ID
 
   """
   All values that are not equal to given value.
   """
-  teachedId_not: ID
+  teacherId_not: ID
 
   """
   All values that are contained in given list.
   """
-  teachedId_in: [ID!]
+  teacherId_in: [ID!]
 
   """
   All values that are not contained in given list.
   """
-  teachedId_not_in: [ID!]
+  teacherId_not_in: [ID!]
 
   """
   All values less than the given value.
   """
-  teachedId_lt: ID
+  teacherId_lt: ID
 
   """
   All values less than or equal the given value.
   """
-  teachedId_lte: ID
+  teacherId_lte: ID
 
   """
   All values greater than the given value.
   """
-  teachedId_gt: ID
+  teacherId_gt: ID
 
   """
   All values greater than or equal the given value.
   """
-  teachedId_gte: ID
+  teacherId_gte: ID
 
   """
   All values containing the given string.
   """
-  teachedId_contains: ID
+  teacherId_contains: ID
 
   """
   All values not containing the given string.
   """
-  teachedId_not_contains: ID
+  teacherId_not_contains: ID
 
   """
   All values starting with the given string.
   """
-  teachedId_starts_with: ID
+  teacherId_starts_with: ID
 
   """
   All values not starting with the given string.
   """
-  teachedId_not_starts_with: ID
+  teacherId_not_starts_with: ID
 
   """
   All values ending with the given string.
   """
-  teachedId_ends_with: ID
+  teacherId_ends_with: ID
 
   """
   All values not ending with the given string.
   """
-  teachedId_not_ends_with: ID
+  teacherId_not_ends_with: ID
   title: String
 
   """

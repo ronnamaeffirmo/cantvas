@@ -52,7 +52,7 @@ type Score {
 
 type Exam {
   id: ID! @unique
-  teachedId: ID!
+  teacherId: ID!
   title: String!
   subject: String!
   questions: [Question!]!
