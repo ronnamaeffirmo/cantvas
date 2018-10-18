@@ -1,12 +1,11 @@
 import React from 'react'
 import { Grid, Button, Header } from 'semantic-ui-react'
 
-const loginPage = props => {
+const LoginPage = props => {
 	return (
 		<Grid
 			columns="equal"
-			style={{ height: '100vh', backgroundColor: '#2a474b', margin: 0 }}
-		>
+			style={{ height: '100vh', backgroundColor: '#2a474b', margin: 0 }}>
 			<Grid.Row style={{ width: '100vh' }}>
 				<Grid.Column textAlign="right" verticalAlign="middle">
 					<Button
@@ -30,4 +29,4 @@ const loginPage = props => {
 	)
 }
 
-export default loginPage
+export default LoginPage
