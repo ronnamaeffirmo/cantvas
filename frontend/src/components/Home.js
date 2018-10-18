@@ -16,6 +16,21 @@ const getBody = props => {
     return <Dashboard />
   }
 }
+
+const getBackgroundColor = (name, activeItem) => {
+  if (name === activeItem) {
+    return 'white'
+  }
+  return '#2a474b'
+}
+
+const getFontColor = (name, activeItem) => {
+  if (name === activeItem) {
+    return '#313a96'
+  }
+  return 'white'
+}
+
 const home = props => {
   return (
     <Query query={GET_ACTIVE_ITEM}>
@@ -39,7 +54,14 @@ const home = props => {
                 </Menu.Item>
                 <Menu.Item
                   active={data.activeItem === 'dashboard'}
-                  style={{ color: 'white' }}
+                  style={{
+                    borderRight: 0,
+                    color: getFontColor('dashboard', data.activeItem),
+                    backgroundColor: getBackgroundColor(
+                      'dashboard',
+                      data.activeItem
+                    ),
+                  }}
                   onClick={() =>
                     client.writeData({ data: { activeItem: 'dashboard' } })
                   }
@@ -49,7 +71,14 @@ const home = props => {
                 </Menu.Item>
                 <Menu.Item
                   active={data.activeItem === 'account'}
-                  style={{ color: 'white' }}
+                  style={{
+                    borderRight: 0,
+                    color: getFontColor('account', data.activeItem),
+                    backgroundColor: getBackgroundColor(
+                      'account',
+                      data.activeItem
+                    ),
+                  }}
                   onClick={() =>
                     client.writeData({ data: { activeItem: 'account' } })
                   }
@@ -60,7 +89,7 @@ const home = props => {
               </Menu>
             </Grid.Column>
             <Grid.Column
-              width={15}
+              width={12}
               style={{ padding: 0, margin: 0, paddingLeft: 20 }}
             >
               {getBody(data)}
