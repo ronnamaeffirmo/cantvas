@@ -40,9 +40,8 @@ const style = {
 		margin: 0
 	},
 	column: {
-		padding: 0,
-		margin: 0,
-		paddingLeft: 20
+		paddingLeft: '30px',
+		marginTop: '20px'
 	}
 }
 
