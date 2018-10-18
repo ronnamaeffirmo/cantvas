@@ -39,7 +39,7 @@ type Student {
 	course: course!
 	gender: gender!
 	age: Int!
-	subjectIds: [Subject!]!
+	subjects: [Subject!]!
 	scores: [Score!]!
 	createdAt: DateTime!
 	updatedAt: DateTime!
