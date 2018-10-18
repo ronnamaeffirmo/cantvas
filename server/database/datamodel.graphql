@@ -39,7 +39,7 @@ type Student {
 	course: course!
 	gender: gender!
 	age: Int!
-	subjectIds: [String!]!
+	subjectIds: [Subject!]!
 	scores: [Score!]!
 	createdAt: DateTime!
 	updatedAt: DateTime!
@@ -64,7 +64,7 @@ type Exam {
 	id: ID! @unique
 	teacherId: String!
 	title: String!
-	subjectId: String!
+	subjectId: Subject!
 	questions: [Question!]!
 	createdAt: DateTime!
 	updatedAt: DateTime!
@@ -74,7 +74,7 @@ type Question {
 	id: ID! @unique
 	question: String!
 	choices: [Choice!]!
-	choiceId: String! ## answer of the question
+	answer: String!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
