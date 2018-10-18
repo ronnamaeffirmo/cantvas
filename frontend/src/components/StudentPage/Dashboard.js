@@ -28,19 +28,6 @@ const queryExams = gql`
 		}
 	}
 `
-const q = gql`
-	{
-		exams(where: { Subject: { id: "cjnepy5sbb2bc0b942y2damjy" } }) {
-			Subject {
-				name
-			}
-			teacher {
-				name
-			}
-			title
-		}
-	}
-`
 
 const Dashboard = props => {
 	return (
