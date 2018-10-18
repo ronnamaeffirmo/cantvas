@@ -2,8 +2,8 @@
 # import TeacherWhereUniqueInput, StudentWhereUniqueInput, ScoreWhereUniqueInput, SubjectWhereUniqueInput, ExamWhereUniqueInput, QuestionWhereUniqueInput, ChoiceWhereUniqueInput  from "./generated/prisma.graphql"
 # import TeacherCreateInput, StudentCreateInput, ScoreCreateInput, SubjectCreateInput, ExamCreateInput, QuestionCreateInput, ChoiceCreateInput from "./generated/prisma.graphql"
 # import TeacherUpdateInput, StudentUpdateInput, ScoreUpdateInput, SubjectUpdateInput, ExamUpdateInput, QuestionUpdateInput, ChoiceUpdateInput from "./generated/prisma.graphql"
-# import TeacherSubscriptionWhereInput, StudentSubscriptionWhereInput from "./generated/prisma.graphql"
-# import TeacherSubscriptionPayload, StudentSubscriptionPayload from "./generated/prisma.graphql"
+# import TeacherSubscriptionWhereInput, StudentSubscriptionWhereInput, ScoreSubscriptionWhereInput, SubjectSubscriptionWhereInput, ExamSubscriptionWhereInput, QuestionSubscriptionWhereInput, ChoiceSubscriptionWhereInput from "./generated/prisma.graphql"
+# import TeacherSubscriptionPayload, StudentSubscriptionPayload, ScoreSubscriptionPayload, SubjectSubscriptionPayload, ExamSubscriptionPayload, QuestionSubscriptionPayload, ChoiceSubscriptionPayload from "./generated/prisma.graphql"
 
 type Query {
 	teachers: [Teacher]!
@@ -52,4 +52,9 @@ type Mutation {
 type Subscription {
 	teacherSubscription(where: TeacherSubscriptionWhereInput): TeacherSubscriptionPayload
 	studentSubscription(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
+	scoreSubscription(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
+	subjectSubscription(where: SubjectSubscriptionWhereInput): SubjectSubscriptionPayload
+	examSubscription(where: ExamSubscriptionWhereInput): ExamSubscriptionPayload
+	questionSubscription(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
+	choiceSubscription(where: ChoiceSubscriptionWhereInput): ChoiceSubscriptionPayload
 }
