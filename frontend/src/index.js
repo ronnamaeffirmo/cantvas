@@ -1,13 +1,14 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
-import { ApolloProvider } from 'react-apollo'
 import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from 'react-apollo'
 import { createHttpLink } from 'apollo-link-http'
 import { BrowserRouter } from 'react-router-dom'
 import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
+
+import Routes from './Routes'
 
 const httpLink = createHttpLink({
 	uri: 'http://localhost:4000'
@@ -50,7 +51,7 @@ const client = new ApolloClient({
 ReactDOM.render(
 	<BrowserRouter>
 		<ApolloProvider client={client}>
-			<App />
+			<Routes />
 		</ApolloProvider>
 	</BrowserRouter>,
 	document.getElementById('root')

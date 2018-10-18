@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Button } from 'semantic-ui-react'
 
-const loginPage = props => {
+const LoginPage = props => {
 	return (
 		<Grid columns="equal">
 			<Grid.Row>
@@ -16,4 +16,4 @@ const loginPage = props => {
 	)
 }
 
-export default loginPage
+export default LoginPage
