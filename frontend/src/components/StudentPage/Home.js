@@ -49,7 +49,7 @@ const home = props => {
 								}}
 							>
 								<Menu.Item disabled>
-									<Image src={require('../images/logo.png')} />
+									<Image src={require('../../images/logo.png')} />
 								</Menu.Item>
 								<Menu.Item
 									active={data.activeItem === 'dashboard'}
