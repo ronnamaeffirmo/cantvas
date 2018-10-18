@@ -1,12 +1,9 @@
-import React from 'react'
-import { Menu, Header, Card, Grid, Button, Container } from 'semantic-ui-react'
+import React, { Fragment } from 'react'
+import { Header, Divider, Card } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-
 import ExamCard from './ExamCard'
 
-const placeholder = ['', '', '', '', '', '', '']
-let int = 0
 const querySubjects = gql`
 	{
 		student(where: { id: "cjneq4pypb4vl0b94zy3halsi" }) {
@@ -20,6 +17,7 @@ const querySubjects = gql`
 const queryExams = gql`
 	query examQuery($id: SubjectWhereInput!) {
 		exams(where: { Subject: $id }) {
+			id
 			Subject {
 				name
 			}
@@ -52,44 +50,49 @@ const Dashboard = props => {
 					return 'loading'
 				}
 				return (
-					<div>
-						<Menu pointing secondary>
-							<Menu.Item disabled>
-								<Header size="huge">Dashboard</Header>
-							</Menu.Item>
-						</Menu>
-						<Grid columns="6">
-							<Grid.Row>
-								{data.student.subjects.map(subject => {
-									return (
-										<Query query={queryExams} variables={{ id: { id: subject.id } }} key={int++}>
-											{({ loading, error, data }) => {
-												if (loading) {
-													return 'loading'
-												}
-												console.log(data.exams)
-												return data.exams.map(exam => {
-													return (
-														<Grid.Column key={int++} style={style.column}>
-															<ExamCard /> {/* temporary */}
-														</Grid.Column>
-													)
-												})
-											}}
-										</Query>
-									)
-								})}
-							</Grid.Row>
-						</Grid>
-					</div>
+					<Fragment>
+						<div style={style.pageTitle}>
+							<Header size="huge" style={style.header}>
+								Dashboard
+							</Header>
+							<Divider />
+						</div>
+						<Card.Group itemsPerRow={4}>
+							{data.student.subjects.map(subject => {
+								return (
+									<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
+										{({ loading, error, data }) => {
+											if (loading) {
+												return 'loading'
+											}
+											return data.exams.map(exam => {
+												return (
+													<ExamCard
+														subject={exam.Subject.name}
+														teacher={exam.teacher.name}
+														title={exam.title}
+														key={exam.id}
+													/>
+												)
+											})
+										}}
+									</Query>
+								)
+							})}
+						</Card.Group>
+					</Fragment>
 				)
 			}}
 		</Query>
 	)
 }
+
 const style = {
-	column: {
-		marginBottom: '20px'
+	pageTitle: {
+		marginBottom: '25px'
+	},
+	header: {
+		fontWeight: 'normal'
 	}
 }
 
