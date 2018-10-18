@@ -2,9 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import { ApolloProvider } from 'react-apollo'
-import { ApolloClient } from 'apollo-client'
+import ApolloClient from 'apollo-boost'
 import { createHttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
 import { BrowserRouter } from 'react-router-dom'
 import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
@@ -32,7 +31,20 @@ const link = split(
 
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  clientState: {
+    defaults: {
+      // to change
+      activeItem: 'dashboard',
+    },
+    resolvers: {
+      // to change
+      // to add
+    },
+    typeDefs: {
+      // to change
+      // to add
+    },
+  },
 })
 
 ReactDOM.render(
