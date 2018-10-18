@@ -47,7 +47,7 @@ type Student {
 
 type Score {
 	id: ID! @unique
-	examId: String!
+	exam: Exam!
 	score: Int!
 	createdAt: DateTime!
 	updatedAt: DateTime!
@@ -62,9 +62,9 @@ type Subject {
 
 type Exam {
 	id: ID! @unique
-	teacherId: String!
+	teacher: Teacher!
 	title: String!
-	subjectId: Subject!
+	Subject: Subject!
 	questions: [Question!]!
 	createdAt: DateTime!
 	updatedAt: DateTime!
