@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Thu Oct 18 2018 19:10:18 GMT+0800 (+08)
+# timestamp: Thu Oct 18 2018 20:03:12 GMT+0800 (+08)
 
 type AggregateChoice {
 	count: Int!
@@ -499,7 +499,7 @@ scalar DateTime
 
 type Exam implements Node {
 	id: ID!
-	teacherId: ID!
+	teacherId: String!
 	title: String!
 	subject: String!
 	questions(
@@ -532,7 +532,7 @@ type ExamConnection {
 }
 
 input ExamCreateInput {
-	teacherId: ID!
+	teacherId: String!
 	title: String!
 	subject: String!
 	questions: QuestionCreateManyInput
@@ -570,7 +570,7 @@ enum ExamOrderByInput {
 
 type ExamPreviousValues {
 	id: ID!
-	teacherId: ID!
+	teacherId: String!
 	title: String!
 	subject: String!
 	createdAt: DateTime!
@@ -623,7 +623,7 @@ input ExamSubscriptionWhereInput {
 }
 
 input ExamUpdateInput {
-	teacherId: ID
+	teacherId: String
 	title: String
 	subject: String
 	questions: QuestionUpdateManyInput
@@ -710,72 +710,72 @@ input ExamWhereInput {
 	All values not ending with the given string.
 	"""
 	id_not_ends_with: ID
-	teacherId: ID
+	teacherId: String
 
 	"""
 	All values that are not equal to given value.
 	"""
-	teacherId_not: ID
+	teacherId_not: String
 
 	"""
 	All values that are contained in given list.
 	"""
-	teacherId_in: [ID!]
+	teacherId_in: [String!]
 
 	"""
 	All values that are not contained in given list.
 	"""
-	teacherId_not_in: [ID!]
+	teacherId_not_in: [String!]
 
 	"""
 	All values less than the given value.
 	"""
-	teacherId_lt: ID
+	teacherId_lt: String
 
 	"""
 	All values less than or equal the given value.
 	"""
-	teacherId_lte: ID
+	teacherId_lte: String
 
 	"""
 	All values greater than the given value.
 	"""
-	teacherId_gt: ID
+	teacherId_gt: String
 
 	"""
 	All values greater than or equal the given value.
 	"""
-	teacherId_gte: ID
+	teacherId_gte: String
 
 	"""
 	All values containing the given string.
 	"""
-	teacherId_contains: ID
+	teacherId_contains: String
 
 	"""
 	All values not containing the given string.
 	"""
-	teacherId_not_contains: ID
+	teacherId_not_contains: String
 
 	"""
 	All values starting with the given string.
 	"""
-	teacherId_starts_with: ID
+	teacherId_starts_with: String
 
 	"""
 	All values not starting with the given string.
 	"""
-	teacherId_not_starts_with: ID
+	teacherId_not_starts_with: String
 
 	"""
 	All values ending with the given string.
 	"""
-	teacherId_ends_with: ID
+	teacherId_ends_with: String
 
 	"""
 	All values not ending with the given string.
 	"""
-	teacherId_not_ends_with: ID
+	teacherId_not_ends_with: String
 	title: String
 
 	"""
@@ -1640,7 +1640,7 @@ input QuestionWhereUniqueInput {
 
 type Score implements Node {
 	id: ID!
-	examId: ID!
+	examId: String!
 	score: Int!
 }
 
@@ -1661,7 +1661,7 @@ type ScoreConnection {
 }
 
 input ScoreCreateInput {
-	examId: ID!
+	examId: String!
 	score: Int!
 }
 
@@ -1700,7 +1700,7 @@ enum ScoreOrderByInput {
 
 type ScorePreviousValues {
 	id: ID!
-	examId: ID!
+	examId: String!
 	score: Int!
 }
 
@@ -1750,12 +1750,12 @@ input ScoreSubscriptionWhereInput {
 }
 
 input ScoreUpdateDataInput {
-	examId: ID
+	examId: String
 	score: Int
 }
 
 input ScoreUpdateInput {
-	examId: ID
+	examId: String
 	score: Int
 }
 
@@ -1860,72 +1860,72 @@ input ScoreWhereInput {
 	All values not ending with the given string.
 	"""
 	id_not_ends_with: ID
-	examId: ID
+	examId: String
 
 	"""
 	All values that are not equal to given value.
 	"""
-	examId_not: ID
+	examId_not: String
 
 	"""
 	All values that are contained in given list.
 	"""
-	examId_in: [ID!]
+	examId_in: [String!]
 
 	"""
 	All values that are not contained in given list.
 	"""
-	examId_not_in: [ID!]
+	examId_not_in: [String!]
 
 	"""
 	All values less than the given value.
 	"""
-	examId_lt: ID
+	examId_lt: String
 
 	"""
 	All values less than or equal the given value.
 	"""
-	examId_lte: ID
+	examId_lte: String
 
 	"""
 	All values greater than the given value.
 	"""
-	examId_gt: ID
+	examId_gt: String
 
 	"""
 	All values greater than or equal the given value.
 	"""
-	examId_gte: ID
+	examId_gte: String
 
 	"""
 	All values containing the given string.
 	"""
-	examId_contains: ID
+	examId_contains: String
 
 	"""
 	All values not containing the given string.
 	"""
-	examId_not_contains: ID
+	examId_not_contains: String
 
 	"""
 	All values starting with the given string.
 	"""
-	examId_starts_with: ID
+	examId_starts_with: String
 
 	"""
 	All values not starting with the given string.
 	"""
-	examId_not_starts_with: ID
+	examId_not_starts_with: String
 
 	"""
 	All values ending with the given string.
 	"""
-	examId_ends_with: ID
+	examId_ends_with: String
 
 	"""
 	All values not ending with the given string.
 	"""
-	examId_not_ends_with: ID
+	examId_not_ends_with: String
 	score: Int
 
 	"""
