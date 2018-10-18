@@ -10,48 +10,48 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+	uri: 'http://localhost:4000'
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:4000`,
-  options: {
-    reconnect: true,
-  },
+	uri: `ws://localhost:4000`,
+	options: {
+		reconnect: true
+	}
 })
 
 const link = split(
-  ({ query }) => {
-    const { kind, operation } = getMainDefinition(query)
-    return kind === 'OperationDefinition' && operation === 'subscription'
-  },
-  wsLink,
-  httpLink
+	({ query }) => {
+		const { kind, operation } = getMainDefinition(query)
+		return kind === 'OperationDefinition' && operation === 'subscription'
+	},
+	wsLink,
+	httpLink
 )
 
 const client = new ApolloClient({
-  link,
-  clientState: {
-    defaults: {
-      // to change
-      activeItem: 'dashboard',
-    },
-    resolvers: {
-      // to change
-      // to add
-    },
-    typeDefs: {
-      // to change
-      // to add
-    },
-  },
+	link,
+	clientState: {
+		defaults: {
+			// to change
+			activeItem: 'dashboard'
+		},
+		resolvers: {
+			// to change
+			// to add
+		},
+		typeDefs: {
+			// to change
+			// to add
+		}
+	}
 })
 
 ReactDOM.render(
-  <BrowserRouter>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </BrowserRouter>,
-  document.getElementById('root')
+	<BrowserRouter>
+		<ApolloProvider client={client}>
+			<App />
+		</ApolloProvider>
+	</BrowserRouter>,
+	document.getElementById('root')
 )
