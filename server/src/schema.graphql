@@ -32,28 +32,13 @@ type Mutation {
 	createQuestion(data: QuestionCreateInput!): Question!
 	createChoice(data: ChoiceCreateInput!): Choice!
 
-	updateTeacher(
-		data: TeacherUpdateInput!
-		where: TeacherWhereUniqueInput!
-	): Teacher
-	updateStudent(
-		data: StudentUpdateInput!
-		where: StudentWhereUniqueInput!
-	): Student
-	updateScore(data: ScoreUpdateInput!, where: TeacherWhereUniqueInput!): Score
-	updateSubject(
-		data: SubjectUpdateInput!
-		where: StudentWhereUniqueInput!
-	): Subject
-	updateExam(data: ExamUpdateInput!, where: StudentWhereUniqueInput!): Exam
-	updateQuestion(
-		data: QuestionUpdateInput!
-		where: StudentWhereUniqueInput!
-	): Question
-	updateChoice(
-		data: ChoiceUpdateInput!
-		where: StudentWhereUniqueInput!
-	): Choice
+	updateTeacher(data: TeacherUpdateInput!, where: TeacherWhereUniqueInput!): Teacher
+	updateStudent(data: StudentUpdateInput!, where: StudentWhereUniqueInput!): Student
+	updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
+	updateSubject(data: SubjectUpdateInput!, where: SubjectWhereUniqueInput!): Subject
+	updateExam(data: ExamUpdateInput!, where: ExamWhereUniqueInput!): Exam
+	updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
+	updateChoice(data: ChoiceUpdateInput!, where: ChoiceWhereUniqueInput!): Choice
 
 	deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
 	deleteStudent(where: StudentWhereUniqueInput!): Student
@@ -65,10 +50,6 @@ type Mutation {
 }
 
 type Subscription {
-	teacherSubscription(
-		where: TeacherSubscriptionWhereInput
-	): TeacherSubscriptionPayload
-	studentSubscription(
-		where: StudentSubscriptionWhereInput
-	): StudentSubscriptionPayload
+	teacherSubscription(where: TeacherSubscriptionWhereInput): TeacherSubscriptionPayload
+	studentSubscription(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
 }
