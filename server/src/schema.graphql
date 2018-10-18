@@ -1,24 +1,74 @@
-# import Teacher, Student, TeacherWhereUniqueInput, StudentWhereUniqueInput, TeacherCreateInput, StudentCreateInput from "./generated/prisma.graphql"
-# import TeacherUpdateInput, StudentUpdateInput, TeacherSubscriptionWhereInput, StudentSubscriptionWhereInput from "./generated/prisma.graphql"
+# import Teacher, Student, Score, Subject, Exam, Question, Choice from "./generated/prisma.graphql"
+# import TeacherWhereUniqueInput, StudentWhereUniqueInput, ScoreWhereUniqueInput, SubjectWhereUniqueInput, ExamWhereUniqueInput, QuestionWhereUniqueInput, ChoiceWhereUniqueInput  from "./generated/prisma.graphql"
+# import TeacherCreateInput, StudentCreateInput, ScoreCreateInput, SubjectCreateInput, ExamCreateInput, QuestionCreateInput, ChoiceCreateInput from "./generated/prisma.graphql"
+# import TeacherUpdateInput, StudentUpdateInput, ScoreUpdateInput, SubjectUpdateInput, ExamUpdateInput, QuestionUpdateInput, ChoiceUpdateInput from "./generated/prisma.graphql"
+# import TeacherSubscriptionWhereInput, StudentSubscriptionWhereInput from "./generated/prisma.graphql"
 # import TeacherSubscriptionPayload, StudentSubscriptionPayload from "./generated/prisma.graphql"
 
 type Query {
-  teachers: [Teacher]!
-  teacher(where: TeacherWhereUniqueInput): Teacher!
-  students: [Student]!
-  student(where: StudentWhereUniqueInput): Student!
+	teachers: [Teacher]!
+	students: [Student]!
+	scores: [Score]!
+	subjects: [Subject]!
+	exams: [Exam]!
+	questions: [Question]!
+	choices: [Choice]!
+
+	teacher(where: TeacherWhereUniqueInput): Teacher!
+	student(where: StudentWhereUniqueInput): Student!
+	score(where: ScoreWhereUniqueInput): Score!
+	subject(where: SubjectWhereUniqueInput): Subject!
+	exam(where: ExamWhereUniqueInput): Exam!
+	question(where: QuestionWhereUniqueInput): Question!
+	choice(where: ChoiceWhereUniqueInput): Choice!
 }
 
 type Mutation {
-  createTeacher(data: TeacherCreateInput!): Teacher!
-  createStudent(data: StudentCreateInput!): Student!
-  updateTeacher(data: TeacherUpdateInput!, where: TeacherWhereUniqueInput!): Teacher
-  updateStudent(data: StudentUpdateInput!, where: StudentWhereUniqueInput!): Student
-  deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
-  deleteStudent(where: StudentWhereUniqueInput!): Student
+	createTeacher(data: TeacherCreateInput!): Teacher!
+	createStudent(data: StudentCreateInput!): Student!
+	createScore(data: ScoreCreateInput!): Score!
+	createSubject(data: SubjectCreateInput!): Subject!
+	createExam(data: ExamCreateInput!): Exam!
+	createQuestion(data: QuestionCreateInput!): Question!
+	createChoice(data: ChoiceCreateInput!): Choice!
+
+	updateTeacher(
+		data: TeacherUpdateInput!
+		where: TeacherWhereUniqueInput!
+	): Teacher
+	updateStudent(
+		data: StudentUpdateInput!
+		where: StudentWhereUniqueInput!
+	): Student
+	updateScore(data: ScoreUpdateInput!, where: TeacherWhereUniqueInput!): Score
+	updateSubject(
+		data: SubjectUpdateInput!
+		where: StudentWhereUniqueInput!
+	): Subject
+	updateExam(data: ExamUpdateInput!, where: StudentWhereUniqueInput!): Exam
+	updateQuestion(
+		data: QuestionUpdateInput!
+		where: StudentWhereUniqueInput!
+	): Question
+	updateChoice(
+		data: ChoiceUpdateInput!
+		where: StudentWhereUniqueInput!
+	): Choice
+
+	deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
+	deleteStudent(where: StudentWhereUniqueInput!): Student
+	deleteScore(where: ScoreWhereUniqueInput!): Score
+	deleteSubject(where: SubjectWhereUniqueInput!): Subject
+	deleteExam(where: ExamWhereUniqueInput!): Exam
+	deleteQuestion(where: QuestionWhereUniqueInput!): Question
+	deleteChoice(where: ChoiceWhereUniqueInput!): Choice
 }
 
 type Subscription {
-  teacherSubscription(where: TeacherSubscriptionWhereInput): TeacherSubscriptionPayload
-  studentSubscription(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
+	teacherSubscription(
+		where: TeacherSubscriptionWhereInput
+	): TeacherSubscriptionPayload
+	studentSubscription(
+		where: StudentSubscriptionWhereInput
+	): StudentSubscriptionPayload
 }
