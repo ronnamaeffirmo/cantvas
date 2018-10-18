@@ -1,0 +1,8 @@
+.item {
+	color: white !important;
+}
+
+.active {
+	color: #2a474b !important;
+	background-color: white !important;
+}
