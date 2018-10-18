@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Thu Oct 18 2018 20:03:12 GMT+0800 (+08)
+# timestamp: Thu Oct 18 2018 20:41:51 GMT+0800 (+08)
 
 type AggregateChoice {
 	count: Int!
@@ -18,6 +18,10 @@ type AggregateScore {
 }
 
 type AggregateStudent {
+	count: Int!
+}
+
+type AggregateSubject {
 	count: Int!
 }
 
@@ -501,7 +505,7 @@ type Exam implements Node {
 	id: ID!
 	teacherId: String!
 	title: String!
-	subject: String!
+	subjectId: String!
 	questions(
 		where: QuestionWhereInput
 		orderBy: QuestionOrderByInput
@@ -534,7 +538,7 @@ type ExamConnection {
 input ExamCreateInput {
 	teacherId: String!
 	title: String!
-	subject: String!
+	subjectId: String!
 	questions: QuestionCreateManyInput
 }
 
@@ -560,8 +564,8 @@ enum ExamOrderByInput {
 	teacherId_DESC
 	title_ASC
 	title_DESC
-	subject_ASC
-	subject_DESC
+	subjectId_ASC
+	subjectId_DESC
 	createdAt_ASC
 	createdAt_DESC
 	updatedAt_ASC
@@ -572,7 +576,7 @@ type ExamPreviousValues {
 	id: ID!
 	teacherId: String!
 	title: String!
-	subject: String!
+	subjectId: String!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -625,7 +629,7 @@ input ExamSubscriptionWhereInput {
 input ExamUpdateInput {
 	teacherId: String
 	title: String
-	subject: String
+	subjectId: String
 	questions: QuestionUpdateManyInput
 }
 
@@ -842,72 +846,72 @@ input ExamWhereInput {
 	All values not ending with the given string.
 	"""
 	title_not_ends_with: String
-	subject: String
+	subjectId: String
 
 	"""
 	All values that are not equal to given value.
 	"""
-	subject_not: String
+	subjectId_not: String
 
 	"""
 	All values that are contained in given list.
 	"""
-	subject_in: [String!]
+	subjectId_in: [String!]
 
 	"""
 	All values that are not contained in given list.
 	"""
-	subject_not_in: [String!]
+	subjectId_not_in: [String!]
 
 	"""
 	All values less than the given value.
 	"""
-	subject_lt: String
+	subjectId_lt: String
 
 	"""
 	All values less than or equal the given value.
 	"""
-	subject_lte: String
+	subjectId_lte: String
 
 	"""
 	All values greater than the given value.
 	"""
-	subject_gt: String
+	subjectId_gt: String
 
 	"""
 	All values greater than or equal the given value.
 	"""
-	subject_gte: String
+	subjectId_gte: String
 
 	"""
 	All values containing the given string.
 	"""
-	subject_contains: String
+	subjectId_contains: String
 
 	"""
 	All values not containing the given string.
 	"""
-	subject_not_contains: String
+	subjectId_not_contains: String
 
 	"""
 	All values starting with the given string.
 	"""
-	subject_starts_with: String
+	subjectId_starts_with: String
 
 	"""
 	All values not starting with the given string.
 	"""
-	subject_not_starts_with: String
+	subjectId_not_starts_with: String
 
 	"""
 	All values ending with the given string.
 	"""
-	subject_ends_with: String
+	subjectId_ends_with: String
 
 	"""
 	All values not ending with the given string.
 	"""
-	subject_not_ends_with: String
+	subjectId_not_ends_with: String
 	createdAt: DateTime
 
 	"""
@@ -1002,6 +1006,7 @@ scalar Long
 
 type Mutation {
 	createTeacher(data: TeacherCreateInput!): Teacher!
+	createSubject(data: SubjectCreateInput!): Subject!
 	createExam(data: ExamCreateInput!): Exam!
 	createStudent(data: StudentCreateInput!): Student!
 	createQuestion(data: QuestionCreateInput!): Question!
@@ -1011,6 +1016,10 @@ type Mutation {
 		data: TeacherUpdateInput!
 		where: TeacherWhereUniqueInput!
 	): Teacher
+	updateSubject(
+		data: SubjectUpdateInput!
+		where: SubjectWhereUniqueInput!
+	): Subject
 	updateExam(data: ExamUpdateInput!, where: ExamWhereUniqueInput!): Exam
 	updateStudent(
 		data: StudentUpdateInput!
@@ -1023,6 +1032,7 @@ type Mutation {
 	updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
 	updateChoice(data: ChoiceUpdateInput!, where: ChoiceWhereUniqueInput!): Choice
 	deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
+	deleteSubject(where: SubjectWhereUniqueInput!): Subject
 	deleteExam(where: ExamWhereUniqueInput!): Exam
 	deleteStudent(where: StudentWhereUniqueInput!): Student
 	deleteQuestion(where: QuestionWhereUniqueInput!): Question
@@ -1033,6 +1043,11 @@ type Mutation {
 		create: TeacherCreateInput!
 		update: TeacherUpdateInput!
 	): Teacher!
+	upsertSubject(
+		where: SubjectWhereUniqueInput!
+		create: SubjectCreateInput!
+		update: SubjectUpdateInput!
+	): Subject!
 	upsertExam(
 		where: ExamWhereUniqueInput!
 		create: ExamCreateInput!
@@ -1062,6 +1077,10 @@ type Mutation {
 		data: TeacherUpdateInput!
 		where: TeacherWhereInput
 	): BatchPayload!
+	updateManySubjects(
+		data: SubjectUpdateInput!
+		where: SubjectWhereInput
+	): BatchPayload!
 	updateManyExams(data: ExamUpdateInput!, where: ExamWhereInput): BatchPayload!
 	updateManyStudents(
 		data: StudentUpdateInput!
@@ -1080,6 +1099,7 @@ type Mutation {
 		where: ChoiceWhereInput
 	): BatchPayload!
 	deleteManyTeachers(where: TeacherWhereInput): BatchPayload!
+	deleteManySubjects(where: SubjectWhereInput): BatchPayload!
 	deleteManyExams(where: ExamWhereInput): BatchPayload!
 	deleteManyStudents(where: StudentWhereInput): BatchPayload!
 	deleteManyQuestions(where: QuestionWhereInput): BatchPayload!
@@ -1138,6 +1158,15 @@ type Query {
 		first: Int
 		last: Int
 	): [Teacher]!
+	subjects(
+		where: SubjectWhereInput
+		orderBy: SubjectOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): [Subject]!
 	exams(
 		where: ExamWhereInput
 		orderBy: ExamOrderByInput
@@ -1184,6 +1213,7 @@ type Query {
 		last: Int
 	): [Choice]!
 	teacher(where: TeacherWhereUniqueInput!): Teacher
+	subject(where: SubjectWhereUniqueInput!): Subject
 	exam(where: ExamWhereUniqueInput!): Exam
 	student(where: StudentWhereUniqueInput!): Student
 	question(where: QuestionWhereUniqueInput!): Question
@@ -1198,6 +1228,15 @@ type Query {
 		first: Int
 		last: Int
 	): TeacherConnection!
+	subjectsConnection(
+		where: SubjectWhereInput
+		orderBy: SubjectOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): SubjectConnection!
 	examsConnection(
 		where: ExamWhereInput
 		orderBy: ExamOrderByInput
@@ -1642,6 +1681,8 @@ type Score implements Node {
 	id: ID!
 	examId: String!
 	score: Int!
+	createdAt: DateTime!
+	updatedAt: DateTime!
 }
 
 """
@@ -1692,16 +1733,18 @@ enum ScoreOrderByInput {
 	examId_DESC
 	score_ASC
 	score_DESC
-	updatedAt_ASC
-	updatedAt_DESC
 	createdAt_ASC
 	createdAt_DESC
+	updatedAt_ASC
+	updatedAt_DESC
 }
 
 type ScorePreviousValues {
 	id: ID!
 	examId: String!
 	score: Int!
+	createdAt: DateTime!
+	updatedAt: DateTime!
 }
 
 type ScoreSubscriptionPayload {
@@ -1962,6 +2005,78 @@ input ScoreWhereInput {
 	All values greater than or equal the given value.
 	"""
 	score_gte: Int
+	createdAt: DateTime
+
+	"""
+	All values that are not equal to given value.
+	"""
+	createdAt_not: DateTime
+
+	"""
+	All values that are contained in given list.
+	"""
+	createdAt_in: [DateTime!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	createdAt_not_in: [DateTime!]
+
+	"""
+	All values less than the given value.
+	"""
+	createdAt_lt: DateTime
+
+	"""
+	All values less than or equal the given value.
+	"""
+	createdAt_lte: DateTime
+
+	"""
+	All values greater than the given value.
+	"""
+	createdAt_gt: DateTime
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	createdAt_gte: DateTime
+	updatedAt: DateTime
+
+	"""
+	All values that are not equal to given value.
+	"""
+	updatedAt_not: DateTime
+
+	"""
+	All values that are contained in given list.
+	"""
+	updatedAt_in: [DateTime!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	updatedAt_not_in: [DateTime!]
+
+	"""
+	All values less than the given value.
+	"""
+	updatedAt_lt: DateTime
+
+	"""
+	All values less than or equal the given value.
+	"""
+	updatedAt_lte: DateTime
+
+	"""
+	All values greater than the given value.
+	"""
+	updatedAt_gt: DateTime
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	updatedAt_gte: DateTime
 }
 
 input ScoreWhereUniqueInput {
@@ -1975,6 +2090,7 @@ type Student implements Node {
 	course: course!
 	gender: gender!
 	age: Int!
+	subjectIds: [String!]!
 	scores(
 		where: ScoreWhereInput
 		orderBy: ScoreOrderByInput
@@ -2010,12 +2126,17 @@ input StudentCreateInput {
 	course: course!
 	gender: gender!
 	age: Int!
+	subjectIds: StudentCreatesubjectIdsInput
 	scores: ScoreCreateManyInput
 }
 
 input StudentCreateManyInput {
 	create: [StudentCreateInput!]
 	connect: [StudentWhereUniqueInput!]
+}
+
+input StudentCreatesubjectIdsInput {
+	set: [String!]
 }
 
 """
@@ -2059,6 +2180,7 @@ type StudentPreviousValues {
 	course: course!
 	gender: gender!
 	age: Int!
+	subjectIds: [String!]!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -2114,6 +2236,7 @@ input StudentUpdateDataInput {
 	course: course
 	gender: gender
 	age: Int
+	subjectIds: StudentUpdatesubjectIdsInput
 	scores: ScoreUpdateManyInput
 }
 
@@ -2123,6 +2246,7 @@ input StudentUpdateInput {
 	course: course
 	gender: gender
 	age: Int
+	subjectIds: StudentUpdatesubjectIdsInput
 	scores: ScoreUpdateManyInput
 }
 
@@ -2133,6 +2257,10 @@ input StudentUpdateManyInput {
 	delete: [StudentWhereUniqueInput!]
 	update: [StudentUpdateWithWhereUniqueNestedInput!]
 	upsert: [StudentUpsertWithWhereUniqueNestedInput!]
+}
+
+input StudentUpdatesubjectIdsInput {
+	set: [String!]
 }
 
 input StudentUpdateWithWhereUniqueNestedInput {
@@ -2458,8 +2586,343 @@ input StudentWhereUniqueInput {
 	id: ID
 }
 
+type Subject implements Node {
+	id: ID!
+	name: String!
+	createdAt: DateTime!
+	updatedAt: DateTime!
+}
+
+"""
+A connection to a list of items.
+"""
+type SubjectConnection {
+	"""
+	Information to aid in pagination.
+	"""
+	pageInfo: PageInfo!
+
+	"""
+	A list of edges.
+	"""
+	edges: [SubjectEdge]!
+	aggregate: AggregateSubject!
+}
+
+input SubjectCreateInput {
+	name: String!
+}
+
+"""
+An edge in a connection.
+"""
+type SubjectEdge {
+	"""
+	The item at the end of the edge.
+	"""
+	node: Subject!
+
+	"""
+	A cursor for use in pagination.
+	"""
+	cursor: String!
+}
+
+enum SubjectOrderByInput {
+	id_ASC
+	id_DESC
+	name_ASC
+	name_DESC
+	createdAt_ASC
+	createdAt_DESC
+	updatedAt_ASC
+	updatedAt_DESC
+}
+
+type SubjectPreviousValues {
+	id: ID!
+	name: String!
+	createdAt: DateTime!
+	updatedAt: DateTime!
+}
+
+type SubjectSubscriptionPayload {
+	mutation: MutationType!
+	node: Subject
+	updatedFields: [String!]
+	previousValues: SubjectPreviousValues
+}
+
+input SubjectSubscriptionWhereInput {
+	"""
+	Logical AND on all given filters.
+	"""
+	AND: [SubjectSubscriptionWhereInput!]
+
+	"""
+	Logical OR on all given filters.
+	"""
+	OR: [SubjectSubscriptionWhereInput!]
+
+	"""
+	Logical NOT on all given filters combined by AND.
+	"""
+	NOT: [SubjectSubscriptionWhereInput!]
+
+	"""
+	The subscription event gets dispatched when it's listed in mutation_in
+	"""
+	mutation_in: [MutationType!]
+
+	"""
+	The subscription event gets only dispatched when one of the updated fields names is included in this list
+	"""
+	updatedFields_contains: String
+
+	"""
+	The subscription event gets only dispatched when all of the field names included in this list have been updated
+	"""
+	updatedFields_contains_every: [String!]
+
+	"""
+	The subscription event gets only dispatched when some of the field names included in this list have been updated
+	"""
+	updatedFields_contains_some: [String!]
+	node: SubjectWhereInput
+}
+
+input SubjectUpdateInput {
+	name: String
+}
+
+input SubjectWhereInput {
+	"""
+	Logical AND on all given filters.
+	"""
+	AND: [SubjectWhereInput!]
+
+	"""
+	Logical OR on all given filters.
+	"""
+	OR: [SubjectWhereInput!]
+
+	"""
+	Logical NOT on all given filters combined by AND.
+	"""
+	NOT: [SubjectWhereInput!]
+	id: ID
+
+	"""
+	All values that are not equal to given value.
+	"""
+	id_not: ID
+
+	"""
+	All values that are contained in given list.
+	"""
+	id_in: [ID!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	id_not_in: [ID!]
+
+	"""
+	All values less than the given value.
+	"""
+	id_lt: ID
+
+	"""
+	All values less than or equal the given value.
+	"""
+	id_lte: ID
+
+	"""
+	All values greater than the given value.
+	"""
+	id_gt: ID
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	id_gte: ID
+
+	"""
+	All values containing the given string.
+	"""
+	id_contains: ID
+
+	"""
+	All values not containing the given string.
+	"""
+	id_not_contains: ID
+
+	"""
+	All values starting with the given string.
+	"""
+	id_starts_with: ID
+
+	"""
+	All values not starting with the given string.
+	"""
+	id_not_starts_with: ID
+
+	"""
+	All values ending with the given string.
+	"""
+	id_ends_with: ID
+
+	"""
+	All values not ending with the given string.
+	"""
+	id_not_ends_with: ID
+	name: String
+
+	"""
+	All values that are not equal to given value.
+	"""
+	name_not: String
+
+	"""
+	All values that are contained in given list.
+	"""
+	name_in: [String!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	name_not_in: [String!]
+
+	"""
+	All values less than the given value.
+	"""
+	name_lt: String
+
+	"""
+	All values less than or equal the given value.
+	"""
+	name_lte: String
+
+	"""
+	All values greater than the given value.
+	"""
+	name_gt: String
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	name_gte: String
+
+	"""
+	All values containing the given string.
+	"""
+	name_contains: String
+
+	"""
+	All values not containing the given string.
+	"""
+	name_not_contains: String
+
+	"""
+	All values starting with the given string.
+	"""
+	name_starts_with: String
+
+	"""
+	All values not starting with the given string.
+	"""
+	name_not_starts_with: String
+
+	"""
+	All values ending with the given string.
+	"""
+	name_ends_with: String
+
+	"""
+	All values not ending with the given string.
+	"""
+	name_not_ends_with: String
+	createdAt: DateTime
+
+	"""
+	All values that are not equal to given value.
+	"""
+	createdAt_not: DateTime
+
+	"""
+	All values that are contained in given list.
+	"""
+	createdAt_in: [DateTime!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	createdAt_not_in: [DateTime!]
+
+	"""
+	All values less than the given value.
+	"""
+	createdAt_lt: DateTime
+
+	"""
+	All values less than or equal the given value.
+	"""
+	createdAt_lte: DateTime
+
+	"""
+	All values greater than the given value.
+	"""
+	createdAt_gt: DateTime
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	createdAt_gte: DateTime
+	updatedAt: DateTime
+
+	"""
+	All values that are not equal to given value.
+	"""
+	updatedAt_not: DateTime
+
+	"""
+	All values that are contained in given list.
+	"""
+	updatedAt_in: [DateTime!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	updatedAt_not_in: [DateTime!]
+
+	"""
+	All values less than the given value.
+	"""
+	updatedAt_lt: DateTime
+
+	"""
+	All values less than or equal the given value.
+	"""
+	updatedAt_lte: DateTime
+
+	"""
+	All values greater than the given value.
+	"""
+	updatedAt_gt: DateTime
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	updatedAt_gte: DateTime
+}
+
+input SubjectWhereUniqueInput {
+	id: ID
+}
+
 type Subscription {
 	teacher(where: TeacherSubscriptionWhereInput): TeacherSubscriptionPayload
+	subject(where: SubjectSubscriptionWhereInput): SubjectSubscriptionPayload
 	exam(where: ExamSubscriptionWhereInput): ExamSubscriptionPayload
 	student(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
 	question(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
