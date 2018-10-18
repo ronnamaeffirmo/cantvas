@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Thu Oct 18 2018 20:41:51 GMT+0800 (+08)
+# timestamp: Thu Oct 18 2018 22:26:41 GMT+0800 (+08)
 
 type AggregateChoice {
 	count: Int!
@@ -68,11 +68,6 @@ input ChoiceCreateInput {
 input ChoiceCreateManyInput {
 	create: [ChoiceCreateInput!]
 	connect: [ChoiceWhereUniqueInput!]
-}
-
-input ChoiceCreateOneInput {
-	create: ChoiceCreateInput
-	connect: ChoiceWhereUniqueInput
 }
 
 """
@@ -175,21 +170,9 @@ input ChoiceUpdateManyInput {
 	upsert: [ChoiceUpsertWithWhereUniqueNestedInput!]
 }
 
-input ChoiceUpdateOneRequiredInput {
-	create: ChoiceCreateInput
-	connect: ChoiceWhereUniqueInput
-	update: ChoiceUpdateDataInput
-	upsert: ChoiceUpsertNestedInput
-}
-
 input ChoiceUpdateWithWhereUniqueNestedInput {
 	where: ChoiceWhereUniqueInput!
 	data: ChoiceUpdateDataInput!
-}
-
-input ChoiceUpsertNestedInput {
-	update: ChoiceUpdateDataInput!
-	create: ChoiceCreateInput!
 }
 
 input ChoiceUpsertWithWhereUniqueNestedInput {
@@ -1010,8 +993,8 @@ type Mutation {
 	createExam(data: ExamCreateInput!): Exam!
 	createStudent(data: StudentCreateInput!): Student!
 	createQuestion(data: QuestionCreateInput!): Question!
-	createScore(data: ScoreCreateInput!): Score!
 	createChoice(data: ChoiceCreateInput!): Choice!
+	createScore(data: ScoreCreateInput!): Score!
 	updateTeacher(
 		data: TeacherUpdateInput!
 		where: TeacherWhereUniqueInput!
@@ -1029,15 +1012,15 @@ type Mutation {
 		data: QuestionUpdateInput!
 		where: QuestionWhereUniqueInput!
 	): Question
-	updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
 	updateChoice(data: ChoiceUpdateInput!, where: ChoiceWhereUniqueInput!): Choice
+	updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
 	deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
 	deleteSubject(where: SubjectWhereUniqueInput!): Subject
 	deleteExam(where: ExamWhereUniqueInput!): Exam
 	deleteStudent(where: StudentWhereUniqueInput!): Student
 	deleteQuestion(where: QuestionWhereUniqueInput!): Question
-	deleteScore(where: ScoreWhereUniqueInput!): Score
 	deleteChoice(where: ChoiceWhereUniqueInput!): Choice
+	deleteScore(where: ScoreWhereUniqueInput!): Score
 	upsertTeacher(
 		where: TeacherWhereUniqueInput!
 		create: TeacherCreateInput!
@@ -1063,16 +1046,16 @@ type Mutation {
 		create: QuestionCreateInput!
 		update: QuestionUpdateInput!
 	): Question!
-	upsertScore(
-		where: ScoreWhereUniqueInput!
-		create: ScoreCreateInput!
-		update: ScoreUpdateInput!
-	): Score!
 	upsertChoice(
 		where: ChoiceWhereUniqueInput!
 		create: ChoiceCreateInput!
 		update: ChoiceUpdateInput!
 	): Choice!
+	upsertScore(
+		where: ScoreWhereUniqueInput!
+		create: ScoreCreateInput!
+		update: ScoreUpdateInput!
+	): Score!
 	updateManyTeachers(
 		data: TeacherUpdateInput!
 		where: TeacherWhereInput
@@ -1090,21 +1073,21 @@ type Mutation {
 		data: QuestionUpdateInput!
 		where: QuestionWhereInput
 	): BatchPayload!
-	updateManyScores(
-		data: ScoreUpdateInput!
-		where: ScoreWhereInput
-	): BatchPayload!
 	updateManyChoices(
 		data: ChoiceUpdateInput!
 		where: ChoiceWhereInput
+	): BatchPayload!
+	updateManyScores(
+		data: ScoreUpdateInput!
+		where: ScoreWhereInput
 	): BatchPayload!
 	deleteManyTeachers(where: TeacherWhereInput): BatchPayload!
 	deleteManySubjects(where: SubjectWhereInput): BatchPayload!
 	deleteManyExams(where: ExamWhereInput): BatchPayload!
 	deleteManyStudents(where: StudentWhereInput): BatchPayload!
 	deleteManyQuestions(where: QuestionWhereInput): BatchPayload!
-	deleteManyScores(where: ScoreWhereInput): BatchPayload!
 	deleteManyChoices(where: ChoiceWhereInput): BatchPayload!
+	deleteManyScores(where: ScoreWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -1194,15 +1177,6 @@ type Query {
 		first: Int
 		last: Int
 	): [Question]!
-	scores(
-		where: ScoreWhereInput
-		orderBy: ScoreOrderByInput
-		skip: Int
-		after: String
-		before: String
-		first: Int
-		last: Int
-	): [Score]!
 	choices(
 		where: ChoiceWhereInput
 		orderBy: ChoiceOrderByInput
@@ -1212,13 +1186,22 @@ type Query {
 		first: Int
 		last: Int
 	): [Choice]!
+	scores(
+		where: ScoreWhereInput
+		orderBy: ScoreOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): [Score]!
 	teacher(where: TeacherWhereUniqueInput!): Teacher
 	subject(where: SubjectWhereUniqueInput!): Subject
 	exam(where: ExamWhereUniqueInput!): Exam
 	student(where: StudentWhereUniqueInput!): Student
 	question(where: QuestionWhereUniqueInput!): Question
-	score(where: ScoreWhereUniqueInput!): Score
 	choice(where: ChoiceWhereUniqueInput!): Choice
+	score(where: ScoreWhereUniqueInput!): Score
 	teachersConnection(
 		where: TeacherWhereInput
 		orderBy: TeacherOrderByInput
@@ -1264,15 +1247,6 @@ type Query {
 		first: Int
 		last: Int
 	): QuestionConnection!
-	scoresConnection(
-		where: ScoreWhereInput
-		orderBy: ScoreOrderByInput
-		skip: Int
-		after: String
-		before: String
-		first: Int
-		last: Int
-	): ScoreConnection!
 	choicesConnection(
 		where: ChoiceWhereInput
 		orderBy: ChoiceOrderByInput
@@ -1282,6 +1256,15 @@ type Query {
 		first: Int
 		last: Int
 	): ChoiceConnection!
+	scoresConnection(
+		where: ScoreWhereInput
+		orderBy: ScoreOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): ScoreConnection!
 
 	"""
 	Fetches an object given its ID
@@ -1306,7 +1289,7 @@ type Question implements Node {
 		first: Int
 		last: Int
 	): [Choice!]
-	answer: Choice!
+	choiceId: String!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -1329,8 +1312,8 @@ type QuestionConnection {
 
 input QuestionCreateInput {
 	question: String!
+	choiceId: String!
 	choices: ChoiceCreateManyInput
-	answer: ChoiceCreateOneInput!
 }
 
 input QuestionCreateManyInput {
@@ -1358,6 +1341,8 @@ enum QuestionOrderByInput {
 	id_DESC
 	question_ASC
 	question_DESC
+	choiceId_ASC
+	choiceId_DESC
 	createdAt_ASC
 	createdAt_DESC
 	updatedAt_ASC
@@ -1367,6 +1352,7 @@ enum QuestionOrderByInput {
 type QuestionPreviousValues {
 	id: ID!
 	question: String!
+	choiceId: String!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -1418,14 +1404,14 @@ input QuestionSubscriptionWhereInput {
 
 input QuestionUpdateDataInput {
 	question: String
+	choiceId: String
 	choices: ChoiceUpdateManyInput
-	answer: ChoiceUpdateOneRequiredInput
 }
 
 input QuestionUpdateInput {
 	question: String
+	choiceId: String
 	choices: ChoiceUpdateManyInput
-	answer: ChoiceUpdateOneRequiredInput
 }
 
 input QuestionUpdateManyInput {
@@ -1595,6 +1581,72 @@ input QuestionWhereInput {
 	All values not ending with the given string.
 	"""
 	question_not_ends_with: String
+	choiceId: String
+
+	"""
+	All values that are not equal to given value.
+	"""
+	choiceId_not: String
+
+	"""
+	All values that are contained in given list.
+	"""
+	choiceId_in: [String!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	choiceId_not_in: [String!]
+
+	"""
+	All values less than the given value.
+	"""
+	choiceId_lt: String
+
+	"""
+	All values less than or equal the given value.
+	"""
+	choiceId_lte: String
+
+	"""
+	All values greater than the given value.
+	"""
+	choiceId_gt: String
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	choiceId_gte: String
+
+	"""
+	All values containing the given string.
+	"""
+	choiceId_contains: String
+
+	"""
+	All values not containing the given string.
+	"""
+	choiceId_not_contains: String
+
+	"""
+	All values starting with the given string.
+	"""
+	choiceId_starts_with: String
+
+	"""
+	All values not starting with the given string.
+	"""
+	choiceId_not_starts_with: String
+
+	"""
+	All values ending with the given string.
+	"""
+	choiceId_ends_with: String
+
+	"""
+	All values not ending with the given string.
+	"""
+	choiceId_not_ends_with: String
 	createdAt: DateTime
 
 	"""
@@ -1670,7 +1722,6 @@ input QuestionWhereInput {
 	choices_every: ChoiceWhereInput
 	choices_some: ChoiceWhereInput
 	choices_none: ChoiceWhereInput
-	answer: ChoiceWhereInput
 }
 
 input QuestionWhereUniqueInput {
@@ -2926,8 +2977,8 @@ type Subscription {
 	exam(where: ExamSubscriptionWhereInput): ExamSubscriptionPayload
 	student(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
 	question(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
-	score(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
 	choice(where: ChoiceSubscriptionWhereInput): ChoiceSubscriptionPayload
+	score(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
 }
 
 type Teacher implements Node {

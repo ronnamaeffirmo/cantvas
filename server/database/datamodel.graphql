@@ -73,8 +73,8 @@ type Exam {
 type Question {
 	id: ID! @unique
 	question: String!
-	choices: [Choice!]! @relation(name: "Choices", onDelete: CASCADE)
-	answer: Choice! @relation(name: "Choice", onDelete: CASCADE)
+	choices: [Choice!]!
+	choiceId: String! ## answer of the question
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
