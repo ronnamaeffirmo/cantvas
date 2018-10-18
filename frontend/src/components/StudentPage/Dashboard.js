@@ -31,19 +31,19 @@ const queryExams = gql`
 
 const Dashboard = props => {
 	return (
-		<Query query={querySubjects}>
-			{({ loading, error, data }) => (
-				<Fragment>
-					<div style={style.pageTitle}>
-						<Header size="huge" style={style.header}>
-							Dashboard
-						</Header>
-						<Divider />
-					</div>
+		<Fragment>
+			<div style={style.pageTitle}>
+				<Header size="huge" style={style.header}>
+					Dashboard
+				</Header>
+				<Divider />
+			</div>
+			<Query query={querySubjects}>
+				{({ loading, error, data }) => (
 					<Card.Group itemsPerRow={4}>
 						{loading ? (
 							<div style={style.loading}>
-								<Icon loading name="spinner" /> loading subjects...
+								<Icon loading name="spinner" /> getting subjects...
 							</div>
 						) : (
 							data.student.subjects.map(subject => {
@@ -72,9 +72,9 @@ const Dashboard = props => {
 							})
 						)}
 					</Card.Group>
-				</Fragment>
-			)}
-		</Query>
+				)}
+			</Query>
+		</Fragment>
 	)
 }
 
