@@ -1,13 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ApolloClient from 'apollo-boost'
+import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
 import { createHttpLink } from 'apollo-link-http'
 import { BrowserRouter } from 'react-router-dom'
+import { ApolloLink } from 'apollo-link'
+import { withClientState } from 'apollo-link-state'
 import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
-
+import { InMemoryCache } from 'apollo-cache-inmemory'
 import Routes from './Routes'
 
 const httpLink = createHttpLink({
@@ -30,22 +32,24 @@ const link = split(
 	httpLink
 )
 
+const cache = new InMemoryCache()
+
 const client = new ApolloClient({
-	link,
-	clientState: {
-		defaults: {
-			// to change
-			activeItem: 'dashboard'
-		},
-		resolvers: {
-			// to change
-			// to add
-		},
-		typeDefs: {
-			// to change
-			// to add
-		}
-	}
+	link: ApolloLink.from([
+		withClientState({
+			defaults: {
+				// to change
+				activeItem: 'dashboard'
+			},
+			resolvers: {
+				// to change
+				// to add
+			},
+			cache
+		}),
+		link
+	]),
+	cache
 })
 
 ReactDOM.render(
