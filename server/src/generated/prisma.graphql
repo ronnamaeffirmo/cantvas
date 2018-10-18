@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Thu Oct 18 2018 22:59:30 GMT+0800 (+08)
+# timestamp: Thu Oct 18 2018 23:08:01 GMT+0800 (+08)
 
 type AggregateChoice {
 	count: Int!
@@ -1961,7 +1961,7 @@ type Student implements Node {
 	course: course!
 	gender: gender!
 	age: Int!
-	subjectIds(
+	subjects(
 		where: SubjectWhereInput
 		orderBy: SubjectOrderByInput
 		skip: Int
@@ -2005,7 +2005,7 @@ input StudentCreateInput {
 	course: course!
 	gender: gender!
 	age: Int!
-	subjectIds: SubjectCreateManyInput
+	subjects: SubjectCreateManyInput
 	scores: ScoreCreateManyInput
 }
 
@@ -2110,7 +2110,7 @@ input StudentUpdateDataInput {
 	course: course
 	gender: gender
 	age: Int
-	subjectIds: SubjectUpdateManyInput
+	subjects: SubjectUpdateManyInput
 	scores: ScoreUpdateManyInput
 }
 
@@ -2120,7 +2120,7 @@ input StudentUpdateInput {
 	course: course
 	gender: gender
 	age: Int
-	subjectIds: SubjectUpdateManyInput
+	subjects: SubjectUpdateManyInput
 	scores: ScoreUpdateManyInput
 }
 
@@ -2447,9 +2447,9 @@ input StudentWhereInput {
 	All values greater than or equal the given value.
 	"""
 	updatedAt_gte: DateTime
-	subjectIds_every: SubjectWhereInput
-	subjectIds_some: SubjectWhereInput
-	subjectIds_none: SubjectWhereInput
+	subjects_every: SubjectWhereInput
+	subjects_some: SubjectWhereInput
+	subjects_none: SubjectWhereInput
 	scores_every: ScoreWhereInput
 	scores_some: ScoreWhereInput
 	scores_none: ScoreWhereInput
