@@ -1,0 +1,18 @@
+{
+	"extends": [
+		"standard",
+		"plugin:react/recommended",
+		"plugin:prettier/recommended"
+	],
+	"plugins": ["prettier"],
+	"rules": {
+		"prettier/prettier": "error",
+		"react/prop-types": 0,
+		"quotes": ["error", "single"]
+	},
+	"settings": {
+		"react": {
+			"version": "ˆ16.5.2"
+		}
+	}
+}

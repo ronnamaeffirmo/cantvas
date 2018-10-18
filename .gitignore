@@ -2,6 +2,3 @@
 /node_modules
 /frontend/node_modules
 /server/node_modules
-
-# unnecessary lock files
-yarn.lock
