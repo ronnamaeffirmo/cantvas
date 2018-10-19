@@ -23,6 +23,7 @@ enum course {
 
 type Teacher {
 	id: ID! @unique
+	email: String! @unique
 	name: String!
 	class: String!
 	age: Int!
@@ -34,6 +35,7 @@ type Teacher {
 
 type Student {
 	id: ID! @unique
+	email: String! @unique
 	name: String!
 	year: year!
 	course: course!

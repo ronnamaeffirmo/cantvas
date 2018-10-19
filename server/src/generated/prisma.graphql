@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Thu Oct 18 2018 23:08:01 GMT+0800 (+08)
+# timestamp: Fri Oct 19 2018 14:21:20 GMT+0800 (+08)
 
 type AggregateChoice {
 	count: Int!
@@ -884,24 +884,12 @@ type Mutation {
 	createTeacher(data: TeacherCreateInput!): Teacher!
 	createSubject(data: SubjectCreateInput!): Subject!
 	updateExam(data: ExamUpdateInput!, where: ExamWhereUniqueInput!): Exam
-	updateStudent(
-		data: StudentUpdateInput!
-		where: StudentWhereUniqueInput!
-	): Student
-	updateQuestion(
-		data: QuestionUpdateInput!
-		where: QuestionWhereUniqueInput!
-	): Question
+	updateStudent(data: StudentUpdateInput!, where: StudentWhereUniqueInput!): Student
+	updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
 	updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
 	updateChoice(data: ChoiceUpdateInput!, where: ChoiceWhereUniqueInput!): Choice
-	updateTeacher(
-		data: TeacherUpdateInput!
-		where: TeacherWhereUniqueInput!
-	): Teacher
-	updateSubject(
-		data: SubjectUpdateInput!
-		where: SubjectWhereUniqueInput!
-	): Subject
+	updateTeacher(data: TeacherUpdateInput!, where: TeacherWhereUniqueInput!): Teacher
+	updateSubject(data: SubjectUpdateInput!, where: SubjectWhereUniqueInput!): Subject
 	deleteExam(where: ExamWhereUniqueInput!): Exam
 	deleteStudent(where: StudentWhereUniqueInput!): Student
 	deleteQuestion(where: QuestionWhereUniqueInput!): Question
@@ -945,30 +933,12 @@ type Mutation {
 		update: SubjectUpdateInput!
 	): Subject!
 	updateManyExams(data: ExamUpdateInput!, where: ExamWhereInput): BatchPayload!
-	updateManyStudents(
-		data: StudentUpdateInput!
-		where: StudentWhereInput
-	): BatchPayload!
-	updateManyQuestions(
-		data: QuestionUpdateInput!
-		where: QuestionWhereInput
-	): BatchPayload!
-	updateManyScores(
-		data: ScoreUpdateInput!
-		where: ScoreWhereInput
-	): BatchPayload!
-	updateManyChoices(
-		data: ChoiceUpdateInput!
-		where: ChoiceWhereInput
-	): BatchPayload!
-	updateManyTeachers(
-		data: TeacherUpdateInput!
-		where: TeacherWhereInput
-	): BatchPayload!
-	updateManySubjects(
-		data: SubjectUpdateInput!
-		where: SubjectWhereInput
-	): BatchPayload!
+	updateManyStudents(data: StudentUpdateInput!, where: StudentWhereInput): BatchPayload!
+	updateManyQuestions(data: QuestionUpdateInput!, where: QuestionWhereInput): BatchPayload!
+	updateManyScores(data: ScoreUpdateInput!, where: ScoreWhereInput): BatchPayload!
+	updateManyChoices(data: ChoiceUpdateInput!, where: ChoiceWhereInput): BatchPayload!
+	updateManyTeachers(data: TeacherUpdateInput!, where: TeacherWhereInput): BatchPayload!
+	updateManySubjects(data: SubjectUpdateInput!, where: SubjectWhereInput): BatchPayload!
 	deleteManyExams(where: ExamWhereInput): BatchPayload!
 	deleteManyStudents(where: StudentWhereInput): BatchPayload!
 	deleteManyQuestions(where: QuestionWhereInput): BatchPayload!
@@ -1956,6 +1926,7 @@ input ScoreWhereUniqueInput {
 
 type Student implements Node {
 	id: ID!
+	email: String!
 	name: String!
 	year: year!
 	course: course!
@@ -2000,6 +1971,7 @@ type StudentConnection {
 }
 
 input StudentCreateInput {
+	email: String!
 	name: String!
 	year: year!
 	course: course!
@@ -2032,6 +2004,8 @@ type StudentEdge {
 enum StudentOrderByInput {
 	id_ASC
 	id_DESC
+	email_ASC
+	email_DESC
 	name_ASC
 	name_DESC
 	year_ASC
@@ -2050,6 +2024,7 @@ enum StudentOrderByInput {
 
 type StudentPreviousValues {
 	id: ID!
+	email: String!
 	name: String!
 	year: year!
 	course: course!
@@ -2105,6 +2080,7 @@ input StudentSubscriptionWhereInput {
 }
 
 input StudentUpdateDataInput {
+	email: String
 	name: String
 	year: year
 	course: course
@@ -2115,6 +2091,7 @@ input StudentUpdateDataInput {
 }
 
 input StudentUpdateInput {
+	email: String
 	name: String
 	year: year
 	course: course
@@ -2225,6 +2202,72 @@ input StudentWhereInput {
 	All values not ending with the given string.
 	"""
 	id_not_ends_with: ID
+	email: String
+
+	"""
+	All values that are not equal to given value.
+	"""
+	email_not: String
+
+	"""
+	All values that are contained in given list.
+	"""
+	email_in: [String!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	email_not_in: [String!]
+
+	"""
+	All values less than the given value.
+	"""
+	email_lt: String
+
+	"""
+	All values less than or equal the given value.
+	"""
+	email_lte: String
+
+	"""
+	All values greater than the given value.
+	"""
+	email_gt: String
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	email_gte: String
+
+	"""
+	All values containing the given string.
+	"""
+	email_contains: String
+
+	"""
+	All values not containing the given string.
+	"""
+	email_not_contains: String
+
+	"""
+	All values starting with the given string.
+	"""
+	email_starts_with: String
+
+	"""
+	All values not starting with the given string.
+	"""
+	email_not_starts_with: String
+
+	"""
+	All values ending with the given string.
+	"""
+	email_ends_with: String
+
+	"""
+	All values not ending with the given string.
+	"""
+	email_not_ends_with: String
 	name: String
 
 	"""
@@ -2457,6 +2500,7 @@ input StudentWhereInput {
 
 input StudentWhereUniqueInput {
 	id: ID
+	email: String
 }
 
 type Subject implements Node {
@@ -2851,6 +2895,7 @@ type Subscription {
 
 type Teacher implements Node {
 	id: ID!
+	email: String!
 	name: String!
 	class: String!
 	age: Int!
@@ -2885,6 +2930,7 @@ type TeacherConnection {
 }
 
 input TeacherCreateInput {
+	email: String!
 	name: String!
 	class: String!
 	age: Int!
@@ -2915,6 +2961,8 @@ type TeacherEdge {
 enum TeacherOrderByInput {
 	id_ASC
 	id_DESC
+	email_ASC
+	email_DESC
 	name_ASC
 	name_DESC
 	class_ASC
@@ -2931,6 +2979,7 @@ enum TeacherOrderByInput {
 
 type TeacherPreviousValues {
 	id: ID!
+	email: String!
 	name: String!
 	class: String!
 	age: Int!
@@ -2985,6 +3034,7 @@ input TeacherSubscriptionWhereInput {
 }
 
 input TeacherUpdateDataInput {
+	email: String
 	name: String
 	class: String
 	age: Int
@@ -2993,6 +3043,7 @@ input TeacherUpdateDataInput {
 }
 
 input TeacherUpdateInput {
+	email: String
 	name: String
 	class: String
 	age: Int
@@ -3093,6 +3144,72 @@ input TeacherWhereInput {
 	All values not ending with the given string.
 	"""
 	id_not_ends_with: ID
+	email: String
+
+	"""
+	All values that are not equal to given value.
+	"""
+	email_not: String
+
+	"""
+	All values that are contained in given list.
+	"""
+	email_in: [String!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	email_not_in: [String!]
+
+	"""
+	All values less than the given value.
+	"""
+	email_lt: String
+
+	"""
+	All values less than or equal the given value.
+	"""
+	email_lte: String
+
+	"""
+	All values greater than the given value.
+	"""
+	email_gt: String
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	email_gte: String
+
+	"""
+	All values containing the given string.
+	"""
+	email_contains: String
+
+	"""
+	All values not containing the given string.
+	"""
+	email_not_contains: String
+
+	"""
+	All values starting with the given string.
+	"""
+	email_starts_with: String
+
+	"""
+	All values not starting with the given string.
+	"""
+	email_not_starts_with: String
+
+	"""
+	All values ending with the given string.
+	"""
+	email_ends_with: String
+
+	"""
+	All values not ending with the given string.
+	"""
+	email_not_ends_with: String
 	name: String
 
 	"""
@@ -3356,6 +3473,7 @@ input TeacherWhereInput {
 
 input TeacherWhereUniqueInput {
 	id: ID
+	email: String
 }
 
 enum year {
