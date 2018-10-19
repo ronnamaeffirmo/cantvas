@@ -40,6 +40,7 @@ const registerPage = props => {
 						<Form
 							onSubmit={async values => {
 								await client.mutate({ mutation: createStudent, variables: { data: values } })
+								props.history.push('/student/dashboard')
 							}}
 							render={({ handleSubmit, submitting, values }) => (
 								<form onSubmit={handleSubmit}>
