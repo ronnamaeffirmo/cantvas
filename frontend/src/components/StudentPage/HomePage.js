@@ -5,6 +5,7 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import Dashboard from './Dashboard'
+import Account from './Account'
 import Sidebar from './Sidebar'
 
 const GET_ACTIVE_ITEM = gql`
@@ -15,22 +16,23 @@ const GET_ACTIVE_ITEM = gql`
 
 const HomePage = props => {
 	return (
-		<Switch>
-			<Query query={GET_ACTIVE_ITEM}>
-				{({ data, client }) => {
-					return (
-						<Grid style={style.grid}>
-							<Sidebar data={data} client={client} />
+		<Query query={GET_ACTIVE_ITEM}>
+			{({ data, client }) => {
+				return (
+					<Grid style={style.grid}>
+						<Sidebar data={data} client={client} />
 
-							{/* main body */}
-							<Grid.Column width={12} style={style.column}>
+						{/* main body */}
+						<Grid.Column width={12} style={style.column}>
+							<Switch>
 								<Route path="/student/dashboard" exact component={Dashboard} />
-							</Grid.Column>
-						</Grid>
-					)
-				}}
-			</Query>
-		</Switch>
+								<Route path="/student/account" exact component={Account} />
+							</Switch>
+						</Grid.Column>
+					</Grid>
+				)
+			}}
+		</Query>
 	)
 }
 
