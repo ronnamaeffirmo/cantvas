@@ -46,30 +46,28 @@ const Dashboard = props => {
 								<Icon loading name="spinner" /> getting subjects...
 							</div>
 						) : (
-							data.student.subjects.map(subject => {
-								return (
-									<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
-										{({ loading, error, data }) => {
-											return loading ? (
-												<div style={style.loading}>
-													<Icon loading name="spinner" /> loading exams...
-												</div>
-											) : (
-												data.exams.map(exam => {
-													return (
-														<ExamCard
-															subject={exam.Subject.name}
-															teacher={exam.teacher.name}
-															title={exam.title}
-															key={exam.id}
-														/>
-													)
-												})
-											)
-										}}
-									</Query>
-								)
-							})
+							data.student.subjects.map(subject => (
+								<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
+									{({ loading, error, data }) =>
+										loading ? (
+											<div style={style.loading}>
+												<Icon loading name="spinner" /> loading exams...
+											</div>
+										) : (
+											data.exams.map(exam => {
+												return (
+													<ExamCard
+														subject={exam.Subject.name}
+														teacher={exam.teacher.name}
+														title={exam.title}
+														key={exam.id}
+													/>
+												)
+											})
+										)
+									}
+								</Query>
+							))
 						)}
 					</Card.Group>
 				)}
