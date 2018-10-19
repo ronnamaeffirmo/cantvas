@@ -9,7 +9,7 @@ import Loading from '../Loading'
 
 const querySubjects = gql`
 	{
-		student(where: { id: "cjnfmsxgutka00b949i3dmrri" }) {
+		student(where: { email: "jardenilmark@gmail.com" }) {
 			subjects {
 				id
 			}
@@ -36,7 +36,7 @@ const Dashboard = props => {
 	return (
 		<Fragment>
 			<div style={style.pageTitle}>
-				<Header size="huge" style={style.header}>
+				<Header size={'huge'} style={style.header}>
 					Dashboard
 				</Header>
 				<Divider />

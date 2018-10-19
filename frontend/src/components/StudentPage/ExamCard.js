@@ -11,12 +11,12 @@ const ExamCard = ({ title, subject, teacher }) => {
 			<Card.Content>
 				<Card.Header>{title}</Card.Header>
 				<Card.Meta>
-					<Icon name="book" /> {subject}
+					<Icon name={'book'} /> {subject}
 				</Card.Meta>
 				<Card.Description>by {teacher}</Card.Description>
 			</Card.Content>
-			<Card.Content extra textAlign="right">
-				<Button size="small" basic color={highlightColor}>
+			<Card.Content extra textAlign={'right'}>
+				<Button size={'small'} basic color={highlightColor}>
 					Take test
 				</Button>
 			</Card.Content>

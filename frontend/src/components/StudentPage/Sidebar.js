@@ -6,7 +6,7 @@ import '../../styles/sidebar.css'
 
 const Sidebar = ({ data: { activeItem }, client }) => (
 	<Grid.Column width={1} style={style.column}>
-		<Menu pointing secondary vertical icon="labeled" style={style.menu}>
+		<Menu pointing secondary vertical icon={'labeled'} style={style.menu}>
 			<Menu.Item disabled style={style.logoContainer}>
 				<Image src={require('../../images/logo.png')} style={style.logo} />
 			</Menu.Item>
@@ -14,20 +14,20 @@ const Sidebar = ({ data: { activeItem }, client }) => (
 			{/* navigation routes */}
 			<Menu.Item
 				as={Link}
-				to="/student/dashboard"
+				to={'/student/dashboard'}
 				active={activeItem === 'dashboard'}
 				style={style.menuItem}
 				onClick={() => client.writeData({ data: { activeItem: 'dashboard' } })}>
-				<Icon name="dashboard" />
+				<Icon name={'dashboard'} />
 				Dashboard
 			</Menu.Item>
 			<Menu.Item
 				as={Link}
-				to="/student/account"
+				to={'/student/account'}
 				active={activeItem === 'account'}
 				style={style.menuItem}
 				onClick={() => client.writeData({ data: { activeItem: 'account' } })}>
-				<Icon name="user circle outline" />
+				<Icon name={'user circle outline'} />
 				Account
 			</Menu.Item>
 		</Menu>
