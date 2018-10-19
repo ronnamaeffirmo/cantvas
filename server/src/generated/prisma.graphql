@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Fri Oct 19 2018 14:21:20 GMT+0800 (+08)
+# timestamp: Fri Oct 19 2018 21:44:05 GMT+0800 (+08)
 
 type AggregateChoice {
 	count: Int!
@@ -1927,6 +1927,7 @@ input ScoreWhereUniqueInput {
 type Student implements Node {
 	id: ID!
 	email: String!
+	password: String!
 	name: String!
 	year: year!
 	course: course!
@@ -1972,6 +1973,7 @@ type StudentConnection {
 
 input StudentCreateInput {
 	email: String!
+	password: String!
 	name: String!
 	year: year!
 	course: course!
@@ -2006,6 +2008,8 @@ enum StudentOrderByInput {
 	id_DESC
 	email_ASC
 	email_DESC
+	password_ASC
+	password_DESC
 	name_ASC
 	name_DESC
 	year_ASC
@@ -2025,6 +2029,7 @@ enum StudentOrderByInput {
 type StudentPreviousValues {
 	id: ID!
 	email: String!
+	password: String!
 	name: String!
 	year: year!
 	course: course!
@@ -2081,6 +2086,7 @@ input StudentSubscriptionWhereInput {
 
 input StudentUpdateDataInput {
 	email: String
+	password: String
 	name: String
 	year: year
 	course: course
@@ -2092,6 +2098,7 @@ input StudentUpdateDataInput {
 
 input StudentUpdateInput {
 	email: String
+	password: String
 	name: String
 	year: year
 	course: course
@@ -2268,6 +2275,72 @@ input StudentWhereInput {
 	All values not ending with the given string.
 	"""
 	email_not_ends_with: String
+	password: String
+
+	"""
+	All values that are not equal to given value.
+	"""
+	password_not: String
+
+	"""
+	All values that are contained in given list.
+	"""
+	password_in: [String!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	password_not_in: [String!]
+
+	"""
+	All values less than the given value.
+	"""
+	password_lt: String
+
+	"""
+	All values less than or equal the given value.
+	"""
+	password_lte: String
+
+	"""
+	All values greater than the given value.
+	"""
+	password_gt: String
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	password_gte: String
+
+	"""
+	All values containing the given string.
+	"""
+	password_contains: String
+
+	"""
+	All values not containing the given string.
+	"""
+	password_not_contains: String
+
+	"""
+	All values starting with the given string.
+	"""
+	password_starts_with: String
+
+	"""
+	All values not starting with the given string.
+	"""
+	password_not_starts_with: String
+
+	"""
+	All values ending with the given string.
+	"""
+	password_ends_with: String
+
+	"""
+	All values not ending with the given string.
+	"""
+	password_not_ends_with: String
 	name: String
 
 	"""
@@ -2896,6 +2969,7 @@ type Subscription {
 type Teacher implements Node {
 	id: ID!
 	email: String!
+	password: String!
 	name: String!
 	class: String!
 	age: Int!
@@ -2931,6 +3005,7 @@ type TeacherConnection {
 
 input TeacherCreateInput {
 	email: String!
+	password: String!
 	name: String!
 	class: String!
 	age: Int!
@@ -2963,6 +3038,8 @@ enum TeacherOrderByInput {
 	id_DESC
 	email_ASC
 	email_DESC
+	password_ASC
+	password_DESC
 	name_ASC
 	name_DESC
 	class_ASC
@@ -2980,6 +3057,7 @@ enum TeacherOrderByInput {
 type TeacherPreviousValues {
 	id: ID!
 	email: String!
+	password: String!
 	name: String!
 	class: String!
 	age: Int!
@@ -3035,6 +3113,7 @@ input TeacherSubscriptionWhereInput {
 
 input TeacherUpdateDataInput {
 	email: String
+	password: String
 	name: String
 	class: String
 	age: Int
@@ -3044,6 +3123,7 @@ input TeacherUpdateDataInput {
 
 input TeacherUpdateInput {
 	email: String
+	password: String
 	name: String
 	class: String
 	age: Int
@@ -3210,6 +3290,72 @@ input TeacherWhereInput {
 	All values not ending with the given string.
 	"""
 	email_not_ends_with: String
+	password: String
+
+	"""
+	All values that are not equal to given value.
+	"""
+	password_not: String
+
+	"""
+	All values that are contained in given list.
+	"""
+	password_in: [String!]
+
+	"""
+	All values that are not contained in given list.
+	"""
+	password_not_in: [String!]
+
+	"""
+	All values less than the given value.
+	"""
+	password_lt: String
+
+	"""
+	All values less than or equal the given value.
+	"""
+	password_lte: String
+
+	"""
+	All values greater than the given value.
+	"""
+	password_gt: String
+
+	"""
+	All values greater than or equal the given value.
+	"""
+	password_gte: String
+
+	"""
+	All values containing the given string.
+	"""
+	password_contains: String
+
+	"""
+	All values not containing the given string.
+	"""
+	password_not_contains: String
+
+	"""
+	All values starting with the given string.
+	"""
+	password_starts_with: String
+
+	"""
+	All values not starting with the given string.
+	"""
+	password_not_starts_with: String
+
+	"""
+	All values ending with the given string.
+	"""
+	password_ends_with: String
+
+	"""
+	All values not ending with the given string.
+	"""
+	password_not_ends_with: String
 	name: String
 
 	"""
