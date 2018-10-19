@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Header, Divider, Card } from 'semantic-ui-react'
+import { Header, Divider, Card, Icon } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import ExamCard from './ExamCard'
@@ -39,36 +39,40 @@ const Dashboard = props => {
 				<Divider />
 			</div>
 			<Query query={querySubjects}>
-				{({ loading, error, data }) => {
-					if (loading) {
-						return 'loading'
-					}
-					return (
-						<Card.Group itemsPerRow={4}>
-							{data.student.subjects.map(subject => {
+				{({ loading, error, data }) => (
+					<Card.Group itemsPerRow={4}>
+						{loading ? (
+							<div style={style.loading}>
+								<Icon loading name="spinner" /> getting subjects...
+							</div>
+						) : (
+							data.student.subjects.map(subject => {
 								return (
 									<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
 										{({ loading, error, data }) => {
-											if (loading) {
-												return 'loading'
-											}
-											return data.exams.map(exam => {
-												return (
-													<ExamCard
-														subject={exam.Subject.name}
-														teacher={exam.teacher.name}
-														title={exam.title}
-														key={exam.id}
-													/>
-												)
-											})
+											return loading ? (
+												<div style={style.loading}>
+													<Icon loading name="spinner" /> loading exams...
+												</div>
+											) : (
+												data.exams.map(exam => {
+													return (
+														<ExamCard
+															subject={exam.Subject.name}
+															teacher={exam.teacher.name}
+															title={exam.title}
+															key={exam.id}
+														/>
+													)
+												})
+											)
 										}}
 									</Query>
 								)
-							})}
-						</Card.Group>
-					)
-				}}
+							})
+						)}
+					</Card.Group>
+				)}
 			</Query>
 		</Fragment>
 	)
@@ -80,6 +84,10 @@ const style = {
 	},
 	header: {
 		fontWeight: 'normal'
+	},
+	loading: {
+		marginTop: '10px',
+		marginLeft: '10px'
 	}
 }
 
