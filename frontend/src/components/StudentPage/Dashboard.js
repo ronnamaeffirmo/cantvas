@@ -2,7 +2,10 @@ import React, { Fragment } from 'react'
 import { Header, Divider, Card, Icon } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+
 import ExamCard from './ExamCard'
+import ErrorMessage from '../ErrorMessage'
+import Loading from '../Loading'
 
 const querySubjects = gql`
 	{
@@ -39,38 +42,32 @@ const Dashboard = props => {
 				<Divider />
 			</div>
 			<Query query={querySubjects}>
-				{({ loading, error, data }) => (
-					<Card.Group itemsPerRow={4}>
-						{loading ? (
-							<div style={style.loading}>
-								<Icon loading name="spinner" /> getting subjects...
-							</div>
-						) : (
-							data.student.subjects.map(subject => (
-								<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
-									{({ loading, error, data }) =>
-										loading ? (
-											<div style={style.loading}>
-												<Icon loading name="spinner" /> loading exams...
-											</div>
-										) : (
-											data.exams.map(exam => {
-												return (
-													<ExamCard
-														subject={exam.Subject.name}
-														teacher={exam.teacher.name}
-														title={exam.title}
-														key={exam.id}
-													/>
-												)
-											})
-										)
-									}
-								</Query>
-							))
-						)}
-					</Card.Group>
-				)}
+				{({ loading, error, data }) => {
+					if (error) return <ErrorMessage message={error.message} />
+					if (loading) return <Loading message="getting subjects..." />
+
+					return data.student.subjects.map(subject => (
+						<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
+							{({ loading, error, data }) => {
+								if (error) return <ErrorMessage message={error.message} />
+								if (loading) return <Loading message="loading exams..." />
+
+								return (
+									<Card.Group itemsPerRow={4}>
+										{data.exams.map(exam => (
+											<ExamCard
+												subject={exam.Subject.name}
+												teacher={exam.teacher.name}
+												title={exam.title}
+												key={exam.id}
+											/>
+										))}
+									</Card.Group>
+								)
+							}}
+						</Query>
+					))
+				}}
 			</Query>
 		</Fragment>
 	)
@@ -82,10 +79,6 @@ const style = {
 	},
 	header: {
 		fontWeight: 'normal'
-	},
-	loading: {
-		marginTop: '10px',
-		marginLeft: '10px'
 	}
 }
 

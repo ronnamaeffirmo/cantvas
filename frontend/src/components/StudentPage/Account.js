@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react'
-import { Header, Divider, Icon, Item, Image } from 'semantic-ui-react'
+import { Header, Divider, Icon, Item, Image, Message } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import moment from 'moment'
 
+import ErrorMessage from '../ErrorMessage'
+import Loading from '../Loading'
 import { getNumeralYearEquivalent } from '../../helpers/studentHelper'
 
 const queryStudent = gql`
@@ -32,12 +34,11 @@ const Account = props => (
 			<Divider />
 		</div>
 		<Query query={queryStudent}>
-			{({ loading, error, data }) =>
-				loading ? (
-					<div style={style.loading}>
-						<Icon loading name="spinner" /> fetching profile...
-					</div>
-				) : (
+			{({ loading, error, data }) => {
+				if (error) return <ErrorMessage message={error.message} />
+				if (loading) return <Loading message="fetching account..." />
+
+				return (
 					<Item.Group>
 						<Item>
 							<Item.Image src={data.student.gender === 'MALE' ? boyUrl : girlUrl} size="small" />
@@ -54,7 +55,7 @@ const Account = props => (
 						</Item>
 					</Item.Group>
 				)
-			}
+			}}
 		</Query>
 	</Fragment>
 )
@@ -65,9 +66,6 @@ const style = {
 	},
 	header: {
 		fontWeight: 'normal'
-	},
-	loading: {
-		marginTop: '10px'
 	}
 }
 
