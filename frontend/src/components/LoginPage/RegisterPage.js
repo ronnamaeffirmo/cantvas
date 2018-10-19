@@ -28,7 +28,7 @@ const registerPage = props => {
 						<Grid.Column style={style.gridColumn} width={1}>
 							<Image src={require('../../images/logo.png')} style={style.image} />
 						</Grid.Column>
-						<Grid.Column width={15} verticalAlign="middle">
+						<Grid.Column width={15} verticalAlign={'middle'}>
 							<Header size={'huge'}>Registration Page</Header>
 						</Grid.Column>
 					</Grid.Row>

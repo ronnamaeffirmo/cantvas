@@ -3,7 +3,7 @@ import { Icon } from 'semantic-ui-react'
 
 const Loading = ({ message }) => (
 	<div style={style.loading}>
-		<Icon loading name="spinner" /> {message}
+		<Icon loading name={'spinner'} /> {message}
 	</div>
 )
 
