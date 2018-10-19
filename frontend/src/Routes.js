@@ -7,9 +7,9 @@ import RegisterPage from './components/LoginPage/RegisterPage'
 const Routes = props => {
 	return (
 		<Switch>
-			<Route path="/login" exact component={LoginPage} />
-			<Route path="/student" component={StudentPage} />
-			<Route path="/register" exact component={RegisterPage} />
+			<Route path={'/login'} exact component={LoginPage} />
+			<Route path={'/student'} component={StudentPage} />
+			<Route path={'/register'} exact component={RegisterPage} />
 		</Switch>
 	)
 }

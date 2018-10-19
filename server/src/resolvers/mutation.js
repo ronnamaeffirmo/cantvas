@@ -11,13 +11,15 @@ module.exports = {
 			info
 		)
 	},
-	createStudent(root, args, context, info) {
-		return context.db.mutation.createStudent(
-			{
-				data: args.data
-			},
-			info
-		)
+	async createStudent(root, args, context, info) {
+		const password = await bcrypt.hash(args.data.password, 10)
+		const student = await context.db.mutation.createStudent({
+			data: { ...args.data, password }
+		})
+		return {
+			token: jwt.sign({ studentId: student.id }, APP_SECRET),
+			student
+		}
 	},
 	createScore(root, args, context, info) {
 		return context.db.mutation.createScore(

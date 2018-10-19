@@ -25,8 +25,8 @@ type Query {
 }
 
 type Mutation {
-	createTeacher(data: TeacherCreateInput!): Teacher!
-	createStudent(data: StudentCreateInput!): Student!
+	createTeacher(data: TeacherCreateInput!): TeacherAuthPayload!
+	createStudent(data: StudentCreateInput!): StudentAuthPayload!
 	createScore(data: ScoreCreateInput!): Score!
 	createSubject(data: SubjectCreateInput!): Subject!
 	createExam(data: ExamCreateInput!): Exam!
@@ -64,11 +64,11 @@ type Subscription {
 }
 
 type StudentAuthPayload {
-	token: String
-	student: Student
+	token: String!
+	student: Student!
 }
 
 type TeacherAuthPayload {
-	token: String
-	teacher: Teacher
+	token: String!
+	teacher: Teacher!
 }
