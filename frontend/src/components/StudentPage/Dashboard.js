@@ -33,7 +33,7 @@ const Dashboard = props => {
 	return (
 		<Fragment>
 			<div style={style.pageTitle}>
-				<Header size="huge" style={style.header}>
+				<Header size={'huge'} style={style.header}>
 					Dashboard
 				</Header>
 				<Divider />
@@ -43,7 +43,7 @@ const Dashboard = props => {
 					<Card.Group itemsPerRow={4}>
 						{loading ? (
 							<div style={style.loading}>
-								<Icon loading name="spinner" /> getting subjects...
+								<Icon loading name={'spinner'} /> getting subjects...
 							</div>
 						) : (
 							data.student.subjects.map(subject => (
@@ -51,7 +51,7 @@ const Dashboard = props => {
 									{({ loading, error, data }) =>
 										loading ? (
 											<div style={style.loading}>
-												<Icon loading name="spinner" /> loading exams...
+												<Icon loading name={'spinner'} /> loading exams...
 											</div>
 										) : (
 											data.exams.map(exam => {

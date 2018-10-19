@@ -3,18 +3,18 @@ import { Grid, Button, Header } from 'semantic-ui-react'
 
 const LoginPage = props => {
 	return (
-		<Grid columns="equal" style={style.grid}>
+		<Grid columns={'equal'} style={style.grid}>
 			<Grid.Row style={style.row}>
-				<Grid.Column textAlign="right" verticalAlign="middle">
-					<Button content="Teacher" style={style.button} />
+				<Grid.Column textAlign={'right'} verticalAlign={'middle'}>
+					<Button content={'Teacher'} style={style.button} />
 				</Grid.Column>
-				<Grid.Column textAlign="center" style={style.middleColumn}>
-					<Header style={style.header} textAlign="center">
+				<Grid.Column textAlign={'center'} style={style.middleColumn}>
+					<Header style={style.header} textAlign={'center'}>
 						LOGIN
 					</Header>
 				</Grid.Column>
-				<Grid.Column textAlign="left" verticalAlign="middle">
-					<Button content="Student" style={style.button} />
+				<Grid.Column textAlign={'left'} verticalAlign={'middle'}>
+					<Button content={'Student'} style={style.button} />
 				</Grid.Column>
 			</Grid.Row>
 		</Grid>

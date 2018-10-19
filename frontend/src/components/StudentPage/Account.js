@@ -26,7 +26,7 @@ const paragraph = 'https://react.semantic-ui.com/images/wireframe/short-paragrap
 const Account = props => (
 	<Fragment>
 		<div style={style.pageTitle}>
-			<Header size="huge" style={style.header}>
+			<Header size={'huge'} style={style.header}>
 				Account
 			</Header>
 			<Divider />
@@ -35,14 +35,14 @@ const Account = props => (
 			{({ loading, error, data }) =>
 				loading ? (
 					<div style={style.loading}>
-						<Icon loading name="spinner" /> fetching profile...
+						<Icon loading name={'spinner'} /> fetching profile...
 					</div>
 				) : (
 					<Item.Group>
 						<Item>
-							<Item.Image src={data.student.gender === 'MALE' ? boyUrl : girlUrl} size="small" />
-							<Item.Content verticalAlign="middle">
-								<Item.Header as="a">{data.student.name}</Item.Header>
+							<Item.Image src={data.student.gender === 'MALE' ? boyUrl : girlUrl} size={'small'} />
+							<Item.Content verticalAlign={'middle'}>
+								<Item.Header as={'a'}>{data.student.name}</Item.Header>
 								<Item.Meta>
 									{data.student.course} - {getNumeralYearEquivalent(data.student.year)}
 								</Item.Meta>
