@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Header, Divider, Icon, Item, Image, Message } from 'semantic-ui-react'
+import { Header, Divider, Item, Image } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import moment from 'moment'

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Header, Divider, Card, Icon } from 'semantic-ui-react'
+import { Header, Divider, Card } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
