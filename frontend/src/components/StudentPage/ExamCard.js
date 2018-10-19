@@ -1,35 +1,33 @@
 import React from 'react'
-import { Card, Container, Header, Button } from 'semantic-ui-react'
+import { Card, Icon, Button } from 'semantic-ui-react'
 
-const ExamCard = props => {
+import { getRandomColor } from '../../helpers/colorHelper'
+const highlightColor = getRandomColor()
+
+const ExamCard = ({ title, subject, teacher }) => {
 	return (
-		<Card centered>
+		<Card color={highlightColor}>
+			<div style={style.thumbnail} />
 			<Card.Content>
-				<Container textAlign="center">
-					<Header size="medium" style={style.header}>
-						{props.title}
-					</Header>
-					<br />
-					<Header size="small" style={style.header}>
-						{props.subject}
-					</Header>
-					<Header size="small" style={style.header}>
-						{props.teacher}
-					</Header>
-				</Container>
+				<Card.Header>{title}</Card.Header>
+				<Card.Meta>
+					<Icon name="book" /> {subject}
+				</Card.Meta>
+				<Card.Description>by {teacher}</Card.Description>
 			</Card.Content>
-			<Card.Content>
-				<Container textAlign="center">
-					<Button content="Take Test" positive />
-				</Container>
+			<Card.Content extra textAlign="right">
+				<Button size="small" basic color={highlightColor}>
+					Take test
+				</Button>
 			</Card.Content>
 		</Card>
 	)
 }
 
 const style = {
-	header: {
-		margin: 0
+	thumbnail: {
+		height: '150px',
+		backgroundColor: highlightColor
 	}
 }
 
