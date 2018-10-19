@@ -6,7 +6,7 @@ import ExamCard from './ExamCard'
 
 const querySubjects = gql`
 	{
-		student(where: { id: "cjneq4pypb4vl0b94zy3halsi" }) {
+		student(where: { id: "cjnfmsxgutka00b949i3dmrri" }) {
 			subjects {
 				id
 			}
