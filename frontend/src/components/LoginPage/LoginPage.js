@@ -6,7 +6,11 @@ const LoginPage = props => {
 		<Grid columns={'equal'} style={style.grid}>
 			<Grid.Row style={style.row}>
 				<Grid.Column textAlign={'right'} verticalAlign={'middle'}>
-					<Button content={'Teacher'} style={style.button} />
+					<Button
+						content={'Teacher'}
+						style={style.button}
+						onClick={() => props.history.push('/teacherRegister')}
+					/>
 				</Grid.Column>
 				<Grid.Column textAlign={'center'} style={style.middleColumn}>
 					<Header style={style.header} textAlign={'center'}>
@@ -14,7 +18,11 @@ const LoginPage = props => {
 					</Header>
 				</Grid.Column>
 				<Grid.Column textAlign={'left'} verticalAlign={'middle'}>
-					<Button content={'Student'} style={style.button} />
+					<Button
+						content={'Student'}
+						style={style.button}
+						onClick={() => props.history.push('/studentRegister')}
+					/>
 				</Grid.Column>
 			</Grid.Row>
 		</Grid>

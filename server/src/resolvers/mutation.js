@@ -3,13 +3,15 @@ const jwt = require('jsonwebtoken')
 const { APP_SECRET, getStudentId, getTeacherId } = require('../utils')
 
 module.exports = {
-	createTeacher(root, args, context, info) {
-		return context.db.mutation.createTeacher(
-			{
-				data: args.data
-			},
-			info
-		)
+	async createTeacher(root, args, context, info) {
+		const password = await bcrypt.hash(args.data.password, 10)
+		const teacher = await context.db.mutation.createTeacher({
+			data: { ...args.data, password }
+		})
+		return {
+			token: jwt.sign({ teacherId: teacher.id }, APP_SECRET),
+			teacher
+		}
 	},
 	async createStudent(root, args, context, info) {
 		const password = await bcrypt.hash(args.data.password, 10)
