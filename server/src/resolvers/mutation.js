@@ -1,3 +1,7 @@
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const { APP_SECRET, getStudentId, getTeacherId } = require('../utils')
+
 module.exports = {
 	createTeacher(root, args, context, info) {
 		return context.db.mutation.createTeacher(
@@ -152,5 +156,33 @@ module.exports = {
 		return context.db.mutation.deleteChoice({
 			where: args.where
 		})
+	},
+
+	// auth - login
+	async studentLogin(root, args, context, info) {
+		const student = await context.db.query.student(
+			{ where: { email: args.email } },
+			'{ id password }'
+		)
+		if (!student) throw new Error('No such student found')
+
+		const valid = await bcrypt.compare(args.password, student.password)
+		if (!valid) throw new Error('Invalid student password')
+
+		const token = jwt.sign({ studentId: student.id }, APP_SECRET)
+		return { token, student }
+	},
+	async teacherLogin(root, args, context, info) {
+		const teacher = await context.db.query.teacher(
+			{ where: { email: args.email } },
+			'{ id password }'
+		)
+		if (!teacher) throw new Error('No such teacher found')
+
+		const valid = await bcrypt.compare(args.password, teacher.password)
+		if (!valid) throw new Error('Invalid teacher password')
+
+		const token = jwt.sign({ teacherId: teacher.id }, APP_SECRET)
+		return { token, teacher }
 	}
 }

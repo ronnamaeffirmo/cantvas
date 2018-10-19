@@ -48,6 +48,9 @@ type Mutation {
 	deleteExam(where: ExamWhereUniqueInput!): Exam
 	deleteQuestion(where: QuestionWhereUniqueInput!): Question
 	deleteChoice(where: ChoiceWhereUniqueInput!): Choice
+
+	studentLogin(email: String!, password: String!): StudentAuthPayload
+	teacherLogin(email: String!, password: String!): TeacherAuthPayload
 }
 
 type Subscription {
@@ -58,4 +61,14 @@ type Subscription {
 	examSubscription(where: ExamSubscriptionWhereInput): ExamSubscriptionPayload
 	questionSubscription(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
 	choiceSubscription(where: ChoiceSubscriptionWhereInput): ChoiceSubscriptionPayload
+}
+
+type StudentAuthPayload {
+	token: String
+	student: Student
+}
+
+type TeacherAuthPayload {
+	token: String
+	teacher: Teacher
 }
