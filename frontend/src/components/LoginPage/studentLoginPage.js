@@ -36,9 +36,9 @@ const registerPage = props => {
 						<Form
 							onSubmit={async values => {
 								const student = await client.mutate({ mutation: loginStudent, variables: values })
+								client.writeData({ data: { user: student.data.studentLogin.student.email } })
 								props.history.push({
-									pathname: '/student/dashboard',
-									state: { email: student.data.studentLogin.student.email }
+									pathname: '/student/dashboard'
 								})
 							}}
 							render={({ handleSubmit, submitting, values }) => (

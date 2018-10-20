@@ -45,9 +45,9 @@ const registerPage = props => {
 									mutation: createStudent,
 									variables: { data: values }
 								})
+								client.writeData({ data: { user: student.data.createStudent.student.email } })
 								props.history.push({
-									pathname: '/student/dashboard',
-									state: { email: student.data.createStudent.student.email }
+									pathname: '/student/dashboard'
 								})
 							}}
 							render={({ handleSubmit, submitting, values }) => (

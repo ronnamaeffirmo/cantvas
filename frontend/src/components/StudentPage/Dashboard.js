@@ -32,46 +32,13 @@ const queryExams = gql`
 	}
 `
 
-const Dashboard = props => {
-	const state = props.history.location.state
-	if (state) {
-		return (
-			<Fragment>
-				<div style={style.pageTitle}>
-					<Header size={'huge'} style={style.header}>
-						Dashboard
-					</Header>
-					<Divider />
-				</div>
-				<Query query={querySubjects} variables={{ email: state.email }}>
-					{({ loading, error, data }) => {
-						if (error) return <ErrorMessage message={error.message} />
-						if (loading) return <Loading message={'getting subjects...'} />
-						return data.student.subjects.map(subject => (
-							<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
-								{({ loading, error, data }) => {
-									if (error) return <ErrorMessage message={error.message} />
-									if (loading) return <Loading message={'loading exams...'} />
-									return (
-										<Card.Group itemsPerRow={4}>
-											{data.exams.map(exam => (
-												<ExamCard
-													subject={exam.Subject.name}
-													teacher={exam.teacher.name}
-													title={exam.title}
-													key={exam.id}
-												/>
-											))}
-										</Card.Group>
-									)
-								}}
-							</Query>
-						))
-					}}
-				</Query>
-			</Fragment>
-		)
+const GET_USER = gql`
+	{
+		user @client
 	}
+`
+
+const Dashboard = props => {
 	return (
 		<Fragment>
 			<div style={style.pageTitle}>
@@ -80,7 +47,36 @@ const Dashboard = props => {
 				</Header>
 				<Divider />
 			</div>
-			<ErrorMessage message={'No user found'} />
+			<Query query={GET_USER}>
+				{({ data }) => (
+					<Query query={querySubjects} variables={{ email: data.user }}>
+						{({ loading, error, data }) => {
+							if (error) return <ErrorMessage message={error.message} />
+							if (loading) return <Loading message={'getting subjects...'} />
+							return data.student.subjects.map(subject => (
+								<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
+									{({ loading, error, data }) => {
+										if (error) return <ErrorMessage message={error.message} />
+										if (loading) return <Loading message={'loading exams...'} />
+										return (
+											<Card.Group itemsPerRow={4}>
+												{data.exams.map(exam => (
+													<ExamCard
+														subject={exam.Subject.name}
+														teacher={exam.teacher.name}
+														title={exam.title}
+														key={exam.id}
+													/>
+												))}
+											</Card.Group>
+										)
+									}}
+								</Query>
+							))
+						}}
+					</Query>
+				)}
+			</Query>
 		</Fragment>
 	)
 }
