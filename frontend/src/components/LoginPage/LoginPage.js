@@ -13,7 +13,7 @@ const getActiveUserTab = gql`
 	}
 `
 
-const LoginPage = () => (
+const LoginPage = ({ history }) => (
 	<div className={'login-form'}>
 		<Grid style={style.grid} textAlign={'center'} verticalAlign={'middle'}>
 			<Grid.Column style={style.column}>
@@ -49,8 +49,14 @@ const LoginPage = () => (
 				</Query>
 
 				{/* the form will render here */}
-				<Route path={'/login/student'} component={() => <LoginForm title={'student'} />} />
-				<Route path={'/login/teacher'} component={() => <LoginForm title={'teacher'} />} />
+				<Route
+					path={'/login/student'}
+					component={() => <LoginForm history={history} title={'student'} />}
+				/>
+				<Route
+					path={'/login/teacher'}
+					component={() => <LoginForm history={history} title={'teacher'} />}
+				/>
 
 				<Message>
 					Don't have an account? <a href="/register">Register here</a>

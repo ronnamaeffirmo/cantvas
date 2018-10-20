@@ -1,25 +1,104 @@
-import React from 'react'
-import { Form, Segment, Button, Header } from 'semantic-ui-react'
+import React, { Fragment } from 'react'
+import { Form as SemanticForm, Segment, Button, Header, Message } from 'semantic-ui-react'
+import { Form, Field } from 'react-final-form'
+import { ApolloConsumer } from 'react-apollo'
+import iziToast from 'izitoast'
+import gql from 'graphql-tag'
 
-const LoginForm = ({ title }) => (
-	<Form>
-		<Segment piled>
-			<Header size={'small'} style={style.header}>
-				Login as a <span style={style.title}>{title}</span>
-			</Header>
-			<Form.Input fluid icon={'user'} iconPosition={'left'} placeholder={'Email address'} />
-			<Form.Input
-				fluid
-				icon={'lock'}
-				iconPosition={'left'}
-				placeholder={'Password'}
-				type={'password'}
+import { required, composeValidators, email } from '../../helpers/validationHelper'
+
+const loginStudent = gql`
+	mutation student($email: String!, $password: String!) {
+		studentLogin(email: $email, password: $password) {
+			student {
+				email
+			}
+		}
+	}
+`
+
+const teacherLogin = gql`
+	mutation teacherLogin($email: String!, $password: String!) {
+		teacherLogin(email: $email, password: $password) {
+			teacher {
+				email
+			}
+		}
+	}
+`
+
+const CustomInput = ({ input, meta, ...formInput }) => (
+	<Fragment>
+		<SemanticForm.Input {...input} {...formInput} fluid iconPosition={'left'} />
+		{meta.error &&
+			meta.touched && <p style={{ color: 'red', textAlign: 'right' }}>*{meta.error}</p>}
+	</Fragment>
+)
+
+const LoginForm = ({ title, history }) => (
+	<ApolloConsumer>
+		{client => (
+			<Form
+				onSubmit={async values => {
+					try {
+						const mutation = title === 'student' ? loginStudent : teacherLogin
+						const result = await client.mutate({ mutation, variables: values })
+						const dataTitle = title === 'student' ? 'userStudent' : 'userTeacher'
+						client.writeData({
+							data: { [`${dataTitle}`]: result.data[`${title}Login`][`${title}`].email }
+						})
+						history.push({ pathname: `/${title}/dashboard` })
+					} catch (e) {
+						iziToast.error({ title: 'Oops! Something went wrong..', message: e.message })
+					}
+				}}
+				render={({ handleSubmit, submitting, values }) => (
+					<SemanticForm onSubmit={handleSubmit}>
+						<Segment piled>
+							<Header size={'small'} style={style.header}>
+								Login as a <span style={style.title}>{title}</span>
+							</Header>
+
+							<Field name={'email'} validate={composeValidators(required, email)}>
+								{({ input, meta }) => (
+									<CustomInput
+										input={input}
+										meta={meta}
+										icon={'user'}
+										placeholder={'Email address'}
+									/>
+								)}
+							</Field>
+							<Field name={'password'} validate={required}>
+								{({ input, meta }) => (
+									<CustomInput
+										input={input}
+										meta={meta}
+										type={'password'}
+										icon={'lock'}
+										placeholder={'Password'}
+									/>
+								)}
+							</Field>
+
+							<Button
+								type={'submit'}
+								onClick={() => console.log('clicked submit')}
+								disabled={submitting}
+								fluid
+								size={'large'}
+								style={style.button}>
+								Login
+							</Button>
+
+							{/* TODO: remove */}
+							<pre>to delete {JSON.stringify(values, 0, 2)}</pre>
+						</Segment>
+					</SemanticForm>
+				)}
 			/>
-			<Button fluid size={'large'} style={style.button}>
-				Login
-			</Button>
-		</Segment>
-	</Form>
+		)}
+	</ApolloConsumer>
 )
 
 const style = {
