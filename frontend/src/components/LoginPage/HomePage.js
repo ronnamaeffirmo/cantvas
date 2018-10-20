@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Button, Header } from 'semantic-ui-react'
+import { Grid, Button } from 'semantic-ui-react'
 
 const LoginPage = props => {
 	return (
@@ -7,19 +7,24 @@ const LoginPage = props => {
 			<Grid.Row style={style.row}>
 				<Grid.Column textAlign={'right'} verticalAlign={'middle'}>
 					<Button
-						content={'Teacher'}
+						content={'Login as Teacher'}
+						style={style.button}
+						onClick={() => props.history.push('/teacherRegister')}
+					/>
+					<Button
+						content={'Register as Teacher'}
 						style={style.button}
 						onClick={() => props.history.push('/teacherRegister')}
 					/>
 				</Grid.Column>
-				<Grid.Column textAlign={'center'} style={style.middleColumn}>
-					<Header style={style.header} textAlign={'center'}>
-						LOGIN
-					</Header>
-				</Grid.Column>
 				<Grid.Column textAlign={'left'} verticalAlign={'middle'}>
 					<Button
-						content={'Student'}
+						content={'Login as Student'}
+						style={style.button}
+						onClick={() => props.history.push('/studentLogin')}
+					/>
+					<Button
+						content={'Register as Student'}
 						style={style.button}
 						onClick={() => props.history.push('/studentRegister')}
 					/>
@@ -46,6 +51,7 @@ const style = {
 	},
 	button: {
 		margin: 0,
+		marginTop: 10,
 		padding: 90,
 		fontSize: 50
 	}
