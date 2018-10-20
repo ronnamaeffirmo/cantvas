@@ -30,7 +30,6 @@ type Teacher {
 	age: Int!
 	gender: gender!
 	subjects: [Subject!]!
-	students: [Student!]!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
