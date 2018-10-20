@@ -1,15 +1,17 @@
 import React, { Fragment } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import StudentPage from './components/StudentPage/HomePage'
 import LoginPage from './components/LoginPage/LoginPage'
-import RegisterPage from './components/LoginPage/RegisterPage'
+import RegisterStudentPage from './components/LoginPage/studentRegisterPage'
+import RegisterTeacherPage from './components/LoginPage/teacherRegisterPage'
 
 const Routes = props => {
 	return (
 		<Fragment>
-			<Route path="/login" component={LoginPage} />
-			<Route path="/student" component={StudentPage} />
-			<Route path="/register" component={RegisterPage} />
+			<Route path={'/login'} component={LoginPage} />
+			<Route path={'/student'} component={StudentPage} />
+			<Route path={'/register-student'} component={RegisterStudentPage} />
+			<Route path={'/register-teacher'} component={RegisterTeacherPage} />
 		</Fragment>
 	)
 }

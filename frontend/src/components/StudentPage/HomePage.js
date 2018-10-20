@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import { Grid } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -24,8 +24,8 @@ const HomePage = props => {
 
 						{/* main body */}
 						<Grid.Column width={12} style={style.column}>
-							<Route path={'/student/dashboard'} exact component={Dashboard} />
-							<Route path={'/student/account'} exact component={Account} />
+							<Route path={'/student/dashboard'} component={Dashboard} />
+							<Route path={'/student/account'} component={Account} />
 						</Grid.Column>
 					</Grid>
 				)

@@ -15,7 +15,7 @@ import {
 const createStudent = gql`
 	mutation student($data: StudentCreateInput!) {
 		createStudent(data: $data) {
-			id
+			token
 		}
 	}
 `
