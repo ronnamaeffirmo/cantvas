@@ -8,7 +8,7 @@ import Dashboard from './Dashboard'
 import Account from './Account'
 import Sidebar from './Sidebar'
 
-const GET_ACTIVE_ITEM = gql`
+const getActiveItem = gql`
 	{
 		activeItem @client
 	}
@@ -16,7 +16,7 @@ const GET_ACTIVE_ITEM = gql`
 
 const HomePage = props => {
 	return (
-		<Query query={GET_ACTIVE_ITEM}>
+		<Query query={getActiveItem}>
 			{({ data, client }) => {
 				return (
 					<Grid style={style.grid}>

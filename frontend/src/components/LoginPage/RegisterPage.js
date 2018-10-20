@@ -3,6 +3,7 @@ import { Container, Header, Grid, Image, Button } from 'semantic-ui-react'
 import { Form, Field } from 'react-final-form'
 import { ApolloConsumer } from 'react-apollo'
 import gql from 'graphql-tag'
+
 import {
 	required,
 	composeValidators,

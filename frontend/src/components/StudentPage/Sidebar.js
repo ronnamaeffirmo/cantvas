@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Grid, Menu, Image, Icon } from 'semantic-ui-react'
 
-import '../../styles/sidebar.css'
+import { getBackgroundColor, getFontColor } from '../../helpers/colorHelper'
 
 const Sidebar = ({ data: { activeItem }, client }) => (
 	<Grid.Column width={1} style={style.column}>
@@ -16,7 +16,7 @@ const Sidebar = ({ data: { activeItem }, client }) => (
 				as={Link}
 				to={'/student/dashboard'}
 				active={activeItem === 'dashboard'}
-				style={style.menuItem}
+				style={style.menuItem('dashboard', activeItem)}
 				onClick={() => client.writeData({ data: { activeItem: 'dashboard' } })}>
 				<Icon name={'dashboard'} />
 				Dashboard
@@ -25,7 +25,7 @@ const Sidebar = ({ data: { activeItem }, client }) => (
 				as={Link}
 				to={'/student/account'}
 				active={activeItem === 'account'}
-				style={style.menuItem}
+				style={style.menuItem('account', activeItem)}
 				onClick={() => client.writeData({ data: { activeItem: 'account' } })}>
 				<Icon name={'user circle outline'} />
 				Account
@@ -54,9 +54,13 @@ const style = {
 		height: '100vh',
 		width: '100%'
 	},
-	menuItem: {
-		fontWeight: 'lighter',
-		borderRight: 0
+	menuItem(name, activeItem) {
+		return {
+			color: getFontColor(name, activeItem),
+			backgroundColor: getBackgroundColor(name, activeItem),
+			fontWeight: 'lighter',
+			borderRight: 0
+		}
 	}
 }
 
