@@ -7,8 +7,8 @@ import ErrorMessage from '../ErrorMessage'
 import Loading from '../Loading'
 
 const querySubjects = gql`
-	query subjectQuery($email: String!) {
-		student(where: { email: $email }) {
+	query subjectQuery($id: ID!) {
+		student(where: { id: $id }) {
 			subjects {
 				id
 			}
@@ -43,7 +43,7 @@ const GET_USER = gql`
 const StudentPage = props => (
 	<Query query={GET_USER}>
 		{({ data }) => (
-			<Query query={querySubjects} variables={{ email: data.userStudent }}>
+			<Query query={querySubjects} variables={{ id: data.userStudent }}>
 				{({ loading, error, data }) => {
 					if (error) return <ErrorMessage message={error.message} />
 					if (loading) return <Loading message={'getting subjects...'} />

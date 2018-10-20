@@ -9,8 +9,8 @@ import Loading from '../Loading'
 import { getNumeralYearEquivalent } from '../../helpers/studentHelper'
 
 const queryStudent = gql`
-	query queryStudent($email: String!) {
-		student(where: { email: $email }) {
+	query queryStudent($id: ID!) {
+		student(where: { id: $id }) {
 			name
 			gender
 			course
@@ -42,7 +42,7 @@ const Account = props => (
 			{({ data }) => {
 				if (data.userStudent) {
 					return (
-						<Query query={queryStudent} variables={{ email: data.userStudent }}>
+						<Query query={queryStudent} variables={{ id: data.userStudent }}>
 							{({ loading, error, data }) => {
 								console.log(data)
 								if (error) return <ErrorMessage message={error.message} />

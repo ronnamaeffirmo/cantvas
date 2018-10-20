@@ -12,7 +12,7 @@ const loginStudent = gql`
 	mutation student($email: String!, $password: String!) {
 		studentLogin(email: $email, password: $password) {
 			student {
-				email
+				id
 			}
 		}
 	}
@@ -22,7 +22,7 @@ const teacherLogin = gql`
 	mutation teacherLogin($email: String!, $password: String!) {
 		teacherLogin(email: $email, password: $password) {
 			teacher {
-				email
+				id
 			}
 		}
 	}
@@ -38,7 +38,7 @@ const LoginForm = ({ title, history }) => (
 						const result = await client.mutate({ mutation, variables: values })
 						const dataTitle = title === 'student' ? 'userStudent' : 'userTeacher'
 						client.writeData({
-							data: { [`${dataTitle}`]: result.data[`${title}Login`][`${title}`].email }
+							data: { [`${dataTitle}`]: result.data[`${title}Login`][`${title}`].id }
 						})
 						history.push({ pathname: `/${title}/dashboard` })
 					} catch (e) {

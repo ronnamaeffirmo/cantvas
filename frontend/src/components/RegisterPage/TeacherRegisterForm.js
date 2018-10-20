@@ -18,7 +18,7 @@ const createTeacher = gql`
 	mutation teacher($data: TeacherCreateInput!) {
 		createTeacher(data: $data) {
 			teacher {
-				email
+				id
 			}
 		}
 	}
@@ -35,7 +35,7 @@ const TeacherRegisterForm = ({ title, history }) => (
 							variables: { data: values }
 						})
 						client.writeData({
-							data: { userTeacher: teacher.data.createTeacher.teacher.email }
+							data: { userTeacher: teacher.data.createTeacher.teacher.id }
 						})
 						history.push({
 							pathname: '/teacher/dashboard'
