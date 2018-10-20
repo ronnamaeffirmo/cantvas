@@ -10,7 +10,7 @@ import Sidebar from './Sidebar'
 
 const GET_ACTIVE_ITEM = gql`
 	{
-		activeItem @client
+		activeItemStudent @client
 	}
 `
 

@@ -28,6 +28,9 @@ const queryExams = gql`
 				name
 			}
 			title
+			questions {
+				id
+			}
 		}
 	}
 `
@@ -62,6 +65,7 @@ const Dashboard = props => {
 											<Card.Group itemsPerRow={4}>
 												{data.exams.map(exam => (
 													<ExamCard
+														questions={exam.questions}
 														subject={exam.Subject.name}
 														teacher={exam.teacher.name}
 														title={exam.title}
