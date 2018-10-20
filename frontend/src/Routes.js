@@ -9,6 +9,7 @@ const Routes = props => {
 		<Fragment>
 			<Route path={'/login'} component={LoginPage} />
 			<Route path={'/student'} component={HomePage} />
+			<Route path={'/teacher'} component={HomePage} />
 			<Route path={'/register'} component={RegisterPage} />
 		</Fragment>
 	)

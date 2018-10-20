@@ -2,7 +2,7 @@ import React from 'react'
 import { Card } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import ExamCard from '../StudentPage/ExamCard'
+import ExamCard from '../UserPage/ExamCard'
 import ErrorMessage from '../ErrorMessage'
 import Loading from '../Loading'
 
