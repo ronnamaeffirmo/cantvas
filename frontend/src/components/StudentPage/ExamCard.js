@@ -16,7 +16,6 @@ const ExamCard = ({ questions, title, subject, teacher }) => {
 						<Card.Meta>
 							<Icon name={'book'} /> {subject}
 						</Card.Meta>
-						<Card.Description>by {teacher}</Card.Description>
 					</Card.Content>
 					<Card.Content extra textAlign={'right'}>
 						<Button

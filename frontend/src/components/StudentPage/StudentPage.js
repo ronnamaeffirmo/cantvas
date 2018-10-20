@@ -23,9 +23,6 @@ const queryExams = gql`
 			Subject {
 				name
 			}
-			teacher {
-				name
-			}
 			title
 			questions {
 				id
@@ -58,7 +55,6 @@ const StudentPage = props => (
 											<ExamCard
 												questions={exam.questions}
 												subject={exam.Subject.name}
-												teacher={exam.teacher.name}
 												title={exam.title}
 												key={exam.id}
 											/>
