@@ -24,10 +24,8 @@ const HomePage = props => {
 
 						{/* main body */}
 						<Grid.Column width={12} style={style.column}>
-							<Switch>
-								<Route path={'/student/dashboard'} exact component={Dashboard} />
-								<Route path={'/student/account'} exact component={Account} />
-							</Switch>
+							<Route path={'/student/dashboard'} exact component={Dashboard} />
+							<Route path={'/student/account'} exact component={Account} />
 						</Grid.Column>
 					</Grid>
 				)
