@@ -1,36 +1,23 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Grid, Menu, Image, Icon } from 'semantic-ui-react'
+import { Route } from 'react-router-dom'
+import { Grid } from 'semantic-ui-react'
+import StudentSidebarItems from '../StudentPage/SidebarItems'
+import TeacherSidebarItems from '../TeacherPage/SidebarItems'
 
-import { getBackgroundColor, getFontColor } from '../../helpers/colorHelper'
-
-const Sidebar = ({ data: { activeItemStudent }, client }) => (
+const Sidebar = ({ data: { activeItemStudent, activeItemTeacher }, client }) => (
 	<Grid.Column width={1} style={style.column}>
-		<Menu pointing secondary vertical icon={'labeled'} style={style.menu}>
-			<Menu.Item disabled style={style.logoContainer}>
-				<Image src={require('../../images/logo.png')} style={style.logo} />
-			</Menu.Item>
-
-			{/* navigation routes */}
-			<Menu.Item
-				as={Link}
-				to={'/student/dashboard'}
-				active={activeItemStudent === 'dashboard'}
-				style={style.menuItem('dashboard', activeItemStudent)}
-				onClick={() => client.writeData({ data: { activeItemStudent: 'dashboard' } })}>
-				<Icon name={'dashboard'} />
-				Dashboard
-			</Menu.Item>
-			<Menu.Item
-				as={Link}
-				to={'/student/account'}
-				active={activeItemStudent === 'account'}
-				style={style.menuItem('account', activeItemStudent)}
-				onClick={() => client.writeData({ data: { activeItemStudent: 'account' } })}>
-				<Icon name={'user circle outline'} />
-				Account
-			</Menu.Item>
-		</Menu>
+		<Route
+			path={'/student'}
+			component={() => (
+				<StudentSidebarItems activeItemStudent={activeItemStudent} client={client} />
+			)}
+		/>
+		<Route
+			path={'/teacher'}
+			component={() => (
+				<TeacherSidebarItems activeItemTeacher={activeItemTeacher} client={client} />
+			)}
+		/>
 	</Grid.Column>
 )
 
@@ -38,29 +25,6 @@ const style = {
 	column: {
 		padding: 0,
 		margin: 0
-	},
-	logoContainer: {
-		paddingTop: '25px',
-		paddingBottom: '35px',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	logo: {
-		width: '60%'
-	},
-	menu: {
-		backgroundColor: '#2a474b',
-		height: '100vh',
-		width: '100%'
-	},
-	menuItem(name, activeItem) {
-		return {
-			color: getFontColor(name, activeItem),
-			backgroundColor: getBackgroundColor(name, activeItem),
-			fontWeight: 'lighter',
-			borderRight: 0
-		}
 	}
 }
 

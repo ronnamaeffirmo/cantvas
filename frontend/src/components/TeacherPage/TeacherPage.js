@@ -30,7 +30,10 @@ const TeacherPage = props => (
 							placeholder={'Select subject'}
 							fluid
 							selection
-							options={getOptions(data.teacher.subjects)}
+							options={[
+								{ key: 'All subjects', value: null, text: 'All subjects' },
+								...getOptions(data.teacher.subjects)
+							]}
 							style={{ marginBottom: 10 }}
 							onChange={(e, { value }) => client.writeData({ data: { subject: value } })}
 						/>
