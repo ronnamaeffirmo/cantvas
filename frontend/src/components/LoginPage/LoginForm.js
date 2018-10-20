@@ -5,7 +5,7 @@ import { ApolloConsumer } from 'react-apollo'
 import iziToast from 'izitoast'
 import gql from 'graphql-tag'
 
-import CustomInput from '../CustomInput'
+import CustomInput from '../CustomComponents/CustomInput'
 import { required, composeValidators, email } from '../../helpers/validationHelper'
 
 const loginStudent = gql`

@@ -1,8 +1,11 @@
 import React from 'react'
-import { Button } from 'semantic-ui-react'
+import { Form as SemanticForm, Segment, Button, Header } from 'semantic-ui-react'
 import { Form, Field } from 'react-final-form'
 import { ApolloConsumer } from 'react-apollo'
+import iziToast from 'izitoast'
 import gql from 'graphql-tag'
+import CustomSelect from '../CustomComponents/CustomSelect'
+import CustomInput from '../CustomComponents/CustomInput'
 import {
 	required,
 	composeValidators,
@@ -14,92 +17,130 @@ import {
 const createTeacher = gql`
 	mutation teacher($data: TeacherCreateInput!) {
 		createTeacher(data: $data) {
-			token
+			teacher {
+				email
+			}
 		}
 	}
 `
 
-const teacherRegistForm = props => (
+const TeacherRegisterForm = ({ title, history }) => (
 	<ApolloConsumer>
 		{client => (
 			<Form
 				onSubmit={async values => {
-					await client.mutate({ mutation: createTeacher, variables: { data: values } })
-					props.history.push('/login')
+					try {
+						const teacher = await client.mutate({
+							mutation: createTeacher,
+							variables: { data: values }
+						})
+						client.writeData({
+							data: { userTeacher: teacher.data.createTeacher.teacher.email }
+						})
+						history.push({
+							pathname: '/teacher/dashboard'
+						})
+					} catch (e) {
+						iziToast.error({ title: 'Oops! Something went wrong..', message: e.message })
+					}
 				}}
-				render={({ handleSubmit, submitting, values }) => (
-					<form onSubmit={handleSubmit}>
-						<Field name={'name'} validate={required}>
-							{({ input, meta }) => (
-								<div>
-									<label>Name</label>
-									<input {...input} type={'text'} placeholder={'Name'} />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
-						<Field name={'email'} validate={composeValidators(required, email)}>
-							{({ input, meta }) => (
-								<div>
-									<label>Email</label>
-									<input {...input} type={'email'} placeholder={'email'} />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
-						<Field name={'password'} validate={required}>
-							{({ input, meta }) => (
-								<div>
-									<label>Password</label>
-									<input {...input} type={'text'} placeholder={'Password'} />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
-						<Field name={'age'} validate={composeValidators(required, mustBeNumber, minValue(10))}>
-							{({ input, meta }) => (
-								<div>
-									<label>Age</label>
-									<input {...input} type={'text'} placeholder={'Age'} />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
-						<Field name={'class'} validate={required}>
-							{({ input, meta }) => (
-								<div>
-									<label>Class</label>
-									<input {...input} type={'text'} placeholder={'Class'} />
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
-						<Field name={'gender'} validate={required}>
-							{({ input, meta }) => (
-								<div>
-									<label>Gender</label>
-									<select {...input} name={'gender'}>
-										<option value={''} disabled defaultValue hidden>
-											gender
-										</option>
-										<option value={'MALE'}>MALE</option>
-										<option value={'FEMALE'}>FEMALE</option>
-									</select>
-									{meta.error && meta.touched && <span>{meta.error}</span>}
-								</div>
-							)}
-						</Field>
-						<div className={'buttons'}>
-							<Button type={'submit'} disabled={submitting}>
-								Submit
+				render={({ handleSubmit, submitting }) => (
+					<SemanticForm onSubmit={handleSubmit}>
+						<Segment piled>
+							<Header size={'small'} style={style.header}>
+								Login as a <span style={style.title}>{title}</span>
+							</Header>
+
+							{/* input fields */}
+							<Field name={'name'} validate={required}>
+								{({ input, meta }) => (
+									<CustomInput input={input} meta={meta} icon={'user'} placeholder={'Name'} />
+								)}
+							</Field>
+							<Field name={'email'} validate={composeValidators(required, email)}>
+								{({ input, meta }) => (
+									<CustomInput
+										input={input}
+										meta={meta}
+										icon={'mail'}
+										placeholder={'Email address'}
+									/>
+								)}
+							</Field>
+							<Field name={'password'} validate={required}>
+								{({ input, meta }) => (
+									<CustomInput
+										input={input}
+										meta={meta}
+										type={'password'}
+										icon={'lock'}
+										placeholder={'Password'}
+									/>
+								)}
+							</Field>
+							<Field
+								name={'age'}
+								validate={composeValidators(required, mustBeNumber, minValue(10))}>
+								{({ input, meta }) => (
+									<CustomInput
+										input={input}
+										meta={meta}
+										type={'text'}
+										icon={'calendar'}
+										placeholder={'Age'}
+									/>
+								)}
+							</Field>
+							<Field name={'class'} validate={required}>
+								{({ input, meta }) => (
+									<CustomInput
+										input={input}
+										meta={meta}
+										type={'text'}
+										icon={'group'}
+										placeholder={'class'}
+									/>
+								)}
+							</Field>
+							<Field name={'gender'} validate={required}>
+								{({ input, meta }) => (
+									<CustomSelect
+										input={input}
+										meta={meta}
+										title={'gender'}
+										array={['MALE', 'FEMALE']}
+									/>
+								)}
+							</Field>
+							<Button
+								type={'submit'}
+								onClick={() => console.log('clicked submit')}
+								disabled={submitting}
+								fluid
+								size={'large'}
+								style={style.button}>
+								Login
 							</Button>
-						</div>
-						<pre>{JSON.stringify(values, 0, 2)}</pre>
-					</form>
+						</Segment>
+					</SemanticForm>
 				)}
 			/>
 		)}
 	</ApolloConsumer>
 )
 
-export default teacherRegistForm
+const style = {
+	header: {
+		paddingTop: '10px',
+		paddingBottom: '10px'
+	},
+	title: {
+		color: 'rgb(209, 66, 45)'
+	},
+	button: {
+		backgroundColor: '#2a474b',
+		color: 'white'
+	}
+}
+
+export default TeacherRegisterForm

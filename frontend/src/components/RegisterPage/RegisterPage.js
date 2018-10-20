@@ -1,10 +1,12 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
-import { Grid, Header, Image, Message, Menu } from 'semantic-ui-react'
+import { Grid, Header, Image, Menu } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import StudentRegisterForm from './StudentRegisterForm'
+import TeacherRegisterForm from './TeacherRegisterForm'
 
-import LoginForm from './LoginForm'
+// import LoginForm from './LoginForm'
 import '../../styles/login.css'
 
 const getActiveUserTab = gql`
@@ -13,7 +15,7 @@ const getActiveUserTab = gql`
 	}
 `
 
-const LoginPage = ({ history }) => (
+const registerPage = ({ history }) => (
 	<div className={'login-form'}>
 		<Grid style={style.grid} textAlign={'center'} verticalAlign={'middle'}>
 			<Grid.Column style={style.column}>
@@ -30,7 +32,7 @@ const LoginPage = ({ history }) => (
 						<Menu pointing secondary>
 							<Menu.Item
 								as={Link}
-								to={'/login/student'}
+								to={'/register/student'}
 								style={style.menuItem}
 								name={'student'}
 								active={data.activeUserTab === 'student'}
@@ -38,7 +40,7 @@ const LoginPage = ({ history }) => (
 							/>
 							<Menu.Item
 								as={Link}
-								to={'/login/teacher'}
+								to={'/register/teacher'}
 								style={style.menuItem}
 								name={'teacher'}
 								active={data.activeUserTab === 'teacher'}
@@ -50,17 +52,13 @@ const LoginPage = ({ history }) => (
 
 				{/* the form will render here */}
 				<Route
-					path={'/login/student'}
-					component={() => <LoginForm history={history} title={'student'} />}
+					path={'/register/student'}
+					component={() => <StudentRegisterForm history={history} title={'student'} />}
 				/>
 				<Route
-					path={'/login/teacher'}
-					component={() => <LoginForm history={history} title={'teacher'} />}
+					path={'/register/teacher'}
+					component={() => <TeacherRegisterForm history={history} title={'teacher'} />}
 				/>
-
-				<Message>
-					Don't have an account? <a href={'/register/student'}>Register here</a>
-				</Message>
 			</Grid.Column>
 		</Grid>
 	</div>
@@ -83,4 +81,4 @@ const style = {
 	}
 }
 
-export default LoginPage
+export default registerPage
