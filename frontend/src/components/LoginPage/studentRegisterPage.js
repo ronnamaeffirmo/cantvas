@@ -14,7 +14,9 @@ import {
 const createStudent = gql`
 	mutation student($data: StudentCreateInput!) {
 		createStudent(data: $data) {
-			token
+			student {
+				email
+			}
 		}
 	}
 `
@@ -39,8 +41,14 @@ const registerPage = props => {
 					{client => (
 						<Form
 							onSubmit={async values => {
-								await client.mutate({ mutation: createStudent, variables: { data: values } })
-								props.history.push('/student/dashboard')
+								const student = await client.mutate({
+									mutation: createStudent,
+									variables: { data: values }
+								})
+								props.history.push({
+									pathname: '/student/dashboard',
+									state: { email: student.data.createStudent.student.email }
+								})
 							}}
 							render={({ handleSubmit, submitting, values }) => (
 								<form onSubmit={handleSubmit}>

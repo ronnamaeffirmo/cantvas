@@ -5,10 +5,12 @@ import { ApolloConsumer } from 'react-apollo'
 import gql from 'graphql-tag'
 import { required, composeValidators, email } from '../../helpers/validationHelper'
 
-const createStudent = gql`
-	mutation student($data: StudentCreateInput!) {
-		createStudent(data: $data) {
-			token
+const loginStudent = gql`
+	mutation student($email: String!, $password: String!) {
+		studentLogin(email: $email, password: $password) {
+			student {
+				email
+			}
 		}
 	}
 `
@@ -33,8 +35,11 @@ const registerPage = props => {
 					{client => (
 						<Form
 							onSubmit={async values => {
-								await client.mutate({ mutation: createStudent, variables: { data: values } })
-								props.history.push('/student/dashboard')
+								const student = await client.mutate({ mutation: loginStudent, variables: values })
+								props.history.push({
+									pathname: '/student/dashboard',
+									state: { email: student.data.studentLogin.student.email }
+								})
 							}}
 							render={({ handleSubmit, submitting, values }) => (
 								<form onSubmit={handleSubmit}>
