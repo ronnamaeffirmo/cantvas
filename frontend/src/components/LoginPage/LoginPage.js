@@ -24,6 +24,7 @@ const LoginPage = () => (
 					</Header>
 				</Header>
 
+				{/* menu: student or teacher login */}
 				<Query query={getActiveUserTab}>
 					{({ data, client }) => (
 						<Menu pointing secondary>
@@ -47,6 +48,7 @@ const LoginPage = () => (
 					)}
 				</Query>
 
+				{/* the form will render here */}
 				<Route path={'/login/student'} component={() => <LoginForm title={'student'} />} />
 				<Route path={'/login/teacher'} component={() => <LoginForm title={'teacher'} />} />
 
