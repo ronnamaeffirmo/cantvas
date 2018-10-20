@@ -29,6 +29,7 @@ type Teacher {
 	class: String!
 	age: Int!
 	gender: gender!
+	subjects: [Subject!]!
 	students: [Student!]!
 	createdAt: DateTime!
 	updatedAt: DateTime!
@@ -66,7 +67,6 @@ type Subject {
 
 type Exam {
 	id: ID! @unique
-	teacher: Teacher!
 	title: String!
 	Subject: Subject!
 	questions: [Question!]!

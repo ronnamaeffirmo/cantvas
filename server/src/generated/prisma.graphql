@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Fri Oct 19 2018 21:44:05 GMT+0800 (+08)
+# timestamp: Sat Oct 20 2018 23:47:02 GMT+0800 (+08)
 
 type AggregateChoice {
 	count: Int!
@@ -486,7 +486,6 @@ scalar DateTime
 
 type Exam implements Node {
 	id: ID!
-	teacher: Teacher!
 	title: String!
 	Subject: Subject!
 	questions(
@@ -520,7 +519,6 @@ type ExamConnection {
 
 input ExamCreateInput {
 	title: String!
-	teacher: TeacherCreateOneInput!
 	Subject: SubjectCreateOneInput!
 	questions: QuestionCreateManyInput
 }
@@ -610,14 +608,12 @@ input ExamSubscriptionWhereInput {
 
 input ExamUpdateDataInput {
 	title: String
-	teacher: TeacherUpdateOneRequiredInput
 	Subject: SubjectUpdateOneRequiredInput
 	questions: QuestionUpdateManyInput
 }
 
 input ExamUpdateInput {
 	title: String
-	teacher: TeacherUpdateOneRequiredInput
 	Subject: SubjectUpdateOneRequiredInput
 	questions: QuestionUpdateManyInput
 }
@@ -853,7 +849,6 @@ input ExamWhereInput {
 	All values greater than or equal the given value.
 	"""
 	updatedAt_gte: DateTime
-	teacher: TeacherWhereInput
 	Subject: SubjectWhereInput
 	questions_every: QuestionWhereInput
 	questions_some: QuestionWhereInput
@@ -876,27 +871,32 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
+	createTeacher(data: TeacherCreateInput!): Teacher!
 	createExam(data: ExamCreateInput!): Exam!
 	createStudent(data: StudentCreateInput!): Student!
 	createQuestion(data: QuestionCreateInput!): Question!
 	createScore(data: ScoreCreateInput!): Score!
 	createChoice(data: ChoiceCreateInput!): Choice!
-	createTeacher(data: TeacherCreateInput!): Teacher!
 	createSubject(data: SubjectCreateInput!): Subject!
+	updateTeacher(data: TeacherUpdateInput!, where: TeacherWhereUniqueInput!): Teacher
 	updateExam(data: ExamUpdateInput!, where: ExamWhereUniqueInput!): Exam
 	updateStudent(data: StudentUpdateInput!, where: StudentWhereUniqueInput!): Student
 	updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
 	updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
 	updateChoice(data: ChoiceUpdateInput!, where: ChoiceWhereUniqueInput!): Choice
-	updateTeacher(data: TeacherUpdateInput!, where: TeacherWhereUniqueInput!): Teacher
 	updateSubject(data: SubjectUpdateInput!, where: SubjectWhereUniqueInput!): Subject
+	deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
 	deleteExam(where: ExamWhereUniqueInput!): Exam
 	deleteStudent(where: StudentWhereUniqueInput!): Student
 	deleteQuestion(where: QuestionWhereUniqueInput!): Question
 	deleteScore(where: ScoreWhereUniqueInput!): Score
 	deleteChoice(where: ChoiceWhereUniqueInput!): Choice
-	deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
 	deleteSubject(where: SubjectWhereUniqueInput!): Subject
+	upsertTeacher(
+		where: TeacherWhereUniqueInput!
+		create: TeacherCreateInput!
+		update: TeacherUpdateInput!
+	): Teacher!
 	upsertExam(
 		where: ExamWhereUniqueInput!
 		create: ExamCreateInput!
@@ -922,29 +922,24 @@ type Mutation {
 		create: ChoiceCreateInput!
 		update: ChoiceUpdateInput!
 	): Choice!
-	upsertTeacher(
-		where: TeacherWhereUniqueInput!
-		create: TeacherCreateInput!
-		update: TeacherUpdateInput!
-	): Teacher!
 	upsertSubject(
 		where: SubjectWhereUniqueInput!
 		create: SubjectCreateInput!
 		update: SubjectUpdateInput!
 	): Subject!
+	updateManyTeachers(data: TeacherUpdateInput!, where: TeacherWhereInput): BatchPayload!
 	updateManyExams(data: ExamUpdateInput!, where: ExamWhereInput): BatchPayload!
 	updateManyStudents(data: StudentUpdateInput!, where: StudentWhereInput): BatchPayload!
 	updateManyQuestions(data: QuestionUpdateInput!, where: QuestionWhereInput): BatchPayload!
 	updateManyScores(data: ScoreUpdateInput!, where: ScoreWhereInput): BatchPayload!
 	updateManyChoices(data: ChoiceUpdateInput!, where: ChoiceWhereInput): BatchPayload!
-	updateManyTeachers(data: TeacherUpdateInput!, where: TeacherWhereInput): BatchPayload!
 	updateManySubjects(data: SubjectUpdateInput!, where: SubjectWhereInput): BatchPayload!
+	deleteManyTeachers(where: TeacherWhereInput): BatchPayload!
 	deleteManyExams(where: ExamWhereInput): BatchPayload!
 	deleteManyStudents(where: StudentWhereInput): BatchPayload!
 	deleteManyQuestions(where: QuestionWhereInput): BatchPayload!
 	deleteManyScores(where: ScoreWhereInput): BatchPayload!
 	deleteManyChoices(where: ChoiceWhereInput): BatchPayload!
-	deleteManyTeachers(where: TeacherWhereInput): BatchPayload!
 	deleteManySubjects(where: SubjectWhereInput): BatchPayload!
 }
 
@@ -990,6 +985,15 @@ type PageInfo {
 }
 
 type Query {
+	teachers(
+		where: TeacherWhereInput
+		orderBy: TeacherOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): [Teacher]!
 	exams(
 		where: ExamWhereInput
 		orderBy: ExamOrderByInput
@@ -1035,15 +1039,6 @@ type Query {
 		first: Int
 		last: Int
 	): [Choice]!
-	teachers(
-		where: TeacherWhereInput
-		orderBy: TeacherOrderByInput
-		skip: Int
-		after: String
-		before: String
-		first: Int
-		last: Int
-	): [Teacher]!
 	subjects(
 		where: SubjectWhereInput
 		orderBy: SubjectOrderByInput
@@ -1053,13 +1048,22 @@ type Query {
 		first: Int
 		last: Int
 	): [Subject]!
+	teacher(where: TeacherWhereUniqueInput!): Teacher
 	exam(where: ExamWhereUniqueInput!): Exam
 	student(where: StudentWhereUniqueInput!): Student
 	question(where: QuestionWhereUniqueInput!): Question
 	score(where: ScoreWhereUniqueInput!): Score
 	choice(where: ChoiceWhereUniqueInput!): Choice
-	teacher(where: TeacherWhereUniqueInput!): Teacher
 	subject(where: SubjectWhereUniqueInput!): Subject
+	teachersConnection(
+		where: TeacherWhereInput
+		orderBy: TeacherOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): TeacherConnection!
 	examsConnection(
 		where: ExamWhereInput
 		orderBy: ExamOrderByInput
@@ -1105,15 +1109,6 @@ type Query {
 		first: Int
 		last: Int
 	): ChoiceConnection!
-	teachersConnection(
-		where: TeacherWhereInput
-		orderBy: TeacherOrderByInput
-		skip: Int
-		after: String
-		before: String
-		first: Int
-		last: Int
-	): TeacherConnection!
 	subjectsConnection(
 		where: SubjectWhereInput
 		orderBy: SubjectOrderByInput
@@ -2957,12 +2952,12 @@ input SubjectWhereUniqueInput {
 }
 
 type Subscription {
+	teacher(where: TeacherSubscriptionWhereInput): TeacherSubscriptionPayload
 	exam(where: ExamSubscriptionWhereInput): ExamSubscriptionPayload
 	student(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
 	question(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
 	score(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
 	choice(where: ChoiceSubscriptionWhereInput): ChoiceSubscriptionPayload
-	teacher(where: TeacherSubscriptionWhereInput): TeacherSubscriptionPayload
 	subject(where: SubjectSubscriptionWhereInput): SubjectSubscriptionPayload
 }
 
@@ -2974,6 +2969,15 @@ type Teacher implements Node {
 	class: String!
 	age: Int!
 	gender: gender!
+	subjects(
+		where: SubjectWhereInput
+		orderBy: SubjectOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): [Subject!]
 	students(
 		where: StudentWhereInput
 		orderBy: StudentOrderByInput
@@ -3010,12 +3014,8 @@ input TeacherCreateInput {
 	class: String!
 	age: Int!
 	gender: gender!
+	subjects: SubjectCreateManyInput
 	students: StudentCreateManyInput
-}
-
-input TeacherCreateOneInput {
-	create: TeacherCreateInput
-	connect: TeacherWhereUniqueInput
 }
 
 """
@@ -3111,16 +3111,6 @@ input TeacherSubscriptionWhereInput {
 	node: TeacherWhereInput
 }
 
-input TeacherUpdateDataInput {
-	email: String
-	password: String
-	name: String
-	class: String
-	age: Int
-	gender: gender
-	students: StudentUpdateManyInput
-}
-
 input TeacherUpdateInput {
 	email: String
 	password: String
@@ -3128,19 +3118,8 @@ input TeacherUpdateInput {
 	class: String
 	age: Int
 	gender: gender
+	subjects: SubjectUpdateManyInput
 	students: StudentUpdateManyInput
-}
-
-input TeacherUpdateOneRequiredInput {
-	create: TeacherCreateInput
-	connect: TeacherWhereUniqueInput
-	update: TeacherUpdateDataInput
-	upsert: TeacherUpsertNestedInput
-}
-
-input TeacherUpsertNestedInput {
-	update: TeacherUpdateDataInput!
-	create: TeacherCreateInput!
 }
 
 input TeacherWhereInput {
@@ -3612,6 +3591,9 @@ input TeacherWhereInput {
 	All values greater than or equal the given value.
 	"""
 	updatedAt_gte: DateTime
+	subjects_every: SubjectWhereInput
+	subjects_some: SubjectWhereInput
+	subjects_none: SubjectWhereInput
 	students_every: StudentWhereInput
 	students_some: StudentWhereInput
 	students_none: StudentWhereInput
