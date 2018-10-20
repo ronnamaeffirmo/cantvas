@@ -18,7 +18,7 @@ const registerPage = props => {
 				</Grid>
 			</Container>
 			<Container textAlign={'center'} style={style.form}>
-				<StudentRegisterForm />
+				<StudentRegisterForm history={props.history} />
 			</Container>
 			<Container style={style.footer} />
 		</Container>
