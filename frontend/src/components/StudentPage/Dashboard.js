@@ -37,7 +37,7 @@ const queryExams = gql`
 
 const GET_USER = gql`
 	{
-		user @client
+		userStudent @client
 	}
 `
 
@@ -52,7 +52,7 @@ const Dashboard = props => {
 			</div>
 			<Query query={GET_USER}>
 				{({ data }) => (
-					<Query query={querySubjects} variables={{ email: data.user }}>
+					<Query query={querySubjects} variables={{ email: data.userStudent }}>
 						{({ loading, error, data }) => {
 							if (error) return <ErrorMessage message={error.message} />
 							if (loading) return <Loading message={'getting subjects...'} />

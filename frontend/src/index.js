@@ -38,7 +38,8 @@ const client = new ApolloClient({
 		withClientState({
 			defaults: {
 				// to change
-				activeItemStudent: 'dashboard'
+				activeItemStudent: 'dashboard',
+				activeItemTeacher: 'dashboard'
 			},
 			resolvers: {
 				// to change

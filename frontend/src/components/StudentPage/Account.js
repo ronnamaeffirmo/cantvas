@@ -22,7 +22,7 @@ const queryStudent = gql`
 `
 const GET_USER = gql`
 	{
-		user @client
+		userStudent @client
 	}
 `
 
@@ -40,9 +40,9 @@ const Account = props => (
 		</div>
 		<Query query={GET_USER}>
 			{({ data }) => {
-				if (data.user) {
+				if (data.userStudent) {
 					return (
-						<Query query={queryStudent} variables={{ email: data.user }}>
+						<Query query={queryStudent} variables={{ email: data.userStudent }}>
 							{({ loading, error, data }) => {
 								console.log(data)
 								if (error) return <ErrorMessage message={error.message} />
