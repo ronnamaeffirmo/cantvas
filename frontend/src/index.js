@@ -4,9 +4,8 @@ import { ApolloClient } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
 import { createHttpLink } from 'apollo-link-http'
 import { BrowserRouter } from 'react-router-dom'
-import { ApolloLink } from 'apollo-link'
+import { ApolloLink, split } from 'apollo-link'
 import { withClientState } from 'apollo-link-state'
-import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -39,7 +38,8 @@ const client = new ApolloClient({
 		withClientState({
 			defaults: {
 				// to change
-				activeItem: 'dashboard',
+				activeItemStudent: 'dashboard',
+				activeItemTeacher: 'dashboard',
 				activeUserTab: 'student'
 			},
 			resolvers: {

@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Grid, Menu, Image, Icon } from 'semantic-ui-react'
 
-import { getBackgroundColor, getFontColor } from '../../helpers/colorHelper'
+import '../../styles/sidebar.css'
 
-const Sidebar = ({ data: { activeItemStudent }, client }) => (
+const Sidebar = ({ data: { activeItemTeacher }, client }) => (
 	<Grid.Column width={1} style={style.column}>
 		<Menu pointing secondary vertical icon={'labeled'} style={style.menu}>
 			<Menu.Item disabled style={style.logoContainer}>
@@ -14,19 +14,19 @@ const Sidebar = ({ data: { activeItemStudent }, client }) => (
 			{/* navigation routes */}
 			<Menu.Item
 				as={Link}
-				to={'/student/dashboard'}
-				active={activeItemStudent === 'dashboard'}
-				style={style.menuItem('dashboard', activeItemStudent)}
-				onClick={() => client.writeData({ data: { activeItemStudent: 'dashboard' } })}>
+				to={'/teacher/dashboard'}
+				active={activeItemTeacher === 'dashboard'}
+				style={style.menuItem}
+				onClick={() => client.writeData({ data: { activeItemTeacher: 'dashboard' } })}>
 				<Icon name={'dashboard'} />
 				Dashboard
 			</Menu.Item>
 			<Menu.Item
 				as={Link}
-				to={'/student/account'}
-				active={activeItemStudent === 'account'}
-				style={style.menuItem('account', activeItemStudent)}
-				onClick={() => client.writeData({ data: { activeItemStudent: 'account' } })}>
+				to={'/teacher/account'}
+				active={activeItemTeacher === 'account'}
+				style={style.menuItem}
+				onClick={() => client.writeData({ data: { activeItemTeacher: 'account' } })}>
 				<Icon name={'user circle outline'} />
 				Account
 			</Menu.Item>
@@ -54,13 +54,9 @@ const style = {
 		height: '100vh',
 		width: '100%'
 	},
-	menuItem(name, activeItem) {
-		return {
-			color: getFontColor(name, activeItem),
-			backgroundColor: getBackgroundColor(name, activeItem),
-			fontWeight: 'lighter',
-			borderRight: 0
-		}
+	menuItem: {
+		fontWeight: 'lighter',
+		borderRight: 0
 	}
 }
 
