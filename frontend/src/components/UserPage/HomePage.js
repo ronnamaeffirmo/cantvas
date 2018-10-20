@@ -5,7 +5,7 @@ import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import Dashboard from './Dashboard'
-import Account from './Account'
+import Account from '../StudentPage/Account'
 import Sidebar from './Sidebar'
 
 const getActiveItem = gql`

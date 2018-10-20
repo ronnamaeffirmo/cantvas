@@ -1,10 +1,7 @@
 import React, { Fragment } from 'react'
-import { Header, Divider, Card } from 'semantic-ui-react'
-import { Query } from 'react-apollo'
-import gql from 'graphql-tag'
-
-import ErrorMessage from '../ErrorMessage'
-import Loading from '../Loading'
+import { Header, Divider } from 'semantic-ui-react'
+import { Route } from 'react-router-dom'
+import StudentPage from '../StudentPage/StudentPage'
 
 const Dashboard = props => {
 	return (
@@ -15,6 +12,7 @@ const Dashboard = props => {
 				</Header>
 				<Divider />
 			</div>
+			<Route path={'/student/dashboard'} component={StudentPage} />
 		</Fragment>
 	)
 }
