@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react'
-import { Form as SemanticForm, Segment, Button, Header, Message } from 'semantic-ui-react'
+import React from 'react'
+import { Form as SemanticForm, Segment, Button, Header } from 'semantic-ui-react'
 import { Form, Field } from 'react-final-form'
 import { ApolloConsumer } from 'react-apollo'
 import iziToast from 'izitoast'
 import gql from 'graphql-tag'
 
+import CustomInput from '../CustomInput'
 import { required, composeValidators, email } from '../../helpers/validationHelper'
 
 const loginStudent = gql`
@@ -26,14 +27,6 @@ const teacherLogin = gql`
 		}
 	}
 `
-
-const CustomInput = ({ input, meta, ...formInput }) => (
-	<Fragment>
-		<SemanticForm.Input {...input} {...formInput} fluid iconPosition={'left'} />
-		{meta.error &&
-			meta.touched && <p style={{ color: 'red', textAlign: 'right' }}>*{meta.error}</p>}
-	</Fragment>
-)
 
 const LoginForm = ({ title, history }) => (
 	<ApolloConsumer>
@@ -59,6 +52,7 @@ const LoginForm = ({ title, history }) => (
 								Login as a <span style={style.title}>{title}</span>
 							</Header>
 
+							{/* input fields */}
 							<Field name={'email'} validate={composeValidators(required, email)}>
 								{({ input, meta }) => (
 									<CustomInput
@@ -90,9 +84,6 @@ const LoginForm = ({ title, history }) => (
 								style={style.button}>
 								Login
 							</Button>
-
-							{/* TODO: remove */}
-							<pre>to delete {JSON.stringify(values, 0, 2)}</pre>
 						</Segment>
 					</SemanticForm>
 				)}
