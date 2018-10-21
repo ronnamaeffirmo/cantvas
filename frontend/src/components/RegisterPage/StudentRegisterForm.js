@@ -48,7 +48,7 @@ const StudentRegisterForm = ({ title, history }) => (
 					<SemanticForm onSubmit={handleSubmit}>
 						<Segment piled>
 							<Header size={'small'} style={style.header}>
-								Login as a <span style={style.title}>{title}</span>
+								Register as a <span style={style.title}>{title}</span>
 							</Header>
 
 							{/* input fields */}
