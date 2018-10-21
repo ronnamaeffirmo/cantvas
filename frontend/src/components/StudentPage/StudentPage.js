@@ -56,7 +56,7 @@ const StudentPage = props => (
 												questions={exam.questions}
 												subject={subject.name}
 												title={exam.title}
-												link={'/student/exam'}
+												link={`/student/exam/${exam.id}`}
 												text={'Take test'}
 												key={exam.id}
 											/>
