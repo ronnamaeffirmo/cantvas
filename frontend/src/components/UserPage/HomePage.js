@@ -17,13 +17,13 @@ const getActiveItem = gql`
 	}
 `
 
-const HomePage = props => {
+const HomePage = ({ menuItems }) => {
 	return (
 		<Query query={getActiveItem}>
 			{({ data, client }) => {
 				return (
 					<Grid style={style.grid}>
-						<Sidebar data={data} client={client} />
+						<Sidebar data={data} client={client} menuItems={menuItems} />
 
 						{/* main body */}
 						<Grid.Column width={12} style={style.column}>
