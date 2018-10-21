@@ -124,12 +124,11 @@ const StudentRegisterForm = ({ title, history }) => (
 							</Field>
 							<Button
 								type={'submit'}
-								onClick={() => console.log('clicked submit')}
 								disabled={submitting}
 								fluid
 								size={'large'}
 								style={style.button}>
-								Login
+								Submit
 							</Button>
 						</Segment>
 					</SemanticForm>
