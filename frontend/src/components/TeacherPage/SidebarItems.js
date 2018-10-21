@@ -22,6 +22,15 @@ const Items = ({ activeItemTeacher, client }) => (
 		</Menu.Item>
 		<Menu.Item
 			as={Link}
+			to={'/teacher/students'}
+			active={activeItemTeacher === 'students'}
+			style={style.menuItem('students', activeItemTeacher)}
+			onClick={() => client.writeData({ data: { activeItemTeacher: 'students' } })}>
+			<Icon name={'users'} />
+			Students
+		</Menu.Item>
+		<Menu.Item
+			as={Link}
 			to={'/teacher/account'}
 			active={activeItemTeacher === 'account'}
 			style={style.menuItem('account', activeItemTeacher)}
