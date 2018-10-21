@@ -3,14 +3,14 @@ import { Card, Icon, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { getRandomColor } from '../../helpers/colorHelper'
 import { ApolloConsumer } from 'react-apollo'
-const highlightColor = getRandomColor()
 
 const ExamCard = ({ questions, title, subject, text, link }) => {
+	const highlightColor = getRandomColor()
 	return (
 		<ApolloConsumer>
 			{client => (
 				<Card color={highlightColor}>
-					<div style={style.thumbnail} />
+					<div style={style.thumbnail(highlightColor)} />
 					<Card.Content>
 						<Card.Header>{title}</Card.Header>
 						<Card.Meta>
@@ -35,9 +35,11 @@ const ExamCard = ({ questions, title, subject, text, link }) => {
 }
 
 const style = {
-	thumbnail: {
-		height: '150px',
-		backgroundColor: highlightColor
+	thumbnail(highlightColor) {
+		return {
+			height: '150px',
+			backgroundColor: highlightColor
+		}
 	}
 }
 
