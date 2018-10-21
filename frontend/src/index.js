@@ -42,10 +42,7 @@ const client = new ApolloClient({
 				activeUserTab: 'student',
 				dropdownDisable: false
 			},
-			resolvers: {
-				// to change
-				// to add
-			},
+			resolvers: {},
 			cache
 		}),
 		link

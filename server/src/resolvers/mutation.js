@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { APP_SECRET, getStudentId, getTeacherId } = require('../utils')
+const { APP_SECRET } = require('../utils')
 
 module.exports = {
 	async createTeacher(root, args, context, info) {

@@ -13,6 +13,7 @@ const Sidebar = ({ data: { activeItemStudent, activeItemTeacher }, client, menuI
 			{menuItems.map(({ url, key, title, icon }) => (
 				<Menu.Item
 					as={Link}
+					key={key}
 					to={url}
 					active={activeItemStudent === key}
 					style={style.menuItem(key, activeItemStudent)}

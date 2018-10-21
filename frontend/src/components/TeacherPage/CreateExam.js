@@ -23,7 +23,7 @@ const CreateExam = props => {
 						<Divider />
 						<Grid columns={'equal'}>
 							<ExamDropDowns disabled={disabled} client={client} />
-							<QuestionArea disabled={disabled} client={client} />
+							<QuestionArea disabled={disabled} client={client} history={props.history} />
 						</Grid>
 					</div>
 				)
