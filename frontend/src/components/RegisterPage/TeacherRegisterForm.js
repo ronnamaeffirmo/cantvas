@@ -85,7 +85,7 @@ const TeacherRegisterForm = ({ title, history }) => (
 									<CustomInput
 										input={input}
 										meta={meta}
-										type={'text'}
+										type={'number'}
 										icon={'calendar'}
 										placeholder={'Age'}
 									/>
