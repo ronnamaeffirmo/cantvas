@@ -43,6 +43,8 @@ const Subject = ({ subject }) => {
 										questions={exam.questions}
 										subject={exam.Subject.name}
 										title={exam.title}
+										link={'/teacher/edit-exam'}
+										text={'Edit exam'}
 										key={exam.id}
 									/>
 								))

@@ -5,7 +5,7 @@ import { getRandomColor } from '../../helpers/colorHelper'
 import { ApolloConsumer } from 'react-apollo'
 const highlightColor = getRandomColor()
 
-const ExamCard = ({ questions, title, subject }) => {
+const ExamCard = ({ questions, title, subject, text, link }) => {
 	return (
 		<ApolloConsumer>
 			{client => (
@@ -23,9 +23,9 @@ const ExamCard = ({ questions, title, subject }) => {
 							basic
 							color={highlightColor}
 							as={Link}
-							to={'/student/exam'} // to change
+							to={link} // to change
 							onClick={() => client.writeData({ data: { questions: questions } })}>
-							Take test
+							{text}
 						</Button>
 					</Card.Content>
 				</Card>
