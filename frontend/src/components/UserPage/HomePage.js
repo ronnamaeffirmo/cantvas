@@ -4,6 +4,7 @@ import { Grid } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import CreateExam from '../TeacherPage/CreateExam'
 import Dashboard from './Dashboard'
 import Account from '../StudentPage/Account'
 import Sidebar from './Sidebar'
@@ -11,6 +12,7 @@ import Sidebar from './Sidebar'
 const getActiveItem = gql`
 	{
 		activeItemStudent @client
+		activeItemTeacher @client
 	}
 `
 
@@ -25,7 +27,9 @@ const HomePage = props => {
 						{/* main body */}
 						<Grid.Column width={12} style={style.column}>
 							<Route path={'/student/dashboard'} component={Dashboard} />
+							<Route path={'/teacher/dashboard'} component={Dashboard} />
 							<Route path={'/student/account'} component={Account} />
+							<Route path={'/teacher/create-exam'} component={CreateExam} />
 						</Grid.Column>
 					</Grid>
 				)

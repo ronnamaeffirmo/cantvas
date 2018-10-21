@@ -2,7 +2,7 @@ import React from 'react'
 import { Card } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
-import ExamCard from '../StudentPage/ExamCard'
+import ExamCard from '../UserPage/ExamCard'
 import ErrorMessage from '../ErrorMessage'
 import Loading from '../Loading'
 
@@ -21,9 +21,6 @@ const queryExams = gql`
 		exams(where: { Subject: $id }) {
 			id
 			Subject {
-				name
-			}
-			teacher {
 				name
 			}
 			title
@@ -58,8 +55,9 @@ const StudentPage = props => (
 											<ExamCard
 												questions={exam.questions}
 												subject={exam.Subject.name}
-												teacher={exam.teacher.name}
 												title={exam.title}
+												link={'/student/exam'}
+												text={'Take test'}
 												key={exam.id}
 											/>
 										))}

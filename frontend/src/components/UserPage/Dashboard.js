@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { Header, Divider } from 'semantic-ui-react'
 import { Route } from 'react-router-dom'
 import StudentPage from '../StudentPage/StudentPage'
+import TeacherPage from '../TeacherPage/TeacherPage'
 
 const Dashboard = props => {
 	return (
@@ -12,6 +13,7 @@ const Dashboard = props => {
 				</Header>
 				<Divider />
 			</div>
+			<Route path={'/teacher/dashboard'} component={TeacherPage} />
 			<Route path={'/student/dashboard'} component={StudentPage} />
 		</Fragment>
 	)
