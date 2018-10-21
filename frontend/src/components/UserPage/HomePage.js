@@ -9,6 +9,7 @@ import Dashboard from './Dashboard'
 import Account from '../StudentPage/Account'
 import Sidebar from './Sidebar'
 import StudentList from '../TeacherPage/StudentList'
+import TeacherAccount from '../TeacherPage/Account'
 
 const getActiveItem = gql`
 	{
@@ -31,6 +32,7 @@ const HomePage = ({ menuItems }) => {
 							<Route path={'/student/account'} component={Account} />
 							<Route path={'/teacher/dashboard'} component={Dashboard} />
 							<Route path={'/teacher/students'} component={StudentList} />
+							<Route path={'/teacher/account'} component={TeacherAccount} />
 							<Route path={'/teacher/create-exam'} component={CreateExam} />
 						</Grid.Column>
 					</Grid>
