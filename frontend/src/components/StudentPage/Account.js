@@ -6,7 +6,9 @@ import moment from 'moment'
 
 import ErrorMessage from '../ErrorMessage'
 import Loading from '../Loading'
+
 import { getNumeralYearEquivalent } from '../../helpers/studentHelper'
+import { boyUrl, girlUrl, paragraph } from '../../constants/assetUrls'
 
 const queryStudent = gql`
 	query queryStudent($id: ID!) {
@@ -20,15 +22,12 @@ const queryStudent = gql`
 		}
 	}
 `
+
 const GET_USER = gql`
 	{
-		userStudent @client
+		userTeacher @client
 	}
 `
-
-const boyUrl = 'https://react.semantic-ui.com/images/avatar/large/matthew.png'
-const girlUrl = 'https://react.semantic-ui.com/images/avatar/large/molly.png'
-const paragraph = 'https://react.semantic-ui.com/images/wireframe/short-paragraph.png'
 
 const Account = props => (
 	<Fragment>
