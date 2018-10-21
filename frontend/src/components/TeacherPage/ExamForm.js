@@ -17,6 +17,14 @@ const createExam = gql`
 	}
 `
 
+const getSubjects = gql`
+	query subjects($data: SubjectWhereInput!) {
+		subjects(where: $data) {
+			id
+		}
+	}
+`
+
 const ExamForm = ({ disabled, client, questions, choices, history }) => (
 	<div>
 		<Button
@@ -35,6 +43,14 @@ const ExamForm = ({ disabled, client, questions, choices, history }) => (
 					title: title,
 					questions: { create: output }
 				}
+				const query = await client.query({
+					query: getSubjects,
+					variables: { data: { name: subject } }
+				})
+				exam.Subject =
+					query.data.subjects.length > 0
+						? { connect: { id: query.data.subjects[0].id } }
+						: { create: { name: subject } }
 				await client.mutate({
 					mutation: createExam,
 					variables: { data: exam }
