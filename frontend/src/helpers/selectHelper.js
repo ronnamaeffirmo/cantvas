@@ -4,4 +4,13 @@ const getOptions = input => {
 	})
 }
 
-export { getOptions }
+const getNumberOptions = input => {
+	return Array(input)
+		.fill()
+		.map((e, i) => {
+			const num = i + 1
+			return { key: num, value: num, text: num }
+		})
+}
+
+export { getOptions, getNumberOptions }

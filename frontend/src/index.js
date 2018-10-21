@@ -37,15 +37,12 @@ const client = new ApolloClient({
 	link: ApolloLink.from([
 		withClientState({
 			defaults: {
-				// to change
 				activeItemStudent: 'dashboard',
 				activeItemTeacher: 'dashboard',
-				activeUserTab: 'student'
+				activeUserTab: 'student',
+				dropdownDisable: false
 			},
-			resolvers: {
-				// to change
-				// to add
-			},
+			resolvers: {},
 			cache
 		}),
 		link

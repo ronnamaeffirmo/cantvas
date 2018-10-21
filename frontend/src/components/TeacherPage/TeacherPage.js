@@ -18,39 +18,44 @@ const querySubjects = gql`
 	}
 `
 
+const GET_USER = gql`
+	{
+		userTeacher @client
+	}
+`
+
 const TeacherPage = props => (
 	<div>
-		<Query query={querySubjects} variables={{ id: 'cjngagee8w3io0b945rfjgc0a' }}>
-			{({ data, loading, error, client }) => {
-				if (error) return <ErrorMessage message={error.message} />
-				if (loading) return <Loading message={'getting subjects...'} />
-
+		<Query query={GET_USER}>
+			{({ data }) => {
 				return (
-					<div>
-						<Dropdown
-							placeholder={'Select subject'}
-							selection
-							options={[
-								{ key: 'All subjects', value: null, text: 'All subjects' },
-								...getOptions(data.teacher.subjects.map(subject => subject.name))
-							]}
-							style={style.dropdown}
-							onChange={(e, { value }) => client.writeData({ data: { subject: value } })}
-						/>
-						{data.teacher.subjects.map(subject => (
-							<Subject subject={subject} key={subject.id} />
-						))}
-					</div>
+					<Query query={querySubjects} variables={{ id: data.userTeacher }}>
+						{({ data, loading, error, client }) => {
+							if (error) return <ErrorMessage message={error.message} />
+							if (loading) return <Loading message={'getting subjects...'} />
+							return (
+								<div>
+									<Dropdown
+										placeholder={'Select subject'}
+										fluid
+										selection
+										options={[
+											{ key: 'All subjects', value: null, text: 'All subjects' },
+											...getOptions(data.teacher.subjects.map(subject => subject.name))
+										]}
+										style={{ marginBottom: 10 }}
+										onChange={(e, { value }) => client.writeData({ data: { subject: value } })}
+									/>
+									{data.teacher.subjects.map(subject => (
+										<Subject subject={subject} key={subject.id} />
+									))}
+								</div>
+							)
+						}}
+					</Query>
 				)
 			}}
 		</Query>
 	</div>
 )
-
-const style = {
-	dropdown: {
-		marginBottom: 20
-	}
-}
-
 export default TeacherPage
