@@ -10,9 +10,6 @@ const queryExams = gql`
 	query examQuery($id: SubjectWhereInput!) {
 		exams(where: { Subject: $id }) {
 			id
-			Subject {
-				name
-			}
 			title
 			questions {
 				id
@@ -32,8 +29,10 @@ const Subject = ({ subject }) => {
 		<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
 			{({ loading, error, data }) => {
 				if (error) return <ErrorMessage message={error.message} />
-				if (loading) return <Loading message={'loading exams...'} />
+				if (loading) return <Loading message={`loading ${subject.name}...`} />
+
 				const exams = data.exams
+
 				return (
 					<Card.Group itemsPerRow={4}>
 						<Query query={getSubject}>
@@ -41,7 +40,7 @@ const Subject = ({ subject }) => {
 								const output = exams.map(exam => (
 									<ExamCard
 										questions={exam.questions}
-										subject={exam.Subject.name}
+										subject={subject.name}
 										title={exam.title}
 										link={'/teacher/edit-exam'}
 										text={'Edit exam'}

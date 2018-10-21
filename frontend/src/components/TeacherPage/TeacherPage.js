@@ -24,17 +24,17 @@ const TeacherPage = props => (
 			{({ data, loading, error, client }) => {
 				if (error) return <ErrorMessage message={error.message} />
 				if (loading) return <Loading message={'getting subjects...'} />
+
 				return (
 					<div>
 						<Dropdown
 							placeholder={'Select subject'}
-							fluid
 							selection
 							options={[
 								{ key: 'All subjects', value: null, text: 'All subjects' },
 								...getOptions(data.teacher.subjects.map(subject => subject.name))
 							]}
-							style={{ marginBottom: 10 }}
+							style={style.dropdown}
 							onChange={(e, { value }) => client.writeData({ data: { subject: value } })}
 						/>
 						{data.teacher.subjects.map(subject => (
@@ -46,4 +46,11 @@ const TeacherPage = props => (
 		</Query>
 	</div>
 )
+
+const style = {
+	dropdown: {
+		marginBottom: 20
+	}
+}
+
 export default TeacherPage

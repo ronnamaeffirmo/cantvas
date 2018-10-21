@@ -1,23 +1,27 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
-import { Grid } from 'semantic-ui-react'
-import StudentSidebarItems from '../StudentPage/SidebarItems'
-import TeacherSidebarItems from '../TeacherPage/SidebarItems'
+import { Link } from 'react-router-dom'
+import { Grid, Menu, Image, Icon } from 'semantic-ui-react'
+import { getBackgroundColor, getFontColor } from '../../helpers/colorHelper'
 
-const Sidebar = ({ data: { activeItemStudent, activeItemTeacher }, client }) => (
+const Sidebar = ({ data: { activeItemStudent, activeItemTeacher }, client, menuItems }) => (
 	<Grid.Column width={1} style={style.column}>
-		<Route
-			path={'/student'}
-			component={() => (
-				<StudentSidebarItems activeItemStudent={activeItemStudent} client={client} />
-			)}
-		/>
-		<Route
-			path={'/teacher'}
-			component={() => (
-				<TeacherSidebarItems activeItemTeacher={activeItemTeacher} client={client} />
-			)}
-		/>
+		<Menu pointing secondary vertical icon={'labeled'} style={style.menu}>
+			<Menu.Item disabled style={style.logoContainer}>
+				<Image src={require('../../images/logo.png')} style={style.logo} />
+			</Menu.Item>
+
+			{menuItems.map(({ url, key, title, icon }) => (
+				<Menu.Item
+					as={Link}
+					to={url}
+					active={activeItemStudent === key}
+					style={style.menuItem(key, activeItemStudent)}
+					onClick={() => client.writeData({ data: { activeItemStudent: key } })}>
+					<Icon name={icon} />
+					{title}
+				</Menu.Item>
+			))}
+		</Menu>
 	</Grid.Column>
 )
 
@@ -25,6 +29,29 @@ const style = {
 	column: {
 		padding: 0,
 		margin: 0
+	},
+	logoContainer: {
+		paddingTop: '25px',
+		paddingBottom: '35px',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	logo: {
+		width: '60%'
+	},
+	menu: {
+		backgroundColor: '#2a474b',
+		height: '100vh',
+		width: '100%'
+	},
+	menuItem(name, activeItem) {
+		return {
+			color: getFontColor(name, activeItem),
+			backgroundColor: getBackgroundColor(name, activeItem),
+			fontWeight: 'lighter',
+			borderRight: 0
+		}
 	}
 }
 
