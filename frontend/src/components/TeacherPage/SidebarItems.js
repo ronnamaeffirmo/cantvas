@@ -29,6 +29,15 @@ const Items = ({ activeItemTeacher, client }) => (
 			<Icon name={'user circle outline'} />
 			Account
 		</Menu.Item>
+		<Menu.Item
+			as={Link}
+			to={'/teacher/create-exam'}
+			active={activeItemTeacher === 'createExam'}
+			style={style.menuItem('createExam', activeItemTeacher)}
+			onClick={() => client.writeData({ data: { activeItemTeacher: 'createExam' } })}>
+			<Icon name={'file'} />
+			Exam Maker
+		</Menu.Item>
 	</Menu>
 )
 
