@@ -11,6 +11,7 @@ const querySubjects = gql`
 		student(where: { id: $id }) {
 			subjects {
 				id
+				name
 			}
 		}
 	}
@@ -20,9 +21,6 @@ const queryExams = gql`
 	query examQuery($id: SubjectWhereInput!) {
 		exams(where: { Subject: $id }) {
 			id
-			Subject {
-				name
-			}
 			title
 			questions {
 				id
@@ -49,14 +47,14 @@ const StudentPage = props => (
 						<Query query={queryExams} variables={{ id: { id: subject.id } }} key={subject.id}>
 							{({ loading, error, data }) => {
 								if (error) return <ErrorMessage message={error.message} />
-								if (loading) return <Loading message={'loading exams...'} />
+								if (loading) return <Loading message={`loading ${subject.name}...`} />
 
 								return (
 									<Card.Group itemsPerRow={4}>
 										{data.exams.map(exam => (
 											<ExamCard
 												questions={exam.questions}
-												subject={exam.Subject.name}
+												subject={subject.name}
 												title={exam.title}
 												link={'/student/exam'}
 												text={'Take test'}
