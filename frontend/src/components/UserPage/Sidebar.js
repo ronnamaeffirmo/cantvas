@@ -14,7 +14,6 @@ const Sidebar = ({ data: { activeItemStudent, activeItemTeacher }, client, menuI
 				<Menu.Item
 					key={key}
 					as={Link}
-					key={key}
 					to={url}
 					active={activeItemStudent === key}
 					style={style.menuItem(key, activeItemStudent)}
