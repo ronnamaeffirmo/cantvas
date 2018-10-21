@@ -32,7 +32,7 @@ const TeacherPage = props => (
 							selection
 							options={[
 								{ key: 'All subjects', value: null, text: 'All subjects' },
-								...getOptions(data.teacher.subjects)
+								...getOptions(data.teacher.subjects.map(subject => subject.name))
 							]}
 							style={{ marginBottom: 10 }}
 							onChange={(e, { value }) => client.writeData({ data: { subject: value } })}
