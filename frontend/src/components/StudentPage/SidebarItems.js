@@ -1,15 +1,11 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
-import { Menu, Image, Icon } from 'semantic-ui-react'
+import { Menu, Icon } from 'semantic-ui-react'
 
 import { getBackgroundColor, getFontColor } from '../../helpers/colorHelper'
 
-const Items = ({ activeItemStudent, client }) => (
-	<Menu pointing secondary vertical icon={'labeled'} style={style.menu}>
-		<Menu.Item disabled style={style.logoContainer}>
-			<Image src={require('../../images/logo.png')} style={style.logo} />
-		</Menu.Item>
-
+const SidebarItems = ({ activeItemStudent, client }) => (
+	<Fragment>
 		{/* navigation routes */}
 		<Menu.Item
 			as={Link}
@@ -29,25 +25,10 @@ const Items = ({ activeItemStudent, client }) => (
 			<Icon name={'user circle outline'} />
 			Account
 		</Menu.Item>
-	</Menu>
+	</Fragment>
 )
 
 const style = {
-	logoContainer: {
-		paddingTop: '25px',
-		paddingBottom: '35px',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	logo: {
-		width: '60%'
-	},
-	menu: {
-		backgroundColor: '#2a474b',
-		height: '100vh',
-		width: '100%'
-	},
 	menuItem(name, activeItem) {
 		return {
 			color: getFontColor(name, activeItem),
@@ -58,4 +39,4 @@ const style = {
 	}
 }
 
-export default Items
+export default SidebarItems
