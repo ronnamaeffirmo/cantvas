@@ -33,6 +33,7 @@ const LoginForm = ({ title, history }) => (
 		{client => (
 			<Form
 				onSubmit={async values => {
+					// TODO: separate
 					try {
 						const mutation = title === 'student' ? loginStudent : teacherLogin
 						const result = await client.mutate({ mutation, variables: values })

@@ -33,6 +33,7 @@ const StudentRegisterForm = ({ title, history }) => (
 			<Form
 				onSubmit={async values => {
 					try {
+						// TODO: separate
 						const student = await client.mutate({
 							mutation: createStudent,
 							variables: { data: values }

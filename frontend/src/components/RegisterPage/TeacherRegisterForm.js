@@ -32,6 +32,7 @@ const TeacherRegisterForm = ({ title, history }) => (
 		{client => (
 			<Form
 				onSubmit={async values => {
+					// TODO: separate
 					try {
 						const teacher = await client.mutate({
 							mutation: createTeacher,
