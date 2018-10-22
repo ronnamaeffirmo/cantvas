@@ -63,9 +63,9 @@ const ExamPage = ({ match }) => (
 								}}
 								render={({ handleSubmit, submitting, values }) => (
 									<SemanticForm onSubmit={handleSubmit}>
-										<Grid columns={2}>
+										<Grid columns={2} style={style.grid}>
 											{data.exam.questions.map((question, index) => (
-												<Grid.Column key={question.id}>
+												<Grid.Column key={question.id} style={style.column}>
 													<Segment secondary stacked>
 														<div>Question #{index + 1}</div>
 														<div>
@@ -106,6 +106,12 @@ const ExamPage = ({ match }) => (
 )
 
 const style = {
+	grid: {
+		padding: '8px'
+	},
+	column: {
+		padding: '8px'
+	},
 	pageTitle: {
 		marginBottom: '25px'
 	},
