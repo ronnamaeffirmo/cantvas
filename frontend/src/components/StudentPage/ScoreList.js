@@ -39,7 +39,7 @@ const ScoreList = () => (
 		<CustomHeader title={'Scores'} />
 		<Query query={getLoggedIn}>
 			{({ data: { userStudent } }) => {
-				if (!userStudent) return <ErrorMessage message={'No such teacher found'} />
+				if (!userStudent) return <ErrorMessage message={'No such student found'} />
 
 				return (
 					<Query query={queryScores} variables={{ id: userStudent }}>
