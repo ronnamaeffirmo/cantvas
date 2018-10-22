@@ -1,12 +1,11 @@
 import React from 'react'
 import { Route, Link } from 'react-router-dom'
-import { Grid, Header, Image, Menu } from 'semantic-ui-react'
+import { Grid, Header, Image, Menu, Message } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import StudentRegisterForm from './StudentRegisterForm'
 import TeacherRegisterForm from './TeacherRegisterForm'
 
-// import LoginForm from './LoginForm'
 import '../../styles/login.css'
 
 const getActiveUserTab = gql`
@@ -59,6 +58,10 @@ const registerPage = ({ history }) => (
 					path={'/register/teacher'}
 					component={() => <TeacherRegisterForm history={history} title={'teacher'} />}
 				/>
+
+				<Message>
+					Have an account? <a href={'/login/student'}>Login instead</a>
+				</Message>
 			</Grid.Column>
 		</Grid>
 	</div>
