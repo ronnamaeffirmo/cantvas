@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react'
-import { Header, Divider, Item, Image } from 'semantic-ui-react'
+import { Item, Image } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import moment from 'moment'
 
 import ErrorMessage from '../ErrorMessage'
 import Loading from '../Loading'
+import CustomHeader from '../CustomComponents/CustomHeader'
 
 import { getNumeralYearEquivalent } from '../../helpers/studentHelper'
 import { boyUrl, girlUrl, paragraph } from '../../constants/assetUrls'
@@ -31,12 +32,7 @@ const GET_USER = gql`
 
 const Account = props => (
 	<Fragment>
-		<div style={style.pageTitle}>
-			<Header size={'huge'} style={style.header}>
-				Account
-			</Header>
-			<Divider />
-		</div>
+		<CustomHeader title={'Account'} />
 		<Query query={GET_USER}>
 			{({ data }) => {
 				if (data.userStudent) {
@@ -76,14 +72,5 @@ const Account = props => (
 		</Query>
 	</Fragment>
 )
-
-const style = {
-	pageTitle: {
-		marginBottom: '25px'
-	},
-	header: {
-		fontWeight: 'normal'
-	}
-}
 
 export default Account

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Header, Divider, Segment } from 'semantic-ui-react'
+import { Header, Segment } from 'semantic-ui-react'
 import { Form } from 'react-final-form'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -7,6 +7,7 @@ import gql from 'graphql-tag'
 import ErrorMessage from '../ErrorMessage'
 import Loading from '../Loading'
 import ExamForm from './ExamForm'
+import CustomHeader from '../CustomComponents/CustomHeader'
 
 import { submitExam } from '../../helpers/examHelper'
 
@@ -31,12 +32,7 @@ const queryExam = gql`
 
 const ExamPage = ({ match, history }) => (
 	<div>
-		<div style={style.pageTitle}>
-			<Header size={'huge'} style={style.header}>
-				Exam
-			</Header>
-			<Divider />
-		</div>
+		<CustomHeader title={'Exam'} />
 		<Query query={queryExam} variables={{ id: match.params.id }}>
 			{({ loading, error, data, client }) => {
 				if (error) return <ErrorMessage message={error.message} />
@@ -71,12 +67,6 @@ const ExamPage = ({ match, history }) => (
 )
 
 const style = {
-	pageTitle: {
-		marginBottom: '25px'
-	},
-	header: {
-		fontWeight: 'normal'
-	},
 	segment: {
 		maxHeight: '70vh',
 		overflow: 'auto'

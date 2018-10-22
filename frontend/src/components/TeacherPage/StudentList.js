@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react'
-import { Header, Divider, Table, Image } from 'semantic-ui-react'
+import { Table, Image } from 'semantic-ui-react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import ErrorMessage from '../ErrorMessage'
 import Loading from '../Loading'
+import CustomHeader from '../CustomComponents/CustomHeader'
 
 import { boyUrl, girlUrl } from '../../constants/assetUrls'
 import { getNumeralYearEquivalent } from '../../helpers/studentHelper'
@@ -42,13 +43,7 @@ const GET_USER = gql`
 const StudentList = props => {
 	return (
 		<Fragment>
-			<div style={style.pageTitle}>
-				<Header size={'huge'} style={style.header}>
-					Students
-				</Header>
-				<Divider />
-			</div>
-
+			<CustomHeader title={'Students'} />
 			<Query query={GET_USER}>
 				{({ data: { userTeacher } }) => {
 					if (!userTeacher) return <ErrorMessage message={'No such teacher found'} />
@@ -103,15 +98,6 @@ const StudentList = props => {
 			</Query>
 		</Fragment>
 	)
-}
-
-const style = {
-	pageTitle: {
-		marginBottom: '25px'
-	},
-	header: {
-		fontWeight: 'normal'
-	}
 }
 
 export default StudentList

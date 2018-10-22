@@ -1,18 +1,14 @@
 import React, { Fragment } from 'react'
-import { Header, Divider } from 'semantic-ui-react'
 import { Route } from 'react-router-dom'
+
 import StudentPage from '../StudentPage/StudentPage'
 import TeacherPage from '../TeacherPage/TeacherPage'
+import CustomHeader from '../CustomComponents/CustomHeader'
 
 const Dashboard = props => {
 	return (
 		<Fragment>
-			<div style={style.pageTitle}>
-				<Header size={'huge'} style={style.header}>
-					Dashboard
-				</Header>
-				<Divider />
-			</div>
+			<CustomHeader title={'Dashboard'} />
 			<Route path={'/teacher/dashboard'} component={TeacherPage} />
 			<Route path={'/student/dashboard'} component={StudentPage} />
 		</Fragment>
