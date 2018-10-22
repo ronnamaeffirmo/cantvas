@@ -3,8 +3,8 @@ import { Form } from 'semantic-ui-react'
 
 const CustomInput = ({ input, meta, ...formInput }) => (
 	<Fragment>
-		{meta.error && meta.touched && <p style={style.error}>*{meta.error}</p>}
-		<Form.Input style={style.input} {...input} {...formInput} fluid iconPosition={'left'} />
+		{meta.error && meta.touched && <div style={style.error}>{meta.error}</div>}
+		<Form.Input style={style.input} {...input} {...formInput} />
 	</Fragment>
 )
 

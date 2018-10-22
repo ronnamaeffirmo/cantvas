@@ -27,7 +27,7 @@ const updateStudent = gql`
 	}
 `
 
-export const submitExam = async (exam, values, client, history) => {
+const submitExam = async (exam, values, client, history) => {
 	let score = 0
 	exam.questions.map(({ answer, id }) => {
 		if (values[id] === answer) {
@@ -63,6 +63,8 @@ export const submitExam = async (exam, values, client, history) => {
 	}
 }
 
-export const getRate = (correct, questions) => {
+const getRate = (correct, questions) => {
 	return Math.round((correct / questions) * 100)
 }
+
+export { submitExam, getRate }

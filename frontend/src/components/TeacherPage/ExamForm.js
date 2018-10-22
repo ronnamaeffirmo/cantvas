@@ -1,13 +1,14 @@
-import { required } from '../../helpers/validationHelper'
-import { Form, Field } from 'react-final-form'
-import { getArray } from '../../helpers/examFormHelper'
-import Question from './Question'
-import Choice from './Choice'
-import Answer from './Answer'
-import { Button, Grid, Segment, Form as SemanticForm } from 'semantic-ui-react'
 import React from 'react'
+import { Button, Grid, Segment, Form as SemanticForm, Header } from 'semantic-ui-react'
+import { Form, Field } from 'react-final-form'
 import gql from 'graphql-tag'
 import iziToast from 'izitoast'
+
+import CustomInput from '../CustomComponents/CustomInput'
+import CustomSelect from '../CustomComponents/CustomSelect'
+
+import { getArray } from '../../helpers/examFormHelper'
+import { required } from '../../helpers/validationHelper'
 
 const createExam = gql`
 	mutation createExam($data: ExamCreateInput!) {
@@ -28,84 +29,110 @@ const getSubjects = gql`
 const ExamForm = ({ disabled, client, questions, choices, history }) => (
 	<div>
 		<Button
-			fluid
 			content={'Confirm'}
 			style={disabled ? style.finished : style.inUse}
 			onClick={() => client.writeData({ data: { dropdownDisable: true } })}
 		/>
 		<Form
 			onSubmit={async values => {
-				const subject = values.subject
-				const title = values.title
-				const output = getArray(questions, choices, values)
-				const exam = {
-					Subject: { create: { name: subject } },
-					title: title,
-					questions: { create: output }
+				// TODO: separate
+				try {
+					const { subject, title } = values
+					const output = getArray(questions, choices, values)
+
+					const exam = {
+						Subject: { create: { name: subject } },
+						title,
+						questions: { create: output }
+					}
+
+					const query = await client.query({
+						query: getSubjects,
+						variables: { data: { name: subject } }
+					})
+
+					exam.Subject =
+						query.data.subjects.length > 0
+							? { connect: { id: query.data.subjects[0].id } }
+							: { create: { name: subject } }
+
+					await client.mutate({
+						mutation: createExam,
+						variables: { data: exam }
+					})
+
+					iziToast.success({ title: 'Successfully created exam!' })
+					history.push('dashboard')
+				} catch (e) {
+					iziToast.success({ title: e.message })
 				}
-				const query = await client.query({
-					query: getSubjects,
-					variables: { data: { name: subject } }
-				})
-				exam.Subject =
-					query.data.subjects.length > 0
-						? { connect: { id: query.data.subjects[0].id } }
-						: { create: { name: subject } }
-				await client.mutate({
-					mutation: createExam,
-					variables: { data: exam }
-				})
-				iziToast.success({ title: 'Exam Creation', message: 'successful' })
-				history.push('dashboard')
 			}}
 			render={({ handleSubmit }) => (
-				<SemanticForm onSubmit={handleSubmit}>
+				<SemanticForm style={style.form} onSubmit={handleSubmit}>
 					<Segment piled style={disabled ? style.segment : style.finished}>
-						<Field name={'subject'} validate={required}>
-							{({ input, meta }) => (
-								<div>
-									<SemanticForm.Input {...input} fluid placeholder={'Subject'} />
-									{meta.error &&
-										meta.touched && (
-											<p style={{ color: 'red', textAlign: 'right' }}>*{meta.error}</p>
-										)}
-								</div>
-							)}
-						</Field>
-						<br />
-						<Field name={'title'} validate={required}>
-							{({ input, meta }) => (
-								<div>
-									<SemanticForm.Input {...input} fluid placeholder={'Title'} />
-									{meta.error &&
-										meta.touched && (
-											<p style={{ color: 'red', textAlign: 'right' }}>*{meta.error}</p>
-										)}
-								</div>
-							)}
-						</Field>
-						<br />
+						{/* subject and title */}
+						<SemanticForm.Group>
+							<Field name={'subject'} validate={required}>
+								{({ input, meta }) => (
+									<CustomInput input={input} meta={meta} placeholder={'Subject'} />
+								)}
+							</Field>
+							<Field name={'title'} validate={required}>
+								{({ input, meta }) => (
+									<CustomInput input={input} meta={meta} placeholder={'Title'} />
+								)}
+							</Field>
+						</SemanticForm.Group>
+
+						{/* questions */}
 						{questions.map(question => (
-							<div key={question}>
-								<Question question={question} required={required} />
-								<Answer choices={choices} question={question} required={required} />
-								<br />
-								<Grid columns={'equal'} style={style.column}>
-									<Grid.Row>
-										{choices.map(choice => (
-											<Choice
-												key={choice}
-												choice={choice}
-												question={question}
-												required={required}
+							<Segment key={question} secondary stacked>
+								<Header size={'small'}>Question #{question}</Header>
+								<SemanticForm.Group>
+									{/* question input */}
+									<Field name={`question${question}`} validate={required}>
+										{({ input, meta }) => (
+											<CustomInput
+												width={14}
+												input={input}
+												meta={meta}
+												placeholder={`Insert question ${question}`}
 											/>
-										))}
-									</Grid.Row>
-								</Grid>
-								<br />
-							</div>
+										)}
+									</Field>
+
+									{/* answer */}
+									<Field name={`answer${question}`} validate={required}>
+										{({ input, meta }) => (
+											<CustomSelect
+												input={input}
+												meta={meta}
+												title={`Answer to question ${question}`}
+												options={choices.map(choice => ({
+													key: `Choice ${question}-${choice}`,
+													value: `Choice ${question}-${choice}`,
+													text: `Choice ${question}-${choice}`
+												}))}
+											/>
+										)}
+									</Field>
+								</SemanticForm.Group>
+
+								{/* choices */}
+								<SemanticForm.Group widths={'equal'}>
+									{choices.map(choice => (
+										<Field name={`choice${question}-${choice}`} validate={required}>
+											{({ input, meta }) => (
+												<CustomInput input={input} meta={meta} placeholder={`Choice ${choice}`} />
+											)}
+										</Field>
+									))}
+								</SemanticForm.Group>
+							</Segment>
 						))}
-						<Button content={'Submit'} positive style={style.button} />
+						<div style={style.buttonContainer}>
+							<Button content={'Submit'} primary style={style.button} />
+						</div>
 					</Segment>
 				</SemanticForm>
 			)}
@@ -114,20 +141,25 @@ const ExamForm = ({ disabled, client, questions, choices, history }) => (
 )
 
 const style = {
+	form: {
+		marginTop: '20px'
+	},
 	segment: {
-		height: '70vh',
-		width: '100%',
-		position: 'absolute',
+		maxHeight: '70vh',
 		overflow: 'auto'
 	},
 	button: {
 		marginTop: 10
 	},
 	inUse: {
+		marginTop: '10px',
 		display: 'inline'
 	},
 	finished: {
 		display: 'none'
+	},
+	buttonContainer: {
+		textAlign: 'center'
 	}
 }
 

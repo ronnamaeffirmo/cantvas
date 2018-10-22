@@ -1,22 +1,27 @@
 import React, { Fragment } from 'react'
 import { Form } from 'semantic-ui-react'
-import { getOptions } from '../../helpers/selectHelper'
 
-const CustomSelect = ({ array, title, input, meta }) => {
-	const options = getOptions(array)
-	return (
-		<Fragment>
-			<Form.Dropdown
-				onChange={(e, { value }) => input.onChange(value)}
-				placeholder={title}
-				selection
-				fluid
-				options={options}
-			/>
-			{meta.error &&
-				meta.touched && <p style={{ color: 'red', textAlign: 'right' }}>*{meta.error}</p>}
-		</Fragment>
-	)
+const CustomSelect = ({ options, title, input, meta }) => (
+	<Fragment>
+		{meta.error && meta.touched && <div style={style.error}>{meta.error}</div>}
+		<Form.Dropdown
+			{...input}
+			selection
+			placeholder={title}
+			onChange={(e, { value }) => input.onChange(value)}
+			options={options}
+		/>
+	</Fragment>
+)
+
+const style = {
+	error: {
+		color: 'red',
+		textAlign: 'right',
+		paddingBottom: 0,
+		marginBottom: 0,
+		fontSize: '12px'
+	}
 }
 
 export default CustomSelect

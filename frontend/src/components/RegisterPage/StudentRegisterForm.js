@@ -4,8 +4,10 @@ import { Form, Field } from 'react-final-form'
 import { ApolloConsumer } from 'react-apollo'
 import iziToast from 'izitoast'
 import gql from 'graphql-tag'
+
 import CustomSelect from '../CustomComponents/CustomSelect'
 import CustomInput from '../CustomComponents/CustomInput'
+
 import {
 	required,
 	composeValidators,
@@ -13,6 +15,7 @@ import {
 	minValue,
 	email
 } from '../../helpers/validationHelper'
+import { getOptions } from '../../helpers/selectHelper'
 
 const createStudent = gql`
 	mutation student($data: StudentCreateInput!) {
@@ -54,7 +57,13 @@ const StudentRegisterForm = ({ title, history }) => (
 							{/* input fields */}
 							<Field name={'name'} validate={required}>
 								{({ input, meta }) => (
-									<CustomInput input={input} meta={meta} icon={'user'} placeholder={'Name'} />
+									<CustomInput
+										input={input}
+										meta={meta}
+										icon={'user'}
+										placeholder={'Name'}
+										iconPosition={'left'}
+									/>
 								)}
 							</Field>
 							<Field name={'email'} validate={composeValidators(required, email)}>
@@ -64,6 +73,7 @@ const StudentRegisterForm = ({ title, history }) => (
 										meta={meta}
 										icon={'mail'}
 										placeholder={'Email address'}
+										iconPosition={'left'}
 									/>
 								)}
 							</Field>
@@ -75,6 +85,7 @@ const StudentRegisterForm = ({ title, history }) => (
 										type={'password'}
 										icon={'lock'}
 										placeholder={'Password'}
+										iconPosition={'left'}
 									/>
 								)}
 							</Field>
@@ -88,6 +99,7 @@ const StudentRegisterForm = ({ title, history }) => (
 										type={'number'}
 										icon={'calendar'}
 										placeholder={'Age'}
+										iconPosition={'left'}
 									/>
 								)}
 							</Field>
@@ -97,7 +109,7 @@ const StudentRegisterForm = ({ title, history }) => (
 										input={input}
 										meta={meta}
 										title={'gender'}
-										array={['MALE', 'FEMALE']}
+										options={getOptions(['MALE', 'FEMALE'])}
 									/>
 								)}
 							</Field>
@@ -107,7 +119,15 @@ const StudentRegisterForm = ({ title, history }) => (
 										input={input}
 										meta={meta}
 										title={'course'}
-										array={['BSSE', 'BSCE', 'BSME', 'BSPKG', 'BSEE', 'BSECE', 'BSCHE']}
+										options={getOptions([
+											'BSSE',
+											'BSCE',
+											'BSME',
+											'BSPKG',
+											'BSEE',
+											'BSECE',
+											'BSCHE'
+										])}
 									/>
 								)}
 							</Field>
@@ -117,7 +137,13 @@ const StudentRegisterForm = ({ title, history }) => (
 										input={input}
 										meta={meta}
 										title={'year'}
-										array={['FIRST_YEAR', 'SECOND_YEAR', 'THIRD_YEAR', 'FOURTH_YEAR', 'FIFTH_YEAR']}
+										options={getOptions([
+											'FIRST_YEAR',
+											'SECOND_YEAR',
+											'THIRD_YEAR',
+											'FOURTH_YEAR',
+											'FIFTH_YEAR'
+										])}
 										icon={'calendar'}
 									/>
 								)}

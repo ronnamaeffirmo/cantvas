@@ -60,6 +60,7 @@ const LoginForm = ({ title, history }) => (
 										meta={meta}
 										icon={'user'}
 										placeholder={'Email address'}
+										iconPosition={'left'}
 									/>
 								)}
 							</Field>
@@ -71,6 +72,7 @@ const LoginForm = ({ title, history }) => (
 										type={'password'}
 										icon={'lock'}
 										placeholder={'Password'}
+										iconPosition={'left'}
 									/>
 								)}
 							</Field>
