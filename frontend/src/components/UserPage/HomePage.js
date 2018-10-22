@@ -12,6 +12,7 @@ import StudentList from '../TeacherPage/StudentList'
 import TeacherAccount from '../TeacherPage/Account'
 import ExamPage from '../StudentPage/ExamPage'
 import ExamResult from '../StudentPage/ExamResult'
+import ScoreList from '../StudentPage/ScoreList'
 
 const getActiveItem = gql`
 	{
@@ -33,6 +34,7 @@ const HomePage = ({ menuItems }) => {
 							<Route path={'/student/dashboard'} component={Dashboard} />
 							<Route path={'/student/exam/:id'} exact component={ExamPage} />
 							<Route path={'/student/exam/:id/result'} exact component={ExamResult} />
+							<Route path={'/student/scores'} component={ScoreList} />
 							<Route path={'/student/account'} component={Account} />
 							<Route path={'/teacher/dashboard'} component={Dashboard} />
 							<Route path={'/teacher/students'} component={StudentList} />

@@ -1,5 +1,6 @@
 export const studentItems = [
 	{ url: '/student/dashboard', key: 'dashboard', title: 'Dashboard', icon: 'dashboard' },
+	{ url: '/student/scores', key: 'scores', title: 'Scores', icon: 'checkmark' },
 	{ url: '/student/account', key: 'account', title: 'Account', icon: 'user circle outline' }
 ]
 
