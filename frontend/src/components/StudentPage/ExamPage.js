@@ -1,19 +1,12 @@
 import React, { Fragment } from 'react'
-import {
-	Header,
-	Divider,
-	Segment,
-	Grid,
-	Form as SemanticForm,
-	Button,
-	Container
-} from 'semantic-ui-react'
-import { Form, Field } from 'react-final-form'
+import { Header, Divider, Segment } from 'semantic-ui-react'
+import { Form } from 'react-final-form'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import ErrorMessage from '../ErrorMessage'
 import Loading from '../Loading'
+import ExamForm from './ExamForm'
 
 const queryExam = gql`
 	query queryExam($id: ID!) {
@@ -62,39 +55,12 @@ const ExamPage = ({ match }) => (
 									console.log('values', values)
 								}}
 								render={({ handleSubmit, submitting, pristine }) => (
-									<SemanticForm onSubmit={handleSubmit}>
-										<Grid columns={2} style={style.grid}>
-											{data.exam.questions.map((question, index) => (
-												<Grid.Column key={question.id} style={style.column}>
-													<Segment secondary stacked>
-														<div>Question #{index + 1}</div>
-														<div>
-															<Header size={'small'}>{question.question}</Header>
-															{question.choices.map(choice => (
-																<Field key={choice.id} name={`question${question.id}`}>
-																	{({ input, meta }) => (
-																		<SemanticForm.Radio
-																			{...input}
-																			label={`${choice.key}. ${choice.value}`}
-																			value={choice.key}
-																			checked={input.value === choice.key}
-																			onChange={(e, { value }) => input.onChange(value)}
-																		/>
-																	)}
-																</Field>
-															))}
-														</div>
-													</Segment>
-												</Grid.Column>
-											))}
-										</Grid>
-										<Divider />
-										<Container textAlign={'center'}>
-											<Button type={'submit'} primary disabled={submitting || pristine}>
-												Submit exam
-											</Button>
-										</Container>
-									</SemanticForm>
+									<ExamForm
+										exam={data.exam}
+										handleSubmit={handleSubmit}
+										submitting={submitting}
+										pristine={pristine}
+									/>
 								)}
 							/>
 						</Segment>
@@ -106,12 +72,6 @@ const ExamPage = ({ match }) => (
 )
 
 const style = {
-	grid: {
-		padding: '8px'
-	},
-	column: {
-		padding: '8px'
-	},
 	pageTitle: {
 		marginBottom: '25px'
 	},
