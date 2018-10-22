@@ -15,10 +15,6 @@ const queryExam = gql`
 		exam(where: { id: $id }) {
 			id
 			title
-			Subject {
-				id
-				name
-			}
 			questions {
 				id
 				question
@@ -55,7 +51,7 @@ const ExamPage = ({ match, history }) => (
 						<Segment style={style.segment}>
 							<Form
 								onSubmit={async values => {
-									await submitExam(data.exam, values, client)
+									await submitExam(data.exam, values, client, history)
 								}}
 								render={({ handleSubmit, submitting, pristine }) => (
 									<ExamForm

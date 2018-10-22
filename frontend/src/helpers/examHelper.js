@@ -27,7 +27,7 @@ const updateStudent = gql`
 	}
 `
 
-export const submitExam = async (exam, values, client) => {
+export const submitExam = async (exam, values, client, history) => {
 	let score = 0
 	exam.questions.map(({ answer, id }) => {
 		if (values[id] === answer) {
@@ -51,8 +51,18 @@ export const submitExam = async (exam, values, client) => {
 			}
 		})
 
-		if (student.data) iziToast.success({ title: 'Sucessfully submitted exam!' })
+		if (student.data) {
+			iziToast.success({ title: 'Sucessfully submitted exam!' })
+			history.push({
+				pathname: `/student/exam/${exam.id}/result`,
+				state: { exam, score }
+			})
+		}
 	} catch (e) {
 		iziToast.error({ title: e.message })
 	}
+}
+
+export const getRate = (correct, questions) => {
+	return Math.round((correct / questions) * 100)
 }
