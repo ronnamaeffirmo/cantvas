@@ -61,7 +61,7 @@ const ExamPage = ({ match }) => (
 								onSubmit={async values => {
 									console.log('values', values)
 								}}
-								render={({ handleSubmit, submitting, values }) => (
+								render={({ handleSubmit, submitting, pristine }) => (
 									<SemanticForm onSubmit={handleSubmit}>
 										<Grid columns={2} style={style.grid}>
 											{data.exam.questions.map((question, index) => (
@@ -90,7 +90,7 @@ const ExamPage = ({ match }) => (
 										</Grid>
 										<Divider />
 										<Container textAlign={'center'}>
-											<Button type={'submit'} primary>
+											<Button type={'submit'} primary disabled={submitting || pristine}>
 												Submit exam
 											</Button>
 										</Container>
