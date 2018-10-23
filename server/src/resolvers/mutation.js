@@ -8,6 +8,7 @@ module.exports = {
 		const teacher = await context.db.mutation.createTeacher({
 			data: { ...args.data, password }
 		})
+
 		return {
 			token: jwt.sign({ teacherId: teacher.id }, APP_SECRET),
 			teacher
@@ -18,6 +19,7 @@ module.exports = {
 		const student = await context.db.mutation.createStudent({
 			data: { ...args.data, password }
 		})
+
 		return {
 			token: jwt.sign({ studentId: student.id }, APP_SECRET),
 			student

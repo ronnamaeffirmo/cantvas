@@ -1,9 +1,17 @@
+const { getTeacherId, getStudentId } = require('../utils')
+
 module.exports = {
 	teachers(root, args, context, info) {
+		const teacherId = getTeacherId(context)
+		console.log('[!] teacherId from resolver', teacherId)
+
 		const { where } = args
 		return context.db.query.teachers({ where }, info)
 	},
 	students(root, args, context, info) {
+		const studentId = getStudentId(context)
+		console.log('[!] studentId from resolver', studentId)
+
 		const { where } = args
 		return context.db.query.students({ where }, info)
 	},
