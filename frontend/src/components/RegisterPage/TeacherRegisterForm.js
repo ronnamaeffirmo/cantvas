@@ -16,17 +16,17 @@ import {
 	email
 } from '../../helpers/validationHelper'
 import { getOptions } from '../../helpers/selectHelper'
+import { storeUser } from '../../helpers/authHelper'
 
 const createTeacher = gql`
 	mutation teacher($data: TeacherCreateInput!) {
 		createTeacher(data: $data) {
-			teacher {
-				id
-			}
+			token
 		}
 	}
 `
 
+// TODO: refactor, one form, different fields
 const TeacherRegisterForm = ({ title, history }) => (
 	<ApolloConsumer>
 		{client => (
@@ -38,14 +38,13 @@ const TeacherRegisterForm = ({ title, history }) => (
 							mutation: createTeacher,
 							variables: { data: values }
 						})
-						client.writeData({
-							data: { userTeacher: teacher.data.createTeacher.teacher.id }
-						})
-						history.push({
-							pathname: '/teacher/dashboard'
-						})
+						const { token } = teacher.data.createTeacher
+
+						storeUser(token)
+						iziToast.success({ title: 'Registration success!' })
+						history.push('/teacher/dashboard')
 					} catch (e) {
-						iziToast.error({ title: 'Oops! Something went wrong..', message: e.message })
+						iziToast.error({ title: e.message })
 					}
 				}}
 				render={({ handleSubmit, submitting }) => (

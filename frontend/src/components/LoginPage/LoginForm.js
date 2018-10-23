@@ -7,13 +7,12 @@ import gql from 'graphql-tag'
 
 import CustomInput from '../CustomComponents/CustomInput'
 import { required, composeValidators, email } from '../../helpers/validationHelper'
+import { storeUser } from '../../helpers/authHelper'
 
 const loginStudent = gql`
 	mutation student($email: String!, $password: String!) {
 		studentLogin(email: $email, password: $password) {
-			student {
-				id
-			}
+			token
 		}
 	}
 `
@@ -21,9 +20,7 @@ const loginStudent = gql`
 const teacherLogin = gql`
 	mutation teacherLogin($email: String!, $password: String!) {
 		teacherLogin(email: $email, password: $password) {
-			teacher {
-				id
-			}
+			token
 		}
 	}
 `
@@ -36,14 +33,16 @@ const LoginForm = ({ title, history }) => (
 					// TODO: separate
 					try {
 						const mutation = title === 'student' ? loginStudent : teacherLogin
+						const userType = title === 'student' ? 'studentLogin' : 'teacherLogin'
+
 						const result = await client.mutate({ mutation, variables: values })
-						const dataTitle = title === 'student' ? 'userStudent' : 'userTeacher'
-						client.writeData({
-							data: { [`${dataTitle}`]: result.data[`${title}Login`][`${title}`].id }
-						})
+						const { token } = result.data[userType]
+
+						storeUser(token)
+						iziToast.success({ title: 'Login success!' })
 						history.push({ pathname: `/${title}/dashboard` })
 					} catch (e) {
-						iziToast.error({ title: 'Oops! Something went wrong..', message: e.message })
+						iziToast.error({ title: e.message })
 					}
 				}}
 				render={({ handleSubmit, submitting, values }) => (
