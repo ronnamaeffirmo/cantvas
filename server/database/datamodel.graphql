@@ -44,8 +44,17 @@ type Student {
 	course: course!
 	gender: gender!
 	age: Int!
+	answers: [Answer!]!
 	subjects: [Subject!]!
 	scores: [Score!]!
+	createdAt: DateTime!
+	updatedAt: DateTime!
+}
+
+type Answer {
+	id: ID! @unique
+	exam: Exam!
+	question: Question!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -68,7 +77,8 @@ type Subject {
 type Exam {
 	id: ID! @unique
 	title: String!
-	Subject: Subject!
+	subject: Subject!
+	published: Boolean!
 	questions: [Question!]!
 	createdAt: DateTime!
 	updatedAt: DateTime!

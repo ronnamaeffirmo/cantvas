@@ -19,12 +19,13 @@ const querySubjects = gql`
 
 const queryExams = gql`
 	query examQuery($id: SubjectWhereInput!) {
-		exams(where: { Subject: $id }) {
+		exams(where: { subject: $id }) {
 			id
 			title
 			questions {
 				id
 			}
+			published
 		}
 	}
 `
@@ -51,16 +52,21 @@ const StudentPage = props => (
 
 								return (
 									<Card.Group itemsPerRow={4}>
-										{data.exams.map(exam => (
-											<ExamCard
-												questions={exam.questions}
-												subject={subject.name}
-												title={exam.title}
-												link={`/student/exam/${exam.id}`}
-												text={'Take test'}
-												key={exam.id}
-											/>
-										))}
+										{data.exams.map(exam => {
+											if (exam.published) {
+												return (
+													<ExamCard
+														questions={exam.questions}
+														subject={subject.name}
+														title={exam.title}
+														link={`/student/exam/${exam.id}`}
+														text={'Take test'}
+														key={exam.id}
+													/>
+												)
+											}
+											return ''
+										})}
 									</Card.Group>
 								)
 							}}

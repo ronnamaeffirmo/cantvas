@@ -3,8 +3,53 @@ import { Card, Icon, Button } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { getRandomColor } from '../../helpers/colorHelper'
 import { ApolloConsumer } from 'react-apollo'
+import Route from 'react-router-dom/Route'
 
-const ExamCard = ({ questions, title, subject, text, link }) => {
+import gql from 'graphql-tag'
+
+const updateExam = gql`
+	mutation updateExam($id: ID!, $data: ExamUpdateInput!) {
+		updateExam(where: { id: $id }, data: $data) {
+			id
+		}
+	}
+`
+
+const PublishButton = ({ highlightColor, examId, status, client }) => {
+	if (!status) {
+		return (
+			<Button
+				size={'small'}
+				basic
+				color={highlightColor}
+				onClick={async () => {
+					await client.mutate({
+						mutation: updateExam,
+						variables: { id: examId, data: { published: true } }
+					})
+					window.location.reload()
+				}}>
+				Publish
+			</Button>
+		)
+	}
+	return (
+		<Button
+			size={'small'}
+			basic
+			color={highlightColor}
+			onClick={async () => {
+				await client.mutate({
+					mutation: updateExam,
+					variables: { id: examId, data: { published: false } }
+				})
+				window.location.reload()
+			}}>
+			Unpublish
+		</Button>
+	)
+}
+const ExamCard = ({ questions, title, subject, text, link, examId, publishStatus }) => {
 	const highlightColor = getRandomColor()
 	return (
 		<ApolloConsumer>
@@ -18,6 +63,17 @@ const ExamCard = ({ questions, title, subject, text, link }) => {
 						</Card.Meta>
 					</Card.Content>
 					<Card.Content extra textAlign={'right'}>
+						<Route
+							path={'/teacher'}
+							render={() => (
+								<PublishButton
+									highlightColor={highlightColor}
+									examId={examId}
+									client={client}
+									status={publishStatus}
+								/>
+							)}
+						/>
 						<Button
 							size={'small'}
 							basic
