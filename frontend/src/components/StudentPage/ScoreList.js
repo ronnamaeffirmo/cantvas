@@ -9,8 +9,8 @@ import ErrorMessage from '../ErrorMessage'
 import Loading from '../Loading'
 
 const queryScores = gql`
-	query queryScores($id: ID!) {
-		student(where: { id: $id }) {
+	query {
+		loggedInStudent {
 			scores {
 				id
 				score
@@ -28,52 +28,36 @@ const queryScores = gql`
 	}
 `
 
-const getLoggedIn = gql`
-	{
-		userStudent @client
-	}
-`
-
 const ScoreList = () => (
 	<div>
 		<CustomHeader title={'Scores'} />
-		<Query query={getLoggedIn}>
-			{({ data: { userStudent } }) => {
-				if (!userStudent) return <ErrorMessage message={'No such student found'} />
+		<Query query={queryScores}>
+			{({ loading, error, data }) => {
+				if (error) return <ErrorMessage message={error.message} />
+				if (loading) return <Loading message={'mining for scores...'} />
 
 				return (
-					<Query query={queryScores} variables={{ id: userStudent }}>
-						{({ loading, error, data, data: { student } }) => {
-							if (error) return <ErrorMessage message={error.message} />
-							if (loading) return <Loading message={'mining for scores...'} />
+					<Table celled striped>
+						<Table.Header>
+							<Table.Row>
+								<Table.HeaderCell>Exam</Table.HeaderCell>
+								<Table.HeaderCell>Score</Table.HeaderCell>
+								<Table.HeaderCell>Subject</Table.HeaderCell>
+								<Table.HeaderCell>Date Took</Table.HeaderCell>
+							</Table.Row>
+						</Table.Header>
 
-							return (
-								<Table celled striped>
-									<Table.Header>
-										<Table.Row>
-											<Table.HeaderCell>Exam</Table.HeaderCell>
-											<Table.HeaderCell>Score</Table.HeaderCell>
-											<Table.HeaderCell>Subject</Table.HeaderCell>
-											<Table.HeaderCell>Date Took</Table.HeaderCell>
-										</Table.Row>
-									</Table.Header>
-
-									<Table.Body>
-										{student.scores.map(score => (
-											<Table.Row key={score.id}>
-												<Table.Cell collapsing>{score.exam.title}</Table.Cell>
-												<Table.Cell collapsing>{score.score}</Table.Cell>
-												<Table.Cell collapsing>{score.exam.subject.name}</Table.Cell>
-												<Table.Cell collapsing>
-													{moment(score.createdAt).format('MM/DD/YY')}
-												</Table.Cell>
-											</Table.Row>
-										))}
-									</Table.Body>
-								</Table>
-							)
-						}}
-					</Query>
+						<Table.Body>
+							{data.loggedInStudent.scores.map(score => (
+								<Table.Row key={score.id}>
+									<Table.Cell collapsing>{score.exam.title}</Table.Cell>
+									<Table.Cell collapsing>{score.score}</Table.Cell>
+									<Table.Cell collapsing>{score.exam.subject.name}</Table.Cell>
+									<Table.Cell collapsing>{moment(score.createdAt).format('MM/DD/YY')}</Table.Cell>
+								</Table.Row>
+							))}
+						</Table.Body>
+					</Table>
 				)
 			}}
 		</Query>

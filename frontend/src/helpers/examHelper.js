@@ -9,16 +9,9 @@ const scoreExists = gql`
 	}
 `
 
-const getStudent = gql`
-	{
-		userStudent @client
-	}
-`
-
-const updateStudent = gql`
-	mutation updateStudent($id: ID!, $score: Int!, $examId: ID!) {
-		updateStudent(
-			where: { id: $id }
+const updateLoggedInStudent = gql`
+	mutation updateLoggedInStudent($score: Int!, $examId: ID!) {
+		updateLoggedInStudent(
 			data: { scores: { create: { score: $score, exam: { connect: { id: $examId } } } } }
 		) {
 			id
@@ -36,19 +29,12 @@ const submitExam = async (exam, values, client, history) => {
 	})
 
 	try {
-		const loggedIn = await client.query({ query: getStudent })
-		if (!loggedIn.data) throw new Error('No student is logged in!')
-
 		const examScore = await client.query({ query: scoreExists, variables: { examId: exam.id } })
 		if (examScore.data.scores.length) throw new Error('Score exists! Already taken the exam...')
 
 		const student = await client.mutate({
-			mutation: updateStudent,
-			variables: {
-				id: loggedIn.data.userStudent,
-				score,
-				examId: exam.id
-			}
+			mutation: updateLoggedInStudent,
+			variables: { score, examId: exam.id }
 		})
 
 		if (student.data) {

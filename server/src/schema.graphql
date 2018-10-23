@@ -7,6 +7,11 @@
 # import TeacherSubscriptionPayload, StudentSubscriptionPayload, ScoreSubscriptionPayload, SubjectSubscriptionPayload, ExamSubscriptionPayload, QuestionSubscriptionPayload, ChoiceSubscriptionPayload from "./generated/prisma.graphql"
 
 type Query {
+	# new ones
+	loggedInStudent: Student!
+	loggedInTeacher: Teacher!
+
+	# old ones
 	teachers(where: TeacherWhereInput): [Teacher]!
 	students(where: StudentWhereInput): [Student]!
 	scores(where: ScoreWhereInput): [Score]!
@@ -25,6 +30,10 @@ type Query {
 }
 
 type Mutation {
+	# new ones
+	updateLoggedInStudent(data: StudentUpdateInput!): Student
+
+	# old ones
 	createTeacher(data: TeacherCreateInput!): TeacherAuthPayload!
 	createStudent(data: StudentCreateInput!): StudentAuthPayload!
 	createScore(data: ScoreCreateInput!): Score!

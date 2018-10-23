@@ -11,8 +11,8 @@ import { boyUrl, girlUrl } from '../../constants/assetUrls'
 import { getNumeralYearEquivalent } from '../../helpers/studentHelper'
 
 const querySubjects = gql`
-	query querySubjects($id: ID!) {
-		teacher(where: { id: $id }) {
+	query {
+		loggedInTeacher {
 			subjects {
 				id
 				name
@@ -34,66 +34,52 @@ const queryStudents = gql`
 	}
 `
 
-const GET_USER = gql`
-	{
-		userTeacher @client
-	}
-`
-
 const StudentList = props => {
 	return (
 		<Fragment>
 			<CustomHeader title={'Students'} />
-			<Query query={GET_USER}>
-				{({ data: { userTeacher } }) => {
-					if (!userTeacher) return <ErrorMessage message={'No such teacher found'} />
+			<Query query={querySubjects}>
+				{({ loading, error, data }) => {
+					if (error) return <ErrorMessage message={error.message} />
+					if (loading) return <Loading message={'fetching subjects...'} />
 
-					return (
-						<Query query={querySubjects} variables={{ id: userTeacher }}>
-							{({ loading, error, data: { teacher } }) => {
+					return data.loggedInTeacher.subjects.map(subject => (
+						<Query key={subject.id} query={queryStudents} variables={{ id: subject.id }}>
+							{({ loading, error, data, client }) => {
 								if (error) return <ErrorMessage message={error.message} />
-								if (loading) return <Loading message={'fetching subjects...'} />
+								if (loading) return <Loading message={`getting ${subject.name}...`} />
 
-								return teacher.subjects.map(subject => (
-									<Query key={subject.id} query={queryStudents} variables={{ id: subject.id }}>
-										{({ loading, error, data, client }) => {
-											if (error) return <ErrorMessage message={error.message} />
-											if (loading) return <Loading message={`getting ${subject.name}...`} />
+								return (
+									<Table celled striped>
+										<Table.Header>
+											<Table.Row>
+												<Table.HeaderCell colSpan={4}>{subject.name}</Table.HeaderCell>
+											</Table.Row>
+										</Table.Header>
 
-											return (
-												<Table celled striped>
-													<Table.Header>
-														<Table.Row>
-															<Table.HeaderCell colSpan={4}>{subject.name}</Table.HeaderCell>
-														</Table.Row>
-													</Table.Header>
-
-													<Table.Body>
-														{data.students.map(student => (
-															<Table.Row key={student.id}>
-																<Table.Cell collapsing>
-																	<Image
-																		rounded
-																		src={student.gender === 'MALE' ? boyUrl : girlUrl}
-																		size={'mini'}
-																	/>
-																</Table.Cell>
-																<Table.Cell>{student.name}</Table.Cell>
-																<Table.Cell>{student.email}</Table.Cell>
-																<Table.Cell>
-																	{student.course} - {getNumeralYearEquivalent(student.year)}
-																</Table.Cell>
-															</Table.Row>
-														))}
-													</Table.Body>
-												</Table>
-											)
-										}}
-									</Query>
-								))
+										<Table.Body>
+											{data.students.map(student => (
+												<Table.Row key={student.id}>
+													<Table.Cell collapsing>
+														<Image
+															rounded
+															src={student.gender === 'MALE' ? boyUrl : girlUrl}
+															size={'mini'}
+														/>
+													</Table.Cell>
+													<Table.Cell>{student.name}</Table.Cell>
+													<Table.Cell>{student.email}</Table.Cell>
+													<Table.Cell>
+														{student.course} - {getNumeralYearEquivalent(student.year)}
+													</Table.Cell>
+												</Table.Row>
+											))}
+										</Table.Body>
+									</Table>
+								)
 							}}
 						</Query>
-					)
+					))
 				}}
 			</Query>
 		</Fragment>

@@ -1,6 +1,17 @@
 const { getTeacherId, getStudentId } = require('../utils')
 
 module.exports = {
+	// new ones
+	loggedInStudent(root, args, context, info) {
+		const studentId = getStudentId(context)
+		return context.db.query.student({ where: { id: studentId } }, info)
+	},
+	loggedInTeacher(root, args, context, info) {
+		const teacherId = getTeacherId(context)
+		return context.db.query.teacher({ where: { id: teacherId } }, info)
+	},
+
+	// old ones
 	teachers(root, args, context, info) {
 		getTeacherId(context)
 
