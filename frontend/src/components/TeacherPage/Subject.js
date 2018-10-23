@@ -8,12 +8,13 @@ import gql from 'graphql-tag'
 
 const queryExams = gql`
 	query examQuery($id: SubjectWhereInput!) {
-		exams(where: { Subject: $id }) {
+		exams(where: { subject: $id }) {
 			id
 			title
 			questions {
 				id
 			}
+			published
 		}
 	}
 `
@@ -39,6 +40,8 @@ const Subject = ({ subject }) => {
 							{({ data }) => {
 								const output = exams.map(exam => (
 									<ExamCard
+										publishStatus={exam.published}
+										examId={exam.id}
 										questions={exam.questions}
 										subject={subject.name}
 										title={exam.title}

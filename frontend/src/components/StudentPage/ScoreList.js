@@ -18,7 +18,7 @@ const queryScores = gql`
 				exam {
 					id
 					title
-					Subject {
+					subject {
 						id
 						name
 					}
@@ -63,7 +63,7 @@ const ScoreList = () => (
 											<Table.Row key={score.id}>
 												<Table.Cell collapsing>{score.exam.title}</Table.Cell>
 												<Table.Cell collapsing>{score.score}</Table.Cell>
-												<Table.Cell collapsing>{score.exam.Subject.name}</Table.Cell>
+												<Table.Cell collapsing>{score.exam.subject.name}</Table.Cell>
 												<Table.Cell collapsing>
 													{moment(score.createdAt).format('MM/DD/YY')}
 												</Table.Cell>

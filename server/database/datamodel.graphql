@@ -77,7 +77,7 @@ type Subject {
 type Exam {
 	id: ID! @unique
 	title: String!
-	Subject: Subject!
+	subject: Subject!
 	published: Boolean!
 	questions: [Question!]!
 	createdAt: DateTime!

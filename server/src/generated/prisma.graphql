@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Tue Oct 23 2018 20:06:46 GMT+0800 (+08)
+# timestamp: Tue Oct 23 2018 22:37:58 GMT+0800 (+08)
 
 type AggregateAnswer {
 	count: Int!
@@ -791,7 +791,7 @@ scalar DateTime
 type Exam implements Node {
 	id: ID!
 	title: String!
-	Subject: Subject!
+	subject: Subject!
 	published: Boolean!
 	questions(
 		where: QuestionWhereInput
@@ -825,7 +825,7 @@ type ExamConnection {
 input ExamCreateInput {
 	title: String!
 	published: Boolean!
-	Subject: SubjectCreateOneInput!
+	subject: SubjectCreateOneInput!
 	questions: QuestionCreateManyInput
 }
 
@@ -918,14 +918,14 @@ input ExamSubscriptionWhereInput {
 input ExamUpdateDataInput {
 	title: String
 	published: Boolean
-	Subject: SubjectUpdateOneRequiredInput
+	subject: SubjectUpdateOneRequiredInput
 	questions: QuestionUpdateManyInput
 }
 
 input ExamUpdateInput {
 	title: String
 	published: Boolean
-	Subject: SubjectUpdateOneRequiredInput
+	subject: SubjectUpdateOneRequiredInput
 	questions: QuestionUpdateManyInput
 }
 
@@ -1166,7 +1166,7 @@ input ExamWhereInput {
 	All values greater than or equal the given value.
 	"""
 	updatedAt_gte: DateTime
-	Subject: SubjectWhereInput
+	subject: SubjectWhereInput
 	questions_every: QuestionWhereInput
 	questions_some: QuestionWhereInput
 	questions_none: QuestionWhereInput
