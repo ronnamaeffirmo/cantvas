@@ -15,13 +15,4 @@ const Dashboard = props => {
 	)
 }
 
-const style = {
-	pageTitle: {
-		marginBottom: '25px'
-	},
-	header: {
-		fontWeight: 'normal'
-	}
-}
-
 export default Dashboard

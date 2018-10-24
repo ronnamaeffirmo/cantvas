@@ -37,7 +37,6 @@ const LoginForm = ({ title, history }) => (
 
 						const result = await client.mutate({ mutation, variables: values })
 						const { token } = result.data[userType]
-
 						storeUser(token)
 						iziToast.success({ title: 'Login success!' })
 						history.push({ pathname: `/${title}/dashboard` })
