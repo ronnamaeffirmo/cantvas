@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Tue Oct 23 2018 22:37:58 GMT+0800 (+08)
+# timestamp: Wed Oct 24 2018 21:26:07 GMT+0800 (+08)
 
 type AggregateAnswer {
 	count: Int!
@@ -37,6 +37,7 @@ type Answer implements Node {
 	id: ID!
 	exam: Exam!
 	question: Question!
+	answer: Choice!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -60,6 +61,7 @@ type AnswerConnection {
 input AnswerCreateInput {
 	exam: ExamCreateOneInput!
 	question: QuestionCreateOneInput!
+	answer: ChoiceCreateOneInput!
 }
 
 input AnswerCreateManyInput {
@@ -145,11 +147,13 @@ input AnswerSubscriptionWhereInput {
 input AnswerUpdateDataInput {
 	exam: ExamUpdateOneRequiredInput
 	question: QuestionUpdateOneRequiredInput
+	answer: ChoiceUpdateOneRequiredInput
 }
 
 input AnswerUpdateInput {
 	exam: ExamUpdateOneRequiredInput
 	question: QuestionUpdateOneRequiredInput
+	answer: ChoiceUpdateOneRequiredInput
 }
 
 input AnswerUpdateManyInput {
@@ -327,6 +331,7 @@ input AnswerWhereInput {
 	updatedAt_gte: DateTime
 	exam: ExamWhereInput
 	question: QuestionWhereInput
+	answer: ChoiceWhereInput
 }
 
 input AnswerWhereUniqueInput {
@@ -372,6 +377,11 @@ input ChoiceCreateInput {
 input ChoiceCreateManyInput {
 	create: [ChoiceCreateInput!]
 	connect: [ChoiceWhereUniqueInput!]
+}
+
+input ChoiceCreateOneInput {
+	create: ChoiceCreateInput
+	connect: ChoiceWhereUniqueInput
 }
 
 """
@@ -474,9 +484,21 @@ input ChoiceUpdateManyInput {
 	upsert: [ChoiceUpsertWithWhereUniqueNestedInput!]
 }
 
+input ChoiceUpdateOneRequiredInput {
+	create: ChoiceCreateInput
+	connect: ChoiceWhereUniqueInput
+	update: ChoiceUpdateDataInput
+	upsert: ChoiceUpsertNestedInput
+}
+
 input ChoiceUpdateWithWhereUniqueNestedInput {
 	where: ChoiceWhereUniqueInput!
 	data: ChoiceUpdateDataInput!
+}
+
+input ChoiceUpsertNestedInput {
+	update: ChoiceUpdateDataInput!
+	create: ChoiceCreateInput!
 }
 
 input ChoiceUpsertWithWhereUniqueNestedInput {
