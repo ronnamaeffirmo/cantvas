@@ -18,6 +18,14 @@ module.exports = {
 		const { where } = args
 		return context.db.query.exams({ where }, info)
 	},
+	scores(root, args, context, info) {
+		// both should be auth to be able to access scores
+		const getUserId = args.type === 'student' ? getStudentId : getTeacherId
+		getUserId(context)
+
+		const { where } = args
+		return context.db.query.scores({ where }, info)
+	},
 
 	// old ones
 	teachers(root, args, context, info) {
@@ -31,10 +39,6 @@ module.exports = {
 
 		const { where } = args
 		return context.db.query.students({ where }, info)
-	},
-	scores(root, args, context, info) {
-		const { where } = args
-		return context.db.query.scores({ where }, info)
 	},
 	subjects(root, args, context, info) {
 		const { where } = args

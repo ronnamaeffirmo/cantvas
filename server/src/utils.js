@@ -24,5 +24,10 @@ module.exports = {
 		}
 
 		throw new Error('Teacher not authenticated')
+	},
+	verifyOwner(loggedInUserId, id) {
+		if (loggedInUserId !== id) {
+			throw new Error('Permission denied!')
+		}
 	}
 }
