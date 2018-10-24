@@ -55,6 +55,7 @@ type Answer {
 	id: ID! @unique
 	exam: Exam!
 	question: Question!
+	answer: Choice!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
