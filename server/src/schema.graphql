@@ -10,13 +10,13 @@ type Query {
 	# new ones
 	loggedInStudent: Student!
 	loggedInTeacher: Teacher!
+	exams(where: ExamWhereInput, type: String!): [Exam]!
 
 	# old ones
 	teachers(where: TeacherWhereInput): [Teacher]!
 	students(where: StudentWhereInput): [Student]!
 	scores(where: ScoreWhereInput): [Score]!
 	subjects(where: SubjectWhereInput): [Subject]!
-	exams(where: ExamWhereInput): [Exam]!
 	questions(where: QuestionWhereInput): [Question]!
 	choices(where: ChoiceWhereInput): [Choice]!
 
