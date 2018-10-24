@@ -43,9 +43,12 @@ const ExamForm = ({ handleSubmit, submitting, pristine, exam, studentId }) => (
 											return question.choices.map(choice => {
 												const value = data.answers ? data.answers[0].answer.value : ''
 												const selected = value === choice.value ? choice.key : ''
-												if (error) return <ErrorMessage message={error.message} key={choice.id} />
-												if (loading)
+												if (error) {
+													return <ErrorMessage message={error.message} key={choice.id} />
+												}
+												if (loading) {
 													return <Loading message={'loading choices...'} key={choice.id} />
+												}
 												return (
 													<Field key={choice.id} name={`${question.id}`}>
 														{({ input, meta }) => (
