@@ -1,8 +1,13 @@
 const jwt = require('jsonwebtoken')
+
 const APP_SECRET = 'himarkimronna'
+const STUDENT = 'student'
+const TEACHER = 'teacher'
 
 module.exports = {
 	APP_SECRET,
+	STUDENT,
+	TEACHER,
 	getStudentId(context) {
 		const Authorization = context.request.get('Authorization')
 		if (Authorization) {
@@ -28,6 +33,11 @@ module.exports = {
 	verifyOwner(loggedInUserId, id) {
 		if (loggedInUserId !== id) {
 			throw new Error('Permission denied!')
+		}
+	},
+	validateId(id, type) {
+		if (!id) {
+			throw new Error(`Authentication required for ${type}`)
 		}
 	}
 }
