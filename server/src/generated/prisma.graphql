@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Wed Oct 24 2018 21:26:07 GMT+0800 (+08)
+# timestamp: Wed Oct 24 2018 21:46:57 GMT+0800 (+08)
 
 type AggregateAnswer {
 	count: Int!
@@ -37,6 +37,7 @@ type Answer implements Node {
 	id: ID!
 	exam: Exam!
 	question: Question!
+	student: Student!
 	answer: Choice!
 	createdAt: DateTime!
 	updatedAt: DateTime!
@@ -61,12 +62,19 @@ type AnswerConnection {
 input AnswerCreateInput {
 	exam: ExamCreateOneInput!
 	question: QuestionCreateOneInput!
+	student: StudentCreateOneWithoutAnswersInput!
 	answer: ChoiceCreateOneInput!
 }
 
-input AnswerCreateManyInput {
-	create: [AnswerCreateInput!]
+input AnswerCreateManyWithoutStudentInput {
+	create: [AnswerCreateWithoutStudentInput!]
 	connect: [AnswerWhereUniqueInput!]
+}
+
+input AnswerCreateWithoutStudentInput {
+	exam: ExamCreateOneInput!
+	question: QuestionCreateOneInput!
+	answer: ChoiceCreateOneInput!
 }
 
 """
@@ -144,36 +152,37 @@ input AnswerSubscriptionWhereInput {
 	node: AnswerWhereInput
 }
 
-input AnswerUpdateDataInput {
-	exam: ExamUpdateOneRequiredInput
-	question: QuestionUpdateOneRequiredInput
-	answer: ChoiceUpdateOneRequiredInput
-}
-
 input AnswerUpdateInput {
 	exam: ExamUpdateOneRequiredInput
 	question: QuestionUpdateOneRequiredInput
+	student: StudentUpdateOneRequiredWithoutAnswersInput
 	answer: ChoiceUpdateOneRequiredInput
 }
 
-input AnswerUpdateManyInput {
-	create: [AnswerCreateInput!]
+input AnswerUpdateManyWithoutStudentInput {
+	create: [AnswerCreateWithoutStudentInput!]
 	connect: [AnswerWhereUniqueInput!]
 	disconnect: [AnswerWhereUniqueInput!]
 	delete: [AnswerWhereUniqueInput!]
-	update: [AnswerUpdateWithWhereUniqueNestedInput!]
-	upsert: [AnswerUpsertWithWhereUniqueNestedInput!]
+	update: [AnswerUpdateWithWhereUniqueWithoutStudentInput!]
+	upsert: [AnswerUpsertWithWhereUniqueWithoutStudentInput!]
 }
 
-input AnswerUpdateWithWhereUniqueNestedInput {
-	where: AnswerWhereUniqueInput!
-	data: AnswerUpdateDataInput!
+input AnswerUpdateWithoutStudentDataInput {
+	exam: ExamUpdateOneRequiredInput
+	question: QuestionUpdateOneRequiredInput
+	answer: ChoiceUpdateOneRequiredInput
 }
 
-input AnswerUpsertWithWhereUniqueNestedInput {
+input AnswerUpdateWithWhereUniqueWithoutStudentInput {
 	where: AnswerWhereUniqueInput!
-	update: AnswerUpdateDataInput!
-	create: AnswerCreateInput!
+	data: AnswerUpdateWithoutStudentDataInput!
+}
+
+input AnswerUpsertWithWhereUniqueWithoutStudentInput {
+	where: AnswerWhereUniqueInput!
+	update: AnswerUpdateWithoutStudentDataInput!
+	create: AnswerCreateWithoutStudentInput!
 }
 
 input AnswerWhereInput {
@@ -331,6 +340,7 @@ input AnswerWhereInput {
 	updatedAt_gte: DateTime
 	exam: ExamWhereInput
 	question: QuestionWhereInput
+	student: StudentWhereInput
 	answer: ChoiceWhereInput
 }
 
@@ -1212,25 +1222,25 @@ scalar Long
 type Mutation {
 	createTeacher(data: TeacherCreateInput!): Teacher!
 	createAnswer(data: AnswerCreateInput!): Answer!
+	createScore(data: ScoreCreateInput!): Score!
 	createStudent(data: StudentCreateInput!): Student!
 	createQuestion(data: QuestionCreateInput!): Question!
-	createScore(data: ScoreCreateInput!): Score!
 	createChoice(data: ChoiceCreateInput!): Choice!
 	createSubject(data: SubjectCreateInput!): Subject!
 	createExam(data: ExamCreateInput!): Exam!
 	updateTeacher(data: TeacherUpdateInput!, where: TeacherWhereUniqueInput!): Teacher
 	updateAnswer(data: AnswerUpdateInput!, where: AnswerWhereUniqueInput!): Answer
+	updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
 	updateStudent(data: StudentUpdateInput!, where: StudentWhereUniqueInput!): Student
 	updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
-	updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
 	updateChoice(data: ChoiceUpdateInput!, where: ChoiceWhereUniqueInput!): Choice
 	updateSubject(data: SubjectUpdateInput!, where: SubjectWhereUniqueInput!): Subject
 	updateExam(data: ExamUpdateInput!, where: ExamWhereUniqueInput!): Exam
 	deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
 	deleteAnswer(where: AnswerWhereUniqueInput!): Answer
+	deleteScore(where: ScoreWhereUniqueInput!): Score
 	deleteStudent(where: StudentWhereUniqueInput!): Student
 	deleteQuestion(where: QuestionWhereUniqueInput!): Question
-	deleteScore(where: ScoreWhereUniqueInput!): Score
 	deleteChoice(where: ChoiceWhereUniqueInput!): Choice
 	deleteSubject(where: SubjectWhereUniqueInput!): Subject
 	deleteExam(where: ExamWhereUniqueInput!): Exam
@@ -1244,6 +1254,11 @@ type Mutation {
 		create: AnswerCreateInput!
 		update: AnswerUpdateInput!
 	): Answer!
+	upsertScore(
+		where: ScoreWhereUniqueInput!
+		create: ScoreCreateInput!
+		update: ScoreUpdateInput!
+	): Score!
 	upsertStudent(
 		where: StudentWhereUniqueInput!
 		create: StudentCreateInput!
@@ -1254,11 +1269,6 @@ type Mutation {
 		create: QuestionCreateInput!
 		update: QuestionUpdateInput!
 	): Question!
-	upsertScore(
-		where: ScoreWhereUniqueInput!
-		create: ScoreCreateInput!
-		update: ScoreUpdateInput!
-	): Score!
 	upsertChoice(
 		where: ChoiceWhereUniqueInput!
 		create: ChoiceCreateInput!
@@ -1276,17 +1286,17 @@ type Mutation {
 	): Exam!
 	updateManyTeachers(data: TeacherUpdateInput!, where: TeacherWhereInput): BatchPayload!
 	updateManyAnswers(data: AnswerUpdateInput!, where: AnswerWhereInput): BatchPayload!
+	updateManyScores(data: ScoreUpdateInput!, where: ScoreWhereInput): BatchPayload!
 	updateManyStudents(data: StudentUpdateInput!, where: StudentWhereInput): BatchPayload!
 	updateManyQuestions(data: QuestionUpdateInput!, where: QuestionWhereInput): BatchPayload!
-	updateManyScores(data: ScoreUpdateInput!, where: ScoreWhereInput): BatchPayload!
 	updateManyChoices(data: ChoiceUpdateInput!, where: ChoiceWhereInput): BatchPayload!
 	updateManySubjects(data: SubjectUpdateInput!, where: SubjectWhereInput): BatchPayload!
 	updateManyExams(data: ExamUpdateInput!, where: ExamWhereInput): BatchPayload!
 	deleteManyTeachers(where: TeacherWhereInput): BatchPayload!
 	deleteManyAnswers(where: AnswerWhereInput): BatchPayload!
+	deleteManyScores(where: ScoreWhereInput): BatchPayload!
 	deleteManyStudents(where: StudentWhereInput): BatchPayload!
 	deleteManyQuestions(where: QuestionWhereInput): BatchPayload!
-	deleteManyScores(where: ScoreWhereInput): BatchPayload!
 	deleteManyChoices(where: ChoiceWhereInput): BatchPayload!
 	deleteManySubjects(where: SubjectWhereInput): BatchPayload!
 	deleteManyExams(where: ExamWhereInput): BatchPayload!
@@ -1352,6 +1362,15 @@ type Query {
 		first: Int
 		last: Int
 	): [Answer]!
+	scores(
+		where: ScoreWhereInput
+		orderBy: ScoreOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): [Score]!
 	students(
 		where: StudentWhereInput
 		orderBy: StudentOrderByInput
@@ -1370,15 +1389,6 @@ type Query {
 		first: Int
 		last: Int
 	): [Question]!
-	scores(
-		where: ScoreWhereInput
-		orderBy: ScoreOrderByInput
-		skip: Int
-		after: String
-		before: String
-		first: Int
-		last: Int
-	): [Score]!
 	choices(
 		where: ChoiceWhereInput
 		orderBy: ChoiceOrderByInput
@@ -1408,9 +1418,9 @@ type Query {
 	): [Exam]!
 	teacher(where: TeacherWhereUniqueInput!): Teacher
 	answer(where: AnswerWhereUniqueInput!): Answer
+	score(where: ScoreWhereUniqueInput!): Score
 	student(where: StudentWhereUniqueInput!): Student
 	question(where: QuestionWhereUniqueInput!): Question
-	score(where: ScoreWhereUniqueInput!): Score
 	choice(where: ChoiceWhereUniqueInput!): Choice
 	subject(where: SubjectWhereUniqueInput!): Subject
 	exam(where: ExamWhereUniqueInput!): Exam
@@ -1432,6 +1442,15 @@ type Query {
 		first: Int
 		last: Int
 	): AnswerConnection!
+	scoresConnection(
+		where: ScoreWhereInput
+		orderBy: ScoreOrderByInput
+		skip: Int
+		after: String
+		before: String
+		first: Int
+		last: Int
+	): ScoreConnection!
 	studentsConnection(
 		where: StudentWhereInput
 		orderBy: StudentOrderByInput
@@ -1450,15 +1469,6 @@ type Query {
 		first: Int
 		last: Int
 	): QuestionConnection!
-	scoresConnection(
-		where: ScoreWhereInput
-		orderBy: ScoreOrderByInput
-		skip: Int
-		after: String
-		before: String
-		first: Int
-		last: Int
-	): ScoreConnection!
 	choicesConnection(
 		where: ChoiceWhereInput
 		orderBy: ChoiceOrderByInput
@@ -1970,6 +1980,7 @@ type Score implements Node {
 	id: ID!
 	exam: Exam!
 	score: Int!
+	student: Student!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -1993,11 +2004,17 @@ type ScoreConnection {
 input ScoreCreateInput {
 	score: Int!
 	exam: ExamCreateOneInput!
+	student: StudentCreateOneWithoutScoresInput!
 }
 
-input ScoreCreateManyInput {
-	create: [ScoreCreateInput!]
+input ScoreCreateManyWithoutStudentInput {
+	create: [ScoreCreateWithoutStudentInput!]
 	connect: [ScoreWhereUniqueInput!]
+}
+
+input ScoreCreateWithoutStudentInput {
+	score: Int!
+	exam: ExamCreateOneInput!
 }
 
 """
@@ -2078,34 +2095,35 @@ input ScoreSubscriptionWhereInput {
 	node: ScoreWhereInput
 }
 
-input ScoreUpdateDataInput {
-	score: Int
-	exam: ExamUpdateOneRequiredInput
-}
-
 input ScoreUpdateInput {
 	score: Int
 	exam: ExamUpdateOneRequiredInput
+	student: StudentUpdateOneRequiredWithoutScoresInput
 }
 
-input ScoreUpdateManyInput {
-	create: [ScoreCreateInput!]
+input ScoreUpdateManyWithoutStudentInput {
+	create: [ScoreCreateWithoutStudentInput!]
 	connect: [ScoreWhereUniqueInput!]
 	disconnect: [ScoreWhereUniqueInput!]
 	delete: [ScoreWhereUniqueInput!]
-	update: [ScoreUpdateWithWhereUniqueNestedInput!]
-	upsert: [ScoreUpsertWithWhereUniqueNestedInput!]
+	update: [ScoreUpdateWithWhereUniqueWithoutStudentInput!]
+	upsert: [ScoreUpsertWithWhereUniqueWithoutStudentInput!]
 }
 
-input ScoreUpdateWithWhereUniqueNestedInput {
-	where: ScoreWhereUniqueInput!
-	data: ScoreUpdateDataInput!
+input ScoreUpdateWithoutStudentDataInput {
+	score: Int
+	exam: ExamUpdateOneRequiredInput
 }
 
-input ScoreUpsertWithWhereUniqueNestedInput {
+input ScoreUpdateWithWhereUniqueWithoutStudentInput {
 	where: ScoreWhereUniqueInput!
-	update: ScoreUpdateDataInput!
-	create: ScoreCreateInput!
+	data: ScoreUpdateWithoutStudentDataInput!
+}
+
+input ScoreUpsertWithWhereUniqueWithoutStudentInput {
+	where: ScoreWhereUniqueInput!
+	update: ScoreUpdateWithoutStudentDataInput!
+	create: ScoreCreateWithoutStudentInput!
 }
 
 input ScoreWhereInput {
@@ -2298,6 +2316,7 @@ input ScoreWhereInput {
 	"""
 	updatedAt_gte: DateTime
 	exam: ExamWhereInput
+	student: StudentWhereInput
 }
 
 input ScoreWhereUniqueInput {
@@ -2368,14 +2387,48 @@ input StudentCreateInput {
 	course: course!
 	gender: gender!
 	age: Int!
-	answers: AnswerCreateManyInput
+	answers: AnswerCreateManyWithoutStudentInput
 	subjects: SubjectCreateManyInput
-	scores: ScoreCreateManyInput
+	scores: ScoreCreateManyWithoutStudentInput
 }
 
 input StudentCreateManyInput {
 	create: [StudentCreateInput!]
 	connect: [StudentWhereUniqueInput!]
+}
+
+input StudentCreateOneWithoutAnswersInput {
+	create: StudentCreateWithoutAnswersInput
+	connect: StudentWhereUniqueInput
+}
+
+input StudentCreateOneWithoutScoresInput {
+	create: StudentCreateWithoutScoresInput
+	connect: StudentWhereUniqueInput
+}
+
+input StudentCreateWithoutAnswersInput {
+	email: String!
+	password: String!
+	name: String!
+	year: year!
+	course: course!
+	gender: gender!
+	age: Int!
+	subjects: SubjectCreateManyInput
+	scores: ScoreCreateManyWithoutStudentInput
+}
+
+input StudentCreateWithoutScoresInput {
+	email: String!
+	password: String!
+	name: String!
+	year: year!
+	course: course!
+	gender: gender!
+	age: Int!
+	answers: AnswerCreateManyWithoutStudentInput
+	subjects: SubjectCreateManyInput
 }
 
 """
@@ -2482,9 +2535,9 @@ input StudentUpdateDataInput {
 	course: course
 	gender: gender
 	age: Int
-	answers: AnswerUpdateManyInput
+	answers: AnswerUpdateManyWithoutStudentInput
 	subjects: SubjectUpdateManyInput
-	scores: ScoreUpdateManyInput
+	scores: ScoreUpdateManyWithoutStudentInput
 }
 
 input StudentUpdateInput {
@@ -2495,9 +2548,9 @@ input StudentUpdateInput {
 	course: course
 	gender: gender
 	age: Int
-	answers: AnswerUpdateManyInput
+	answers: AnswerUpdateManyWithoutStudentInput
 	subjects: SubjectUpdateManyInput
-	scores: ScoreUpdateManyInput
+	scores: ScoreUpdateManyWithoutStudentInput
 }
 
 input StudentUpdateManyInput {
@@ -2509,9 +2562,57 @@ input StudentUpdateManyInput {
 	upsert: [StudentUpsertWithWhereUniqueNestedInput!]
 }
 
+input StudentUpdateOneRequiredWithoutAnswersInput {
+	create: StudentCreateWithoutAnswersInput
+	connect: StudentWhereUniqueInput
+	update: StudentUpdateWithoutAnswersDataInput
+	upsert: StudentUpsertWithoutAnswersInput
+}
+
+input StudentUpdateOneRequiredWithoutScoresInput {
+	create: StudentCreateWithoutScoresInput
+	connect: StudentWhereUniqueInput
+	update: StudentUpdateWithoutScoresDataInput
+	upsert: StudentUpsertWithoutScoresInput
+}
+
+input StudentUpdateWithoutAnswersDataInput {
+	email: String
+	password: String
+	name: String
+	year: year
+	course: course
+	gender: gender
+	age: Int
+	subjects: SubjectUpdateManyInput
+	scores: ScoreUpdateManyWithoutStudentInput
+}
+
+input StudentUpdateWithoutScoresDataInput {
+	email: String
+	password: String
+	name: String
+	year: year
+	course: course
+	gender: gender
+	age: Int
+	answers: AnswerUpdateManyWithoutStudentInput
+	subjects: SubjectUpdateManyInput
+}
+
 input StudentUpdateWithWhereUniqueNestedInput {
 	where: StudentWhereUniqueInput!
 	data: StudentUpdateDataInput!
+}
+
+input StudentUpsertWithoutAnswersInput {
+	update: StudentUpdateWithoutAnswersDataInput!
+	create: StudentCreateWithoutAnswersInput!
+}
+
+input StudentUpsertWithoutScoresInput {
+	update: StudentUpdateWithoutScoresDataInput!
+	create: StudentCreateWithoutScoresInput!
 }
 
 input StudentUpsertWithWhereUniqueNestedInput {
@@ -3354,9 +3455,9 @@ input SubjectWhereUniqueInput {
 type Subscription {
 	teacher(where: TeacherSubscriptionWhereInput): TeacherSubscriptionPayload
 	answer(where: AnswerSubscriptionWhereInput): AnswerSubscriptionPayload
+	score(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
 	student(where: StudentSubscriptionWhereInput): StudentSubscriptionPayload
 	question(where: QuestionSubscriptionWhereInput): QuestionSubscriptionPayload
-	score(where: ScoreSubscriptionWhereInput): ScoreSubscriptionPayload
 	choice(where: ChoiceSubscriptionWhereInput): ChoiceSubscriptionPayload
 	subject(where: SubjectSubscriptionWhereInput): SubjectSubscriptionPayload
 	exam(where: ExamSubscriptionWhereInput): ExamSubscriptionPayload

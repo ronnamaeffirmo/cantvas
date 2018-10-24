@@ -55,6 +55,7 @@ type Answer {
 	id: ID! @unique
 	exam: Exam!
 	question: Question!
+	student: Student!
 	answer: Choice!
 	createdAt: DateTime!
 	updatedAt: DateTime!
@@ -64,6 +65,7 @@ type Score {
 	id: ID! @unique
 	exam: Exam!
 	score: Int!
+	student: Student!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
