@@ -1,22 +1,9 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { APP_SECRET, getStudentId } = require('../utils')
+const { STUDENT, validateId, APP_SECRET, getStudentId } = require('../utils')
 
 module.exports = {
 	// new ones
-	updateLoggedInStudent(root, args, context, info) {
-		const studentId = getStudentId(context)
-
-		return context.db.mutation.updateStudent(
-			{
-				data: args.data,
-				where: { id: studentId }
-			},
-			info
-		)
-	},
-
-	// old ones
 	async createTeacher(root, args, context, info) {
 		const password = await bcrypt.hash(args.data.password, 10)
 		const teacher = await context.db.mutation.createTeacher({
@@ -39,6 +26,20 @@ module.exports = {
 			student
 		}
 	},
+	updateLoggedInStudent(root, args, context, info) {
+		const studentId = getStudentId(context)
+		validateId(studentId, STUDENT)
+
+		return context.db.mutation.updateStudent(
+			{
+				data: args.data,
+				where: { id: studentId }
+			},
+			info
+		)
+	},
+
+	// old ones
 	createScore(root, args, context, info) {
 		return context.db.mutation.createScore(
 			{
