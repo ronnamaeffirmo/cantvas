@@ -11,7 +11,7 @@ module.exports = {
 		return context.db.query.teacher({ where: { id: teacherId } }, info)
 	},
 	exams(root, args, context, info) {
-		// both student and teacher are allowed to access
+		// both student and teacher are allowed access
 		const getUserId = args.type === 'student' ? getStudentId : getTeacherId
 		getUserId(context)
 
@@ -19,12 +19,20 @@ module.exports = {
 		return context.db.query.exams({ where }, info)
 	},
 	scores(root, args, context, info) {
-		// both should be auth to be able to access scores
+		// both student and teacher are allowed access
 		const getUserId = args.type === 'student' ? getStudentId : getTeacherId
 		getUserId(context)
 
 		const { where } = args
 		return context.db.query.scores({ where }, info)
+	},
+	students(root, args, context, info) {
+		// both student and teacher are allowed access
+		const getUserId = args.type === 'student' ? getStudentId : getTeacherId
+		getUserId(context)
+
+		const { where } = args
+		return context.db.query.students({ where }, info)
 	},
 
 	// old ones
@@ -33,12 +41,6 @@ module.exports = {
 
 		const { where } = args
 		return context.db.query.teachers({ where }, info)
-	},
-	students(root, args, context, info) {
-		getStudentId(context)
-
-		const { where } = args
-		return context.db.query.students({ where }, info)
 	},
 	subjects(root, args, context, info) {
 		const { where } = args
