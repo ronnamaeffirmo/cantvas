@@ -14,6 +14,7 @@ import { boyUrl, girlUrl, paragraph } from '../../constants/assetUrls'
 const queryStudent = gql`
 	query {
 		loggedInStudent {
+			id
 			name
 			gender
 			course

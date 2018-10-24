@@ -9,6 +9,7 @@ import Loading from '../Loading'
 const querySubjects = gql`
 	query {
 		loggedInStudent {
+			id
 			subjects {
 				id
 				name

@@ -11,6 +11,7 @@ import Loading from '../Loading'
 const queryScores = gql`
 	query {
 		loggedInStudent {
+			id
 			scores {
 				id
 				score
