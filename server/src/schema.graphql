@@ -1,6 +1,6 @@
 # import Teacher, Student, Score, Subject, Exam, Question, Choice from "./generated/prisma.graphql"
-# import TeacherWhereInput, StudentWhereInput, ScoreWhereInput, SubjectWhereInput, ExamWhereInput, QuestionWhereInput, ChoiceWhereInput from "./generated/prisma.graphql"
-# import TeacherWhereUniqueInput, StudentWhereUniqueInput, ScoreWhereUniqueInput, SubjectWhereUniqueInput, ExamWhereUniqueInput, QuestionWhereUniqueInput, ChoiceWhereUniqueInput  from "./generated/prisma.graphql"
+# import TeacherWhereInput, StudentWhereInput, ScoreWhereInput, AnswerWhereInput, SubjectWhereInput, ExamWhereInput, QuestionWhereInput, ChoiceWhereInput from "./generated/prisma.graphql"
+# import TeacherWhereUniqueInput, StudentWhereUniqueInput, AnswerWhereUniqueInput, ScoreWhereUniqueInput, SubjectWhereUniqueInput, ExamWhereUniqueInput, QuestionWhereUniqueInput, ChoiceWhereUniqueInput  from "./generated/prisma.graphql"
 # import TeacherCreateInput, StudentCreateInput, ScoreCreateInput, SubjectCreateInput, ExamCreateInput, QuestionCreateInput, ChoiceCreateInput from "./generated/prisma.graphql"
 # import TeacherUpdateInput, StudentUpdateInput, ScoreUpdateInput, SubjectUpdateInput, ExamUpdateInput, QuestionUpdateInput, ChoiceUpdateInput from "./generated/prisma.graphql"
 # import TeacherSubscriptionWhereInput, StudentSubscriptionWhereInput, ScoreSubscriptionWhereInput, SubjectSubscriptionWhereInput, ExamSubscriptionWhereInput, QuestionSubscriptionWhereInput, ChoiceSubscriptionWhereInput from "./generated/prisma.graphql"
@@ -21,6 +21,7 @@ type Query {
 	subjects(where: SubjectWhereInput): [Subject]!
 	questions(where: QuestionWhereInput): [Question]!
 	choices(where: ChoiceWhereInput): [Choice]!
+	answers(where: AnswerWhereInput): [Answer]!
 
 	teacher(where: TeacherWhereUniqueInput): Teacher!
 	student(where: StudentWhereUniqueInput): Student!
@@ -29,6 +30,7 @@ type Query {
 	exam(where: ExamWhereUniqueInput): Exam!
 	question(where: QuestionWhereUniqueInput): Question!
 	choice(where: ChoiceWhereUniqueInput): Choice!
+	answer(where: AnswerWhereUniqueInput): Answer!
 }
 
 type Mutation {

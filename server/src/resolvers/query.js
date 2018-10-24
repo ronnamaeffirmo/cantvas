@@ -60,6 +60,10 @@ module.exports = {
 		const { where } = args
 		return context.db.query.subjects({ where }, info)
 	},
+	answers(root, args, context, info) {
+		const { where } = args
+		return context.db.query.answers({ where }, info)
+	},
 	questions(root, args, context, info) {
 		const { where } = args
 		return context.db.query.questions({ where }, info)
@@ -95,5 +99,9 @@ module.exports = {
 	choice(root, args, context, info) {
 		const { where } = args
 		return context.db.query.choice({ where }, info)
+	},
+	answer(root, args, context, info) {
+		const { where } = args
+		return context.db.query.answer({ where }, info)
 	}
 }

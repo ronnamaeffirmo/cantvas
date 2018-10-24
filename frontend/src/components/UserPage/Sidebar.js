@@ -18,7 +18,6 @@ const Sidebar = ({ data: { activeItemStudent, activeItemTeacher }, client, menuI
 					active={activeItemStudent === key}
 					style={style.menuItem(key, activeItemStudent)}
 					onClick={() => {
-						console.log(key)
 						if (key === 'logout') {
 							client.writeData({ data: { activeItemStudent: 'dashboard' } })
 							localStorage.clear()
