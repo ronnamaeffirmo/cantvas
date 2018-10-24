@@ -65,6 +65,7 @@ const ExamForm = ({ disabled, client, questions, choices, history }) => (
 
 					iziToast.success({ title: 'Successfully created exam!' })
 					history.push('dashboard')
+					window.location.reload()
 				} catch (e) {
 					iziToast.success({ title: e.message })
 				}

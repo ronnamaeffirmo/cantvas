@@ -17,7 +17,15 @@ const Sidebar = ({ data: { activeItemStudent, activeItemTeacher }, client, menuI
 					to={url}
 					active={activeItemStudent === key}
 					style={style.menuItem(key, activeItemStudent)}
-					onClick={() => client.writeData({ data: { activeItemStudent: key } })}>
+					onClick={() => {
+						console.log(key)
+						if (key === 'logout') {
+							client.writeData({ data: { activeItemStudent: 'dashboard' } })
+							localStorage.clear()
+						} else {
+							client.writeData({ data: { activeItemStudent: key } })
+						}
+					}}>
 					<Icon name={icon} />
 					{title}
 				</Menu.Item>
