@@ -56,6 +56,8 @@ export const handleOnchange = async (client, examId, questionId, choiceId, value
 		}
 	}
 
+	console.log('data', data)
+
 	await client.mutate({
 		mutation: updateStudent,
 		variables: { data }

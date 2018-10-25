@@ -30,7 +30,6 @@ const TeacherPage = props => (
 					<div>
 						<Dropdown
 							placeholder={'Select subject'}
-							fluid
 							selection
 							options={[
 								{ key: 'All subjects', value: null, text: 'All subjects' },

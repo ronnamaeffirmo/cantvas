@@ -20,7 +20,7 @@ const querySubjects = gql`
 
 const queryExams = gql`
 	query examQuery($id: SubjectWhereInput!) {
-		exams(where: { subject: $id }, type: "student") {
+		exams(where: { subject: $id }) {
 			id
 			title
 			questions {

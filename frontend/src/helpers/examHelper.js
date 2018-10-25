@@ -3,7 +3,7 @@ import iziToast from 'izitoast'
 
 const scoreExists = gql`
 	query scoreExists($examId: ID!) {
-		scores(where: { exam: { id: $examId }, type: "student" }) {
+		scores(where: { exam: { id: $examId } }) {
 			id
 		}
 	}

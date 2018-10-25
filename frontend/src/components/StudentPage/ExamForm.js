@@ -19,7 +19,7 @@ const answers = gql`
 	}
 `
 
-const ExamForm = ({ handleSubmit, submitting, pristine, exam, studentId }) => (
+const ExamForm = ({ handleSubmit, submitting, pristine, exam }) => (
 	<ApolloConsumer>
 		{client => (
 			<Form onSubmit={handleSubmit}>
@@ -34,15 +34,16 @@ const ExamForm = ({ handleSubmit, submitting, pristine, exam, studentId }) => (
 										query={answers}
 										variables={{
 											AND: {
-												student: { id: studentId },
 												question: { id: question.id },
 												exam: { id: exam.id }
 											}
 										}}>
 										{({ loading, error, data }) => {
 											return question.choices.map(choice => {
-												const value = data.answers ? data.answers[0].answer.value : ''
+												const value =
+													data.answers && data.answers.length ? data.answers[0].answer.value : ''
 												const selected = value === choice.value ? choice.key : ''
+
 												if (error) {
 													return <ErrorMessage message={error.message} key={choice.id} />
 												}

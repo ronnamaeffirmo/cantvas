@@ -8,7 +8,7 @@ import gql from 'graphql-tag'
 
 const queryExams = gql`
 	query examQuery($id: SubjectWhereInput!) {
-		exams(where: { subject: $id }, type: "teacher") {
+		exams(where: { subject: $id }) {
 			id
 			title
 			questions {

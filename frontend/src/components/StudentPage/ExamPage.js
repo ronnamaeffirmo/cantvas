@@ -30,53 +30,36 @@ const queryExam = gql`
 	}
 `
 
-const queryStudent = gql`
-	query {
-		loggedInStudent {
-			id
-		}
-	}
-`
-
 const ExamPage = ({ match, history }) => (
 	<div>
 		<CustomHeader title={'Exam'} />
-		<Query query={queryStudent}>
-			{({ loading, error, data }) => {
+		<Query query={queryExam} variables={{ id: match.params.id }}>
+			{({ loading, error, data, client }) => {
 				if (error) return <ErrorMessage message={error.message} />
-				if (loading) return <Loading message={'verifying student....'} />
-				const id = data.loggedInStudent.id
+				if (loading) return <Loading message={'loading exam...'} />
+
 				return (
-					<Query query={queryExam} variables={{ id: match.params.id }}>
-						{({ loading, error, data, client }) => {
-							if (error) return <ErrorMessage message={error.message} />
-							if (loading) return <Loading message={'loading exam...'} />
-							return (
-								<Fragment>
-									<Segment>
-										Exam questions for
-										<Header>{data.exam.title}</Header>
-									</Segment>
-									<Segment style={style.segment}>
-										<Form
-											onSubmit={async values => {
-												await submitExam(data.exam, values, client, history)
-											}}
-											render={({ handleSubmit, submitting, pristine }) => (
-												<ExamForm
-													exam={data.exam}
-													handleSubmit={handleSubmit}
-													submitting={submitting}
-													pristine={pristine}
-													studentId={id}
-												/>
-											)}
-										/>
-									</Segment>
-								</Fragment>
-							)
-						}}
-					</Query>
+					<Fragment>
+						<Segment>
+							Exam questions for
+							<Header>{data.exam.title}</Header>
+						</Segment>
+						<Segment style={style.segment}>
+							<Form
+								onSubmit={async values => {
+									await submitExam(data.exam, values, client, history)
+								}}
+								render={({ handleSubmit, submitting, pristine }) => (
+									<ExamForm
+										exam={data.exam}
+										handleSubmit={handleSubmit}
+										submitting={submitting}
+										pristine={pristine}
+									/>
+								)}
+							/>
+						</Segment>
+					</Fragment>
 				)
 			}}
 		</Query>
