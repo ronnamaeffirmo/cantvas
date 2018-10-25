@@ -47,14 +47,13 @@ module.exports = {
 		// students should only be able to view their own answers
 		// teachers are allowed access
 		console.log('[!] args', args)
-		const { where: initialWhere } = args
+		const { where } = args
 		const role = determineRole(getStudentId(context), getTeacherId(context))
 
 		if (role.type === STUDENT) {
-			const where = { ...initialWhere, id: role.id }
-			return context.db.query.answers({ where }, info)
+			return context.db.query.answers({ ...where, student: { id: role.id } }, info)
 		} else {
-			return context.db.query.answers({ where: initialWhere }, info)
+			return context.db.query.answers({ where: where }, info)
 		}
 	},
 	exams(root, args, context, info) {
