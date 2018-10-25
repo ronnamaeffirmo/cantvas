@@ -10,10 +10,12 @@ type Query {
 	# new ones
 	loggedInStudent: Student!
 	loggedInTeacher: Teacher!
-	scores(where: ScoreWhereInput, type: String!): [Score]!
+	scores(where: ScoreWhereInput): [Score]!
+	answers(where: AnswerWhereInput): [Answer]!
 
 	# wait langs
-	exams(where: ExamWhereInput, type: String!): [Exam]!
+	exams(where: ExamWhereInput): [Exam]!
+	exam(where: ExamWhereUniqueInput): Exam!
 
 	# old ones
 	teachers(where: TeacherWhereInput): [Teacher]!
@@ -21,13 +23,11 @@ type Query {
 	subjects(where: SubjectWhereInput): [Subject]!
 	questions(where: QuestionWhereInput): [Question]!
 	choices(where: ChoiceWhereInput): [Choice]!
-	answers(where: AnswerWhereInput): [Answer]!
 
 	teacher(where: TeacherWhereUniqueInput): Teacher!
 	student(where: StudentWhereUniqueInput): Student!
 	score(where: ScoreWhereUniqueInput): Score!
 	subject(where: SubjectWhereUniqueInput): Subject!
-	exam(where: ExamWhereUniqueInput): Exam!
 	question(where: QuestionWhereUniqueInput): Question!
 	choice(where: ChoiceWhereUniqueInput): Choice!
 	answer(where: AnswerWhereUniqueInput): Answer!

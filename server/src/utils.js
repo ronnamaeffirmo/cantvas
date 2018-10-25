@@ -39,5 +39,14 @@ module.exports = {
 		if (!id) {
 			throw new Error(`Authentication required for ${type}`)
 		}
+	},
+	determineRole(studentId, teacherId) {
+		if (studentId && !teacherId) {
+			return { type: STUDENT, id: studentId }
+		} else if (teacherId && !studentId) {
+			return { type: TEACHER, id: teacherId }
+		} else {
+			throw new Error('Could not determine role!')
+		}
 	}
 }

@@ -1,4 +1,12 @@
-const { STUDENT, TEACHER, getTeacherId, getStudentId, validateId } = require('../utils')
+const {
+	STUDENT,
+	TEACHER,
+	getTeacherId,
+	getStudentId,
+	validateId,
+	verifyOwner,
+	determineRole
+} = require('../utils')
 
 module.exports = {
 	// new ones
@@ -17,15 +25,11 @@ module.exports = {
 	scores(root, args, context, info) {
 		// students should only be able to view their own scores
 		// teachers are allowed access
-		if (args.type === 'student') {
-			const studentId = getStudentId(context)
-			validateId(studentId, STUDENT)
+		const role = determineRole(getStudentId(context), getTeacherId(context))
 
-			return context.db.query.scores({ where: { id: studentId } }, info)
+		if (role.type === STUDENT) {
+			return context.db.query.scores({ where: { id: role.id } }, info)
 		} else {
-			const teacherId = getTeacherId(context)
-			validateId(teacherId, TEACHER)
-
 			const { where } = args
 			return context.db.query.scores({ where }, info)
 		}
@@ -33,75 +37,63 @@ module.exports = {
 	students(root, args, context, info) {
 		// both student and teacher are allowed access
 		const getUserId = args.type === 'student' ? getStudentId : getTeacherId
-		getUserId(context)
+		const id = getUserId(context)
+		validateId(id)
 
 		const { where } = args
 		return context.db.query.students({ where }, info)
 	},
+	answers(root, args, context, info) {
+		// students should only be able to view their own answers
+		// teachers are allowed access
+		console.log('[!] args', args)
+		const { where: initialWhere } = args
+		const role = determineRole(getStudentId(context), getTeacherId(context))
 
-	// wait lang ni
-	exams(root, args, context, info) {
-		// both student and teacher are allowed access
-		const getUserId = args.type === 'student' ? getStudentId : getTeacherId
-		getUserId(context)
-
-		const { where } = args
-		return context.db.query.exams({ where }, info)
+		if (role.type === STUDENT) {
+			const where = { ...initialWhere, id: role.id }
+			return context.db.query.answers({ where }, info)
+		} else {
+			return context.db.query.answers({ where: initialWhere }, info)
+		}
 	},
+	exams(root, args, context, info) {
+		// students can view published exams, that includes in their subjects
+		// teacher who created the exam can view his exams
+		const { where: initialWhere } = args
+		const role = determineRole(getStudentId(context), getTeacherId(context))
 
-	// old ones
-	teachers(root, args, context, info) {
-		getTeacherId(context)
-
+		if (role.type === STUDENT) {
+			const where = { ...initialWhere, published: true }
+			return context.db.query.exams({ where }, info)
+		} else {
+			const where = { ...initialWhere, author: { id: role.id } }
+			return context.db.query.exams({ where }, info)
+		}
+	},
+	async exam(root, args, context, info) {
+		// students can view published exam
+		// teacher who created the exam can view the exam
 		const { where } = args
-		return context.db.query.teachers({ where }, info)
+		const role = determineRole(getStudentId(context), getTeacherId(context))
+
+		if (role.type === STUDENT) {
+			const exams = await context.db.query.exams({ where: { ...where, published: true } }, info)
+			return exams[0]
+		} else {
+			const exam = context.db.query.exam({ where }, info)
+			verifyOwner(role.id, exam.author.id)
+
+			return exam
+		}
 	},
 	subjects(root, args, context, info) {
+		// both student and teacher are allowed access
+		const getUserId = args.type === 'student' ? getStudentId : getTeacherId
+		const id = getUserId(context)
+		validateId(id)
+
 		const { where } = args
 		return context.db.query.subjects({ where }, info)
-	},
-	answers(root, args, context, info) {
-		const { where } = args
-		return context.db.query.answers({ where }, info)
-	},
-	questions(root, args, context, info) {
-		const { where } = args
-		return context.db.query.questions({ where }, info)
-	},
-	choices(root, args, context, info) {
-		const { where } = args
-		return context.db.query.choices({ where }, info)
-	},
-	teacher(root, args, context, info) {
-		const { where } = args
-		return context.db.query.teacher({ where }, info)
-	},
-	student(root, args, context, info) {
-		const { where } = args
-		return context.db.query.student({ where }, info)
-	},
-	score(root, args, context, info) {
-		const { where } = args
-		return context.db.query.score({ where }, info)
-	},
-	subject(root, args, context, info) {
-		const { where } = args
-		return context.db.query.subject({ where }, info)
-	},
-	exam(root, args, context, info) {
-		const { where } = args
-		return context.db.query.exam({ where }, info)
-	},
-	question(root, args, context, info) {
-		const { where } = args
-		return context.db.query.question({ where }, info)
-	},
-	choice(root, args, context, info) {
-		const { where } = args
-		return context.db.query.choice({ where }, info)
-	},
-	answer(root, args, context, info) {
-		const { where } = args
-		return context.db.query.answer({ where }, info)
 	}
 }

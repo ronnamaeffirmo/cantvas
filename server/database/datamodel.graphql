@@ -82,6 +82,7 @@ type Exam {
 	title: String!
 	subject: Subject!
 	published: Boolean!
+	author: Teacher
 	questions: [Question!]!
 	createdAt: DateTime!
 	updatedAt: DateTime!

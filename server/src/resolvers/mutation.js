@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { STUDENT, validateId, APP_SECRET, getStudentId } = require('../utils')
+const { STUDENT, validateId, APP_SECRET, getStudentId, getTeacherId } = require('../utils')
 
 module.exports = {
 	// new ones
@@ -30,6 +30,8 @@ module.exports = {
 		const studentId = getStudentId(context)
 		validateId(studentId, STUDENT)
 
+		console.log('[!] args.data', args.data.answers.update)
+
 		return context.db.mutation.updateStudent(
 			{
 				data: args.data,
@@ -38,85 +40,28 @@ module.exports = {
 			info
 		)
 	},
-
-	// old ones
-	createScore(root, args, context, info) {
-		return context.db.mutation.createScore(
-			{
-				data: args.data
-			},
-			info
-		)
-	},
-	createSubject(root, args, context, info) {
-		return context.db.mutation.createSubject(
-			{
-				data: args.data
-			},
-			info
-		)
-	},
 	createExam(root, args, context, info) {
-		return context.db.mutation.createExam(
-			{
-				data: args.data
-			},
-			info
-		)
-	},
-	createQuestion(root, args, context, info) {
-		return context.db.mutation.createQuestion(
-			{
-				data: args.data
-			},
-			info
-		)
-	},
-	createChoice(root, args, context, info) {
-		return context.db.mutation.createChoice(
-			{
-				data: args.data
-			},
-			info
-		)
-	},
-	updateTeacher(root, args, context, info) {
-		return context.db.mutation.updateTeacher(
-			{
-				data: args.data,
-				where: args.where
-			},
-			info
-		)
-	},
-	updateStudent(root, args, context, info) {
-		return context.db.mutation.updateStudent(
-			{
-				data: args.data,
-				where: args.where
-			},
-			info
-		)
-	},
-	updateScore(root, args, context, info) {
-		return context.db.mutation.updateScore(
-			{
-				data: args.data,
-				where: args.where
-			},
-			info
-		)
-	},
-	updateSubject(root, args, context, info) {
-		return context.db.mutation.updateSubject(
-			{
-				data: args.data,
-				where: args.where
-			},
-			info
-		)
+		// only teachers can create an exam
+		const teacherId = getTeacherId(context)
+		validateId(teacherId)
+
+		const data = { ...args.data, author: { connect: { id: teacherId } } }
+		return context.db.mutation.createExam({ data }, info)
 	},
 	updateExam(root, args, context, info) {
+		// only teachers can update their own created exam
+		const teacherId = getTeacherId(context)
+		validateId(teacherId)
+
+		const exam = context.db.exists.Exam({
+			id: args.id,
+			author: { id: teacherId }
+		})
+
+		if (!exam) {
+			throw new Error('Invalid permissions')
+		}
+
 		return context.db.mutation.updateExam(
 			{
 				data: args.data,
@@ -124,59 +69,6 @@ module.exports = {
 			},
 			info
 		)
-	},
-	updateQuestion(root, args, context, info) {
-		return context.db.mutation.updateQuestion(
-			{
-				data: args.data,
-				where: args.where
-			},
-			info
-		)
-	},
-	updateChoice(root, args, context, info) {
-		return context.db.mutation.updateChoice(
-			{
-				data: args.data,
-				where: args.where
-			},
-			info
-		)
-	},
-	deleteTeacher(root, args, context, info) {
-		return context.db.mutation.deleteTeacher({
-			where: args.where
-		})
-	},
-	deleteStudent(root, args, context, info) {
-		return context.db.mutation.deleteStudent({
-			where: args.where
-		})
-	},
-	deleteScore(root, args, context, info) {
-		return context.db.mutation.deleteScore({
-			where: args.where
-		})
-	},
-	deleteSubject(root, args, context, info) {
-		return context.db.mutation.deleteSubject({
-			where: args.where
-		})
-	},
-	deleteExam(root, args, context, info) {
-		return context.db.mutation.deleteExam({
-			where: args.where
-		})
-	},
-	deleteQuestion(root, args, context, info) {
-		return context.db.mutation.deleteQuestion({
-			where: args.where
-		})
-	},
-	deleteChoice(root, args, context, info) {
-		return context.db.mutation.deleteChoice({
-			where: args.where
-		})
 	},
 
 	// auth - login
