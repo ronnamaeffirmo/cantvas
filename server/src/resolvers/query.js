@@ -51,7 +51,7 @@ module.exports = {
 		const role = determineRole(getStudentId(context), getTeacherId(context))
 
 		if (role.type === STUDENT) {
-			return context.db.query.answers({ ...where, student: { id: role.id } }, info)
+			return context.db.query.answers({ where: { ...where, student: { id: role.id } } }, info)
 		} else {
 			return context.db.query.answers({ where: where }, info)
 		}
