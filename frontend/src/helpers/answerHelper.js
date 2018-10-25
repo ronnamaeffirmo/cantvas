@@ -27,7 +27,9 @@ const updateStudent = gql`
 
 export const handleOnchange = async (client, examId, questionId, choiceId, value, input) => {
 	const student = await client.query({ query: queryStudent })
-	const { answers } = student.data.loggedInStudent
+	const answers = student.data.loggedInStudent.answers.filter(
+		answer => answer.exam.id === examId && answer.question.id === questionId
+	)
 
 	let data
 	if (answers.length === 0) {
