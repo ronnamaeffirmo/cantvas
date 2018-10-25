@@ -9,8 +9,8 @@ import Loading from '../Loading'
 import ErrorMessage from '../ErrorMessage'
 
 const answers = gql`
-	query answers($where: AnswerWhereInput) {
-		answers(where: $where) {
+	query answers($data: AnswerWhereInput) {
+		answers(where: $data) {
 			answer {
 				key
 				value
@@ -33,9 +33,11 @@ const ExamForm = ({ handleSubmit, submitting, pristine, exam }) => (
 									<Query
 										query={answers}
 										variables={{
-											AND: {
-												question: { id: question.id },
-												exam: { id: exam.id }
+											data: {
+												AND: {
+													question: { id: question.id },
+													exam: { id: exam.id }
+												}
 											}
 										}}>
 										{({ loading, error, data }) => {

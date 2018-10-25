@@ -46,7 +46,6 @@ module.exports = {
 	answers(root, args, context, info) {
 		// students should only be able to view their own answers
 		// teachers are allowed access
-		console.log('[!] args', args)
 		const { where } = args
 		const role = determineRole(getStudentId(context), getTeacherId(context))
 
