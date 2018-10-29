@@ -36,9 +36,7 @@ module.exports = {
 	},
 	students(root, args, context, info) {
 		// both student and teacher are allowed access
-		const getUserId = args.type === 'student' ? getStudentId : getTeacherId
-		const id = getUserId(context)
-		validateId(id)
+		determineRole(getStudentId(context), getTeacherId(context))
 
 		const { where } = args
 		return context.db.query.students({ where }, info)
@@ -56,17 +54,15 @@ module.exports = {
 		}
 	},
 	exams(root, args, context, info) {
-		// students can view published exams, that includes in their subjects
+		// students can view published exams
 		// teacher who created the exam can view his exams
-		const { where: initialWhere } = args
+		const { where } = args
 		const role = determineRole(getStudentId(context), getTeacherId(context))
 
 		if (role.type === STUDENT) {
-			const where = { ...initialWhere, published: true }
-			return context.db.query.exams({ where }, info)
+			return context.db.query.exams({ where: { ...where, published: true } }, info)
 		} else {
-			const where = { ...initialWhere, author: { id: role.id } }
-			return context.db.query.exams({ where }, info)
+			return context.db.query.exams({ where: { ...where, author: { id: role.id } } }, info)
 		}
 	},
 	async exam(root, args, context, info) {
@@ -87,9 +83,7 @@ module.exports = {
 	},
 	subjects(root, args, context, info) {
 		// both student and teacher are allowed access
-		const getUserId = args.type === 'student' ? getStudentId : getTeacherId
-		const id = getUserId(context)
-		validateId(id)
+		determineRole(getStudentId(context), getTeacherId(context))
 
 		const { where } = args
 		return context.db.query.subjects({ where }, info)

@@ -27,10 +27,9 @@ module.exports = {
 		}
 	},
 	updateLoggedInStudent(root, args, context, info) {
+		// logged in students can update only their own account
 		const studentId = getStudentId(context)
 		validateId(studentId, STUDENT)
-
-		console.log('[!] args.data', args.data.answers.update)
 
 		return context.db.mutation.updateStudent(
 			{
