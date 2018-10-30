@@ -1,36 +1,30 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { STUDENT, validateId, APP_SECRET, getStudentId, getTeacherId } = require('../utils')
+
+const {
+	// constants
+	STUDENT,
+	APP_SECRET,
+
+	// actions
+	getStudentId,
+	getTeacherId,
+
+	// validators
+	validateId,
+	verifyOwner,
+	validateExam,
+
+	// errors
+	throwPermissionError
+} = require('../utils')
 
 module.exports = {
-	// new ones
-	async createTeacher(root, args, context, info) {
-		const password = await bcrypt.hash(args.data.password, 10)
-		const teacher = await context.db.mutation.createTeacher({
-			data: { ...args.data, password }
-		})
-
-		return {
-			token: jwt.sign({ teacherId: teacher.id }, APP_SECRET),
-			teacher
-		}
-	},
-	async createStudent(root, args, context, info) {
-		const password = await bcrypt.hash(args.data.password, 10)
-		const student = await context.db.mutation.createStudent({
-			data: { ...args.data, password }
-		})
-
-		return {
-			token: jwt.sign({ studentId: student.id }, APP_SECRET),
-			student
-		}
-	},
+	// logged in students can update only their own account
+	// this thing has no where on args
 	updateLoggedInStudent(root, args, context, info) {
-		// logged in students can update only their own account
 		const studentId = getStudentId(context)
 		validateId(studentId, STUDENT)
-
 		return context.db.mutation.updateStudent(
 			{
 				data: args.data,
@@ -39,26 +33,34 @@ module.exports = {
 			info
 		)
 	},
+
+	// only teachers can create an exam
+	// teachers cant create an exam for other teachers
+	// teachers cant create exam with incomplete fields
 	createExam(root, args, context, info) {
-		// only teachers can create an exam
 		const teacherId = getTeacherId(context)
+
 		validateId(teacherId)
+		validateExam(args.data, teacherId)
 
 		const data = { ...args.data, author: { connect: { id: teacherId } } }
 		return context.db.mutation.createExam({ data }, info)
 	},
-	updateExam(root, args, context, info) {
-		// only teachers can update their own created exam
+
+	// only teachers can update their own created exam
+	// teachers cant update other teachers exam
+	// teachers cant update who the author is
+	// this thing only accepts id on where
+	async updateExam(root, args, context, info) {
+		const { where, data } = args
 		const teacherId = getTeacherId(context)
 		validateId(teacherId)
 
-		const exam = context.db.exists.Exam({
-			id: args.id,
-			author: { id: teacherId }
-		})
+		const exam = await context.db.query.exam({ where: { id: where.id } }, '{ author { id } }')
+		verifyOwner(teacherId, exam.author.id)
 
-		if (!exam) {
-			throw new Error('Invalid permissions')
+		if (data && data.author) {
+			throwPermissionError()
 		}
 
 		return context.db.mutation.updateExam(
@@ -96,5 +98,29 @@ module.exports = {
 
 		const token = jwt.sign({ teacherId: teacher.id }, APP_SECRET)
 		return { token, teacher }
+	},
+
+	// auth - signin
+	async createTeacher(root, args, context, info) {
+		const password = await bcrypt.hash(args.data.password, 10)
+		const teacher = await context.db.mutation.createTeacher({
+			data: { ...args.data, password }
+		})
+
+		return {
+			token: jwt.sign({ teacherId: teacher.id }, APP_SECRET),
+			teacher
+		}
+	},
+	async createStudent(root, args, context, info) {
+		const password = await bcrypt.hash(args.data.password, 10)
+		const student = await context.db.mutation.createStudent({
+			data: { ...args.data, password }
+		})
+
+		return {
+			token: jwt.sign({ studentId: student.id }, APP_SECRET),
+			student
+		}
 	}
 }

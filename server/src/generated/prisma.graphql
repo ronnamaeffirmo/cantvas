@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/mark-jardenil/finals_softArch/dev
-# timestamp: Thu Oct 25 2018 23:23:55 GMT+0800 (+08)
+# timestamp: Tue Oct 30 2018 17:20:55 GMT+0800 (+08)
 
 type AggregateAnswer {
 	count: Int!
@@ -494,6 +494,11 @@ input ChoiceUpdateManyInput {
 	upsert: [ChoiceUpsertWithWhereUniqueNestedInput!]
 }
 
+input ChoiceUpdateManyMutationInput {
+	key: String
+	value: String
+}
+
 input ChoiceUpdateOneRequiredInput {
 	create: ChoiceCreateInput
 	connect: ChoiceWhereUniqueInput
@@ -965,7 +970,7 @@ input ExamUpdateInput {
 	questions: QuestionUpdateManyInput
 }
 
-input ExamUpdateManyInput {
+input ExamUpdateManyMutationInput {
 	title: String
 	published: Boolean
 }
@@ -1294,13 +1299,16 @@ type Mutation {
 		create: ExamCreateInput!
 		update: ExamUpdateInput!
 	): Exam!
-	updateManyScores(data: ScoreUpdateManyInput!, where: ScoreWhereInput): BatchPayload!
-	updateManyStudents(data: StudentUpdateManyInput!, where: StudentWhereInput): BatchPayload!
-	updateManyQuestions(data: QuestionUpdateManyInput!, where: QuestionWhereInput): BatchPayload!
-	updateManyChoices(data: ChoiceUpdateManyInput!, where: ChoiceWhereInput): BatchPayload!
-	updateManyTeachers(data: TeacherUpdateManyInput!, where: TeacherWhereInput): BatchPayload!
-	updateManySubjects(data: SubjectUpdateManyInput!, where: SubjectWhereInput): BatchPayload!
-	updateManyExams(data: ExamUpdateManyInput!, where: ExamWhereInput): BatchPayload!
+	updateManyScores(data: ScoreUpdateManyMutationInput!, where: ScoreWhereInput): BatchPayload!
+	updateManyStudents(data: StudentUpdateManyMutationInput!, where: StudentWhereInput): BatchPayload!
+	updateManyQuestions(
+		data: QuestionUpdateManyMutationInput!
+		where: QuestionWhereInput
+	): BatchPayload!
+	updateManyChoices(data: ChoiceUpdateManyMutationInput!, where: ChoiceWhereInput): BatchPayload!
+	updateManyTeachers(data: TeacherUpdateManyMutationInput!, where: TeacherWhereInput): BatchPayload!
+	updateManySubjects(data: SubjectUpdateManyMutationInput!, where: SubjectWhereInput): BatchPayload!
+	updateManyExams(data: ExamUpdateManyMutationInput!, where: ExamWhereInput): BatchPayload!
 	deleteManyAnswers(where: AnswerWhereInput): BatchPayload!
 	deleteManyScores(where: ScoreWhereInput): BatchPayload!
 	deleteManyStudents(where: StudentWhereInput): BatchPayload!
@@ -1666,6 +1674,11 @@ input QuestionUpdateManyInput {
 	delete: [QuestionWhereUniqueInput!]
 	update: [QuestionUpdateWithWhereUniqueNestedInput!]
 	upsert: [QuestionUpsertWithWhereUniqueNestedInput!]
+}
+
+input QuestionUpdateManyMutationInput {
+	question: String
+	answer: String
 }
 
 input QuestionUpdateOneRequiredInput {
@@ -2110,7 +2123,7 @@ input ScoreUpdateInput {
 	student: StudentUpdateOneRequiredWithoutScoresInput
 }
 
-input ScoreUpdateManyInput {
+input ScoreUpdateManyMutationInput {
 	score: Int
 }
 
@@ -2573,6 +2586,16 @@ input StudentUpdateManyInput {
 	delete: [StudentWhereUniqueInput!]
 	update: [StudentUpdateWithWhereUniqueNestedInput!]
 	upsert: [StudentUpsertWithWhereUniqueNestedInput!]
+}
+
+input StudentUpdateManyMutationInput {
+	email: String
+	password: String
+	name: String
+	year: year
+	course: course
+	gender: gender
+	age: Int
 }
 
 input StudentUpdateOneRequiredWithoutAnswersInput {
@@ -3217,6 +3240,10 @@ input SubjectUpdateManyInput {
 	upsert: [SubjectUpsertWithWhereUniqueNestedInput!]
 }
 
+input SubjectUpdateManyMutationInput {
+	name: String
+}
+
 input SubjectUpdateOneRequiredInput {
 	create: SubjectCreateInput
 	connect: SubjectWhereUniqueInput
@@ -3653,7 +3680,7 @@ input TeacherUpdateInput {
 	students: StudentUpdateManyInput
 }
 
-input TeacherUpdateManyInput {
+input TeacherUpdateManyMutationInput {
 	email: String
 	password: String
 	name: String

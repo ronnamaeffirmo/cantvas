@@ -18,36 +18,13 @@ type Query {
 }
 
 type Mutation {
-	# new ones
 	updateLoggedInStudent(data: StudentUpdateInput!): Student
-
-	# old ones
-	createTeacher(data: TeacherCreateInput!): TeacherAuthPayload!
-	createStudent(data: StudentCreateInput!): StudentAuthPayload!
-	createScore(data: ScoreCreateInput!): Score!
-	createSubject(data: SubjectCreateInput!): Subject!
 	createExam(data: ExamCreateInput!): Exam!
-	createQuestion(data: QuestionCreateInput!): Question!
-	createChoice(data: ChoiceCreateInput!): Choice!
-
-	updateTeacher(data: TeacherUpdateInput!, where: TeacherWhereUniqueInput!): Teacher
-	updateStudent(data: StudentUpdateInput!, where: StudentWhereUniqueInput!): Student
-	updateScore(data: ScoreUpdateInput!, where: ScoreWhereUniqueInput!): Score
-	updateSubject(data: SubjectUpdateInput!, where: SubjectWhereUniqueInput!): Subject
 	updateExam(data: ExamUpdateInput!, where: ExamWhereUniqueInput!): Exam
-	updateQuestion(data: QuestionUpdateInput!, where: QuestionWhereUniqueInput!): Question
-	updateChoice(data: ChoiceUpdateInput!, where: ChoiceWhereUniqueInput!): Choice
-
-	deleteTeacher(where: TeacherWhereUniqueInput!): Teacher
-	deleteStudent(where: StudentWhereUniqueInput!): Student
-	deleteScore(where: ScoreWhereUniqueInput!): Score
-	deleteSubject(where: SubjectWhereUniqueInput!): Subject
-	deleteExam(where: ExamWhereUniqueInput!): Exam
-	deleteQuestion(where: QuestionWhereUniqueInput!): Question
-	deleteChoice(where: ChoiceWhereUniqueInput!): Choice
-
 	studentLogin(email: String!, password: String!): StudentAuthPayload
 	teacherLogin(email: String!, password: String!): TeacherAuthPayload
+	createTeacher(data: TeacherCreateInput!): TeacherAuthPayload!
+	createStudent(data: StudentCreateInput!): StudentAuthPayload!
 }
 
 type Subscription {

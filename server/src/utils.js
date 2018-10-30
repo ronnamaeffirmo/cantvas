@@ -18,6 +18,59 @@ const throwRoleError = () => {
 	throw new Error('could not determine role')
 }
 
+const throwFieldError = field => {
+	throw new Error(`invalid field ${field}`)
+}
+
+// validations
+const verifyOwner = (loggedInUserId, id) => {
+	if (loggedInUserId !== id) {
+		throwPermissionError()
+	}
+}
+
+const validateId = (id, type) => {
+	if (!id) {
+		throwAuthError(type)
+	}
+}
+
+const validateExam = (data, teacherId) => {
+	const { title, subject, author, questions } = data
+
+	if (!title) {
+		throwFieldError('title')
+	}
+
+	if (!subject) {
+		throwFieldError('subject')
+	}
+
+	if (author) {
+		if (author.create) {
+			throwPermissionError()
+		}
+		verifyOwner(teacherId, author.connect.id)
+	}
+
+	if (!questions) {
+		throwFieldError('questions')
+	}
+	if (!questions.create) {
+		throwFieldError('create questions')
+	}
+
+	questions.create.map(question => {
+		const { choices } = question
+		if (!choices) {
+			throwFieldError('choices')
+		}
+		if (!choices.create) {
+			throwFieldError('create choices')
+		}
+	})
+}
+
 module.exports = {
 	// contants
 	APP_SECRET,
@@ -28,6 +81,12 @@ module.exports = {
 	throwPermissionError,
 	throwAuthError,
 	throwRoleError,
+	throwFieldError,
+
+	// validations
+	verifyOwner,
+	validateId,
+	validateExam,
 
 	// actions
 	getStudentId(context) {
@@ -55,18 +114,6 @@ module.exports = {
 			return { type: TEACHER, id: teacherId }
 		} else {
 			throwRoleError()
-		}
-	},
-
-	// validations
-	verifyOwner(loggedInUserId, id) {
-		if (loggedInUserId !== id) {
-			throwPermissionError()
-		}
-	},
-	validateId(id, type) {
-		if (!id) {
-			throwAuthError(type)
 		}
 	}
 }
