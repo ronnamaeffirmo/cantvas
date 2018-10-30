@@ -1,15 +1,22 @@
 const {
+	// constants
 	STUDENT,
 	TEACHER,
+
+	// errors
+	throwPermissionError,
+
+	// actions
 	getTeacherId,
 	getStudentId,
+	determineRole,
+
+	// validators
 	validateId,
-	verifyOwner,
-	determineRole
+	verifyOwner
 } = require('../utils')
 
 module.exports = {
-	// new ones
 	loggedInStudent(root, args, context, info) {
 		const studentId = getStudentId(context)
 		validateId(studentId, STUDENT)
@@ -22,68 +29,126 @@ module.exports = {
 
 		return context.db.query.teacher({ where: { id: teacherId } }, info)
 	},
+
+	// students should only be able to view their own scores
+	// teachers are allowed access
 	scores(root, args, context, info) {
-		// students should only be able to view their own scores
-		// teachers are allowed access
-		const role = determineRole(getStudentId(context), getTeacherId(context))
+		const studentId = getStudentId(context)
+		const teacherId = getTeacherId(context)
+		const role = determineRole(studentId, teacherId)
+		const { where } = args
 
 		if (role.type === STUDENT) {
-			return context.db.query.scores({ where: { id: role.id } }, info)
+			if (where.student.id) {
+				verifyOwner(role.id, where.student.id)
+			}
+			return context.db.query.scores(
+				{
+					where: { ...where, student: { id: role.id } }
+				},
+				info
+			)
 		} else {
-			const { where } = args
 			return context.db.query.scores({ where }, info)
 		}
 	},
+
+	// only the teacher is allowed access
 	students(root, args, context, info) {
-		// both student and teacher are allowed access
-		determineRole(getStudentId(context), getTeacherId(context))
+		const teacherId = getTeacherId(context)
+		validateId(teacherId, TEACHER)
 
 		const { where } = args
 		return context.db.query.students({ where }, info)
 	},
+
+	// students should only be able to view their own answers
+	// teachers are allowed access
 	answers(root, args, context, info) {
-		// students should only be able to view their own answers
-		// teachers are allowed access
+		const studentId = getStudentId(context)
+		const teacherId = getTeacherId(context)
+		const role = determineRole(studentId, teacherId)
 		const { where } = args
-		const role = determineRole(getStudentId(context), getTeacherId(context))
 
 		if (role.type === STUDENT) {
-			return context.db.query.answers({ where: { ...where, student: { id: role.id } } }, info)
+			if (where.student.id) {
+				verifyOwner(role.id, where.student.id)
+			}
+			return context.db.query.answers(
+				{
+					where: { ...where, student: { id: role.id } }
+				},
+				info
+			)
 		} else {
 			return context.db.query.answers({ where: where }, info)
 		}
 	},
+
+	// students can view published exams
+	// teacher who created the exam can view his exams
 	exams(root, args, context, info) {
-		// students can view published exams
-		// teacher who created the exam can view his exams
+		const studentId = getStudentId(context)
+		const teacherId = getTeacherId(context)
+		const role = determineRole(studentId, teacherId)
 		const { where } = args
-		const role = determineRole(getStudentId(context), getTeacherId(context))
 
 		if (role.type === STUDENT) {
-			return context.db.query.exams({ where: { ...where, published: true } }, info)
+			if (!where.published) {
+				throwPermissionError()
+			}
+			return context.db.query.exams(
+				{
+					where: { ...where, published: true }
+				},
+				info
+			)
 		} else {
-			return context.db.query.exams({ where: { ...where, author: { id: role.id } } }, info)
+			if (where.author.id) {
+				verifyOwner(role.id, where.author.id)
+			}
+			return context.db.query.exams(
+				{
+					where: { ...where, author: { id: role.id } }
+				},
+				info
+			)
 		}
 	},
+
+	// students can view published exam
+	// teacher who created the exam can view the exam
 	async exam(root, args, context, info) {
-		// students can view published exam
-		// teacher who created the exam can view the exam
+		const studentId = getStudentId(context)
+		const teacherId = getTeacherId(context)
+		const role = determineRole(studentId, teacherId)
 		const { where } = args
-		const role = determineRole(getStudentId(context), getTeacherId(context))
 
 		if (role.type === STUDENT) {
-			const exams = await context.db.query.exams({ where: { ...where, published: true } }, info)
+			if (!where.published) {
+				throwPermissionError()
+			}
+			const exams = await context.db.query.exams(
+				{
+					where: { ...where, published: true }
+				},
+				info
+			)
 			return exams[0]
 		} else {
+			if (where.author.id) {
+				verifyOwner(role.id, where.author.id)
+			}
 			const exam = context.db.query.exam({ where }, info)
-			verifyOwner(role.id, exam.author.id)
-
 			return exam
 		}
 	},
+
+	// both student and teacher are allowed access
 	subjects(root, args, context, info) {
-		// both student and teacher are allowed access
-		determineRole(getStudentId(context), getTeacherId(context))
+		const studentId = getStudentId(context)
+		const teacherId = getTeacherId(context)
+		determineRole(studentId, teacherId)
 
 		const { where } = args
 		return context.db.query.subjects({ where }, info)

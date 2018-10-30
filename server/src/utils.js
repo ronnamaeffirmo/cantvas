@@ -1,44 +1,52 @@
 const jwt = require('jsonwebtoken')
 
+// constants
 const APP_SECRET = 'himarkimronna'
 const STUDENT = 'student'
 const TEACHER = 'teacher'
 
+// errors
+const throwPermissionError = () => {
+	throw new Error('Permission denied')
+}
+
+const throwAuthError = type => {
+	throw new Error(`${type} not authenticated`)
+}
+
+const throwRoleError = () => {
+	throw new Error('Could not determine role')
+}
+
 module.exports = {
+	// contants
 	APP_SECRET,
 	STUDENT,
 	TEACHER,
+
+	// errors
+	throwPermissionError,
+	throwAuthError,
+	throwRoleError,
+
+	// actions
 	getStudentId(context) {
 		const Authorization = context.request.get('Authorization')
 		if (Authorization) {
 			const token = Authorization.replace('Bearer ', '')
 			const { studentId } = jwt.verify(token, APP_SECRET)
-
 			return studentId
 		}
-
-		throw new Error('Student not authenticated')
+		throwAuthError(STUDENT)
 	},
 	getTeacherId(context) {
 		const Authorization = context.request.get('Authorization')
 		if (Authorization) {
 			const token = Authorization.replace('Bearer ', '')
 			const { teacherId } = jwt.verify(token, APP_SECRET)
-
 			return teacherId
 		}
-
-		throw new Error('Teacher not authenticated')
-	},
-	verifyOwner(loggedInUserId, id) {
-		if (loggedInUserId !== id) {
-			throw new Error('Permission denied!')
-		}
-	},
-	validateId(id, type) {
-		if (!id) {
-			throw new Error(`Authentication required for ${type}`)
-		}
+		throwAuthError(TEACHER)
 	},
 	determineRole(studentId, teacherId) {
 		if (studentId && !teacherId) {
@@ -46,7 +54,19 @@ module.exports = {
 		} else if (teacherId && !studentId) {
 			return { type: TEACHER, id: teacherId }
 		} else {
-			throw new Error('Could not determine role!')
+			throwRoleError()
+		}
+	},
+
+	// validations
+	verifyOwner(loggedInUserId, id) {
+		if (loggedInUserId !== id) {
+			throwPermissionError()
+		}
+	},
+	validateId(id, type) {
+		if (!id) {
+			throwAuthError(type)
 		}
 	}
 }
