@@ -29,8 +29,14 @@ const submitExam = async (exam, values, client, history) => {
 	})
 
 	try {
-		const examScore = await client.query({ query: scoreExists, variables: { examId: exam.id } })
-		if (examScore.data.scores.length) throw new Error('Score exists! Already taken the exam...')
+		const examScore = await client.query({
+			query: scoreExists,
+			variables: { examId: exam.id }
+		})
+
+		if (examScore.data.scores.length > 0) {
+			throw new Error('Score exists! Already taken the exam...')
+		}
 
 		const student = await client.mutate({
 			mutation: updateLoggedInStudent,

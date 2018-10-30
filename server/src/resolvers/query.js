@@ -94,7 +94,7 @@ module.exports = {
 		const { where } = args
 
 		if (role.type === STUDENT) {
-			if (where && !where.published) {
+			if (where && where.published === false) {
 				throwPermissionError()
 			}
 			return context.db.query.exams(
@@ -125,7 +125,7 @@ module.exports = {
 		const { where } = args
 
 		if (role.type === STUDENT) {
-			if (where && !where.published) {
+			if (where && where.published === false) {
 				throwPermissionError()
 			}
 			const exams = await context.db.query.exams(
