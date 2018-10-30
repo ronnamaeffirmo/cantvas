@@ -39,7 +39,7 @@ module.exports = {
 		const { where } = args
 
 		if (role.type === STUDENT) {
-			if (where.student.id) {
+			if (where && where.student) {
 				verifyOwner(role.id, where.student.id)
 			}
 			return context.db.query.scores(
@@ -71,7 +71,7 @@ module.exports = {
 		const { where } = args
 
 		if (role.type === STUDENT) {
-			if (where.student.id) {
+			if (where && where.student) {
 				verifyOwner(role.id, where.student.id)
 			}
 			return context.db.query.answers(
@@ -85,8 +85,8 @@ module.exports = {
 		}
 	},
 
-	// students can view published exams
-	// teacher who created the exam can view his exams
+	// students can only view published exams
+	// teacher who created the exam can only view his exams
 	exams(root, args, context, info) {
 		const studentId = getStudentId(context)
 		const teacherId = getTeacherId(context)
@@ -94,7 +94,7 @@ module.exports = {
 		const { where } = args
 
 		if (role.type === STUDENT) {
-			if (!where.published) {
+			if (where && !where.published) {
 				throwPermissionError()
 			}
 			return context.db.query.exams(
@@ -104,7 +104,7 @@ module.exports = {
 				info
 			)
 		} else {
-			if (where.author.id) {
+			if (where && where.author) {
 				verifyOwner(role.id, where.author.id)
 			}
 			return context.db.query.exams(
@@ -116,8 +116,8 @@ module.exports = {
 		}
 	},
 
-	// students can view published exam
-	// teacher who created the exam can view the exam
+	// students can only view published exam
+	// teacher who created the exam can only view his exam
 	async exam(root, args, context, info) {
 		const studentId = getStudentId(context)
 		const teacherId = getTeacherId(context)
@@ -125,7 +125,7 @@ module.exports = {
 		const { where } = args
 
 		if (role.type === STUDENT) {
-			if (!where.published) {
+			if (where && !where.published) {
 				throwPermissionError()
 			}
 			const exams = await context.db.query.exams(
@@ -136,7 +136,7 @@ module.exports = {
 			)
 			return exams[0]
 		} else {
-			if (where.author.id) {
+			if (where && where.author) {
 				verifyOwner(role.id, where.author.id)
 			}
 			const exam = context.db.query.exam({ where }, info)

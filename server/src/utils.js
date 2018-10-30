@@ -7,7 +7,7 @@ const TEACHER = 'teacher'
 
 // errors
 const throwPermissionError = () => {
-	throw new Error('Permission denied')
+	throw new Error('permission denied')
 }
 
 const throwAuthError = type => {
@@ -15,7 +15,7 @@ const throwAuthError = type => {
 }
 
 const throwRoleError = () => {
-	throw new Error('Could not determine role')
+	throw new Error('could not determine role')
 }
 
 module.exports = {
